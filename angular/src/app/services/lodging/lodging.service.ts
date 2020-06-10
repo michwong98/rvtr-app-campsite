@@ -42,6 +42,10 @@ export class LodgingService {
     return this.apiUrl$.pipe(concatMap((url) => this.http.get<Lodging[]>(url, options)));
   }
 
+  getLodging() {
+    let newUrl = 'https://my-json-server.typicode.com/roxfordlc/demo/Lodging';
+    return this.http.get<Lodging[]>(newUrl);
+  }
   /**
    * Represents the _Lodging Service_ `post` method
    *
