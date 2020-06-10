@@ -18,7 +18,11 @@ export class BookingComponent implements OnInit {
 
   searchForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private lodgingService: LodgingService, private bookingService: BookingService) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private lodgingService: LodgingService,
+    private bookingService: BookingService
+  ) {}
 
   ngOnInit(): void {
     // Set fields for form group
