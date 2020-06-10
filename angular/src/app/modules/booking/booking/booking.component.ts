@@ -132,32 +132,32 @@ export class BookingComponent implements OnInit {
 
   private testLodgingsObservable(): Observable<Lodging[]> {
     let dummyLodgings: Lodging[] = [
-      { id: '', name: 'My Lodging', rentals: [], reviews: [], location: { id: '',address: { id: '', city: 'New York', country: 'USA', postalCode: '10001', stateProvince: 'NY', street: '7421 Something Dr', }, latitude: '', longitude: '', locale: '', }, },
-      { id: '', name: 'My Lodge', rentals: [], reviews: [], location: { id: '',address: { id: '', city: 'New York', country: 'USA', postalCode: '10005', stateProvince: 'NY', street: '4212 Whatever Something St', }, latitude: '', longitude: '', locale: '', }, },
-      { id: '', name: 'Your Lodging', rentals: [], reviews: [], location: { id: '',address: { id: '', city: 'New York', country: 'USA', postalCode: '10003', stateProvince: 'NY', street: '4290 More St', }, latitude: '', longitude: '', locale: '', }, },
-      { id: '', name: 'Whose Lodging', rentals: [], reviews: [], location: { id: '',address: { id: '', city: 'New York', country: 'USA', postalCode: '10002', stateProvince: 'NY', street: '4282 Someone Av', }, latitude: '', longitude: '', locale: '', }, },
-      { id: '', name: 'Mine Lodging', rentals: [], reviews: [], location: { id: '',address: { id: '', city: 'New York', country: 'USA', postalCode: '10001', stateProvince: 'NY', street: '7320 Something Dr', }, latitude: '', longitude: '', locale: '', }, },
-      { id: '', name: 'My House', rentals: [], reviews: [], location: { id: '',address: { id: '', city: 'Los Angeles', country: 'USA', postalCode: '90030', stateProvince: 'CA', street: '5421 Whatever Dr', }, latitude: '', longitude: '', locale: '', }, },
+      { id: '', name: 'My Lodging', rentals: [], reviews: [], location: { id: '', address: { id: '', city: 'New York', country: 'USA', postalCode: '10001', stateProvince: 'NY', street: '7421 Something Dr', }, latitude: '', longitude: '', locale: '', }, },
+      { id: '', name: 'My Lodge', rentals: [], reviews: [], location: { id: '', address: { id: '', city: 'New York', country: 'USA', postalCode: '10005', stateProvince: 'NY', street: '4212 Whatever Something St', }, latitude: '', longitude: '', locale: '', }, },
+      { id: '', name: 'Your Lodging', rentals: [], reviews: [], location: { id: '', address: { id: '', city: 'New York', country: 'USA', postalCode: '10003', stateProvince: 'NY', street: '4290 More St', }, latitude: '', longitude: '', locale: '', }, },
+      { id: '', name: 'Whose Lodging', rentals: [], reviews: [], location: { id: '', address: { id: '', city: 'New York', country: 'USA', postalCode: '10002', stateProvince: 'NY', street: '4282 Someone Av', }, latitude: '', longitude: '', locale: '', }, },
+      { id: '', name: 'Mine Lodging', rentals: [], reviews: [], location: { id: '', address: { id: '', city: 'New York', country: 'USA', postalCode: '10001', stateProvince: 'NY', street: '7320 Something Dr', }, latitude: '', longitude: '', locale: '', }, },
+      { id: '', name: 'My House', rentals: [], reviews: [], location: { id: '', address: { id: '', city: 'Los Angeles', country: 'USA', postalCode: '90030', stateProvince: 'CA', street: '5421 Whatever Dr', }, latitude: '', longitude: '', locale: '', }, },
     ];
     return of(dummyLodgings).pipe(delay(1000));
   }
 
   // For later.
-  public getLodgingsRow(lodgings: Lodging[]): Array<Lodging[]> {
+  public lodgingsRow(lodgings: Lodging[]): Array<Lodging[]> {
     return lodgings.reduce((accumulator, currentLodge, index, array) => {
-      if (index % 3 === 0) {
-        let lodgingsRow = [array[index], array[index + 1], array[index + 2]] as Lodging[];
-        accumulator.push(lodgingsRow.reduce((acc, curr) => {
-          if (curr != undefined)
-            acc.push(curr);
-          return acc;
-        }, []));
-      }
+      if (index % 3 === 0)
+        accumulator.push([array[index], array[index + 1], array[index + 2]] as Lodging[]);
       return accumulator;
     }, []);
   }
 
-  public closeModal(): void {
+  public closeModal(event: MouseEvent): void {
     this.bookingModal.nativeElement.classList.remove('is-active');
+    event?.stopPropagation();
+  }
+
+  public openModal(event: MouseEvent, lodging?: Lodging): void {
+    this.bookingModal.nativeElement.classList.add('is-active');
+    event?.stopPropagation();
   }
 }
