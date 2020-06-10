@@ -3,16 +3,16 @@
     <div class="container">
       <br>
       <h1 class="title is-2">booking</h1>
-
       <div class="tile is-ancestor">
         <div class="tile is-vertical">
-          <form action="">
+          <form [formGroup]="searchForm" action="" (ngSubmit)="onSubmit()">
             <div class="tile is-parent">
               <div class="tile is-child">
                 <div class="field">
                   <label for="location" class="label">location</label>
                   <div class="control">
-                    <input class="input" id="location" name="location" placeholder="Add the destination" type="text">
+                    <input formControlName="location" class="input" id="location" name="location"
+                      placeholder="Add the destination" type="text">
                   </div>
                 </div>
               </div>
@@ -21,23 +21,26 @@
                 <label for="check-in" class="label">check-in / check-out</label>
                 <div class="field has-addons">
                   <div class="control is-expanded">
-                    <input class="input" id="check-in" name="check-in" placeholder="Add the traveling date" type="date">
+                    <input formControlName="checkIn" class="input" id="check-in" name="check-in"
+                      placeholder="Add the traveling date" type="date">
                   </div>
                   <div class="control is-expanded">
-                    <input class="input" id="check-out" name="check-out" placeholder="Add the returning date"
-                      type="date">
+                    <input formControlName="checkOut" class="input" id="check-out" name="check-out"
+                      placeholder="Add the returning date" type="date">
                   </div>
                 </div>
               </div>
 
               <div class="tile is-child">
-                <label for="adults" class="label">guests</label>
+                <label for="adults" class="label">Guests(Adults/Children)</label>
                 <div class="field has-addons">
                   <div class="control">
-                    <input class="input" id="adults" name="adults" placeholder="Adults" type="number">
+                    <input formControlName="adults" class="input" id="adults" name="adults" placeholder="Adults"
+                      type="number" min="1">
                   </div>
                   <div class="control">
-                    <input class="input" id="children" name="children" placeholder="Children" type="number">
+                    <input formControlName="children" class="input" id="children" name="children" placeholder="Children"
+                      type="number" min="0">
                   </div>
                   <div class="control">
                     <button class="button is-primary" type="button">search</button>
@@ -55,7 +58,6 @@
                 </figure>
               </div>
             </div>
-
             <div class="tile is-parent">
               <div class="tile is-child">
                 <figure class="image is-16by9">
