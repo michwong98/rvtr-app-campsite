@@ -62,7 +62,8 @@
                 <div class="tile is-parent">
                   <div class="tile is-child" *ngIf="lodgings[i]">
                     <p class="title">{{lodgings[i].name}}</p>
-                    <p class="content">{{lodgings[i].location.address.street}}, {{lodgings[i].location.address.city}}, {{lodgings[i].location.address.stateProvince}}</p>
+                    <p class="content">{{lodgings[i].location.address.street}}, {{lodgings[i].location.address.city}},
+                      {{lodgings[i].location.address.stateProvince}}</p>
                     <figure class="image is-16by9">
                       <img alt="placeholder image" src="https://bulma.io/images/placeholders/1280x960.png">
                     </figure>
@@ -72,7 +73,8 @@
                 <div class="tile is-parent">
                   <div class="tile is-child" *ngIf="lodgings[i+1]">
                     <p class="title">{{lodgings[i+1].name}}</p>
-                    <p class="content">{{lodgings[i+1].location.address.street}}, {{lodgings[i+1].location.address.city}}, {{lodgings[i+1].location.address.stateProvince}}</p>
+                    <p class="content">{{lodgings[i+1].location.address.street}},
+                      {{lodgings[i+1].location.address.city}}, {{lodgings[i+1].location.address.stateProvince}}</p>
                     <figure class="image is-16by9">
                       <img alt="placeholder image" src="https://bulma.io/images/placeholders/1280x960.png">
                     </figure>
@@ -82,7 +84,8 @@
                 <div class="tile is-parent">
                   <div class="tile is-child" *ngIf="lodgings[i+2]">
                     <p class="title">{{lodgings[i+2].name}}</p>
-                    <p class="content">{{lodgings[i+2].location.address.street}}, {{lodgings[i+2].location.address.city}}, {{lodgings[i+2].location.address.stateProvince}}</p>
+                    <p class="content">{{lodgings[i+2].location.address.street}},
+                      {{lodgings[i+2].location.address.city}}, {{lodgings[i+2].location.address.stateProvince}}</p>
                     <figure class="image is-16by9">
                       <img alt="placeholder image" src="https://bulma.io/images/placeholders/1280x960.png">
                     </figure>
@@ -133,3 +136,20 @@
     </div>
   </div>
 </section>
+
+<div class="modal is-active" #bookingModal>
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">Modal Title</p>
+      <button class="delete" aria-label="close" (click)="closeModal()"></button>
+    </header>
+    <section class="modal-card-body">
+      <!--CREATE BOOKING FORM HERE-->
+    </section>
+    <footer class="modal-card-foot">
+      <button class="button is-success">Create Booking</button>
+      <button class="button" (click)="closeModal()">Cancel</button>
+    </footer>
+  </div>
+</div>
