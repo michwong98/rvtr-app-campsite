@@ -9,16 +9,16 @@
             <div class="tile is-parent">
               <div class="tile is-child">
                 <div class="field">
-                  <label for="location" class="label">location</label>
+                  <label for="location" class="label">Location</label>
                   <div class="control">
                     <input formControlName="location" class="input" id="location" name="location"
-                      placeholder="Add the destination" type="text">
+                      placeholder="Search by Location" type="text">
                   </div>
                 </div>
               </div>
 
               <div class="tile is-child">
-                <label for="check-in" class="label">check-in / check-out</label>
+                <label for="check-in" class="label">Check-In / Check-Out</label>
                 <div class="field has-addons">
                   <div class="control is-expanded">
                     <input formControlName="checkIn" class="input" id="check-in" name="check-in"
@@ -58,46 +58,10 @@
 
           <ng-container *ngIf="lodgings$ | async as lodgings; else loading">
             <ng-container *ngIf="!lodgings.length">
-              <div class="column has-text-centered">No Results found...</div>
-            </ng-container>
-            <ng-container *ngFor="let lodging of lodgings; let i = index">
-              <div *ngIf="i % 3 === 0" class="tile">
-                <div class="tile is-parent">
-                  <div class="tile is-child" *ngIf="lodgings[i]">
-                    <p class="title">{{lodgings[i].name}}</p>
-                    <p class="content">{{lodgings[i].location.address.street}}, {{lodgings[i].location.address.city}},
-                      {{lodgings[i].location.address.stateProvince}}</p>
-                    <figure class="image is-16by9">
-                      <img alt="placeholder image" src="https://bulma.io/images/placeholders/1280x960.png">
-                    </figure>
-                  </div>
-                </div>
-
-                <div class="tile is-parent">
-                  <div class="tile is-child" *ngIf="lodgings[i+1]">
-                    <p class="title">{{lodgings[i+1].name}}</p>
-                    <p class="content">{{lodgings[i+1].location.address.street}},
-                      {{lodgings[i+1].location.address.city}}, {{lodgings[i+1].location.address.stateProvince}}</p>
-                    <figure class="image is-16by9">
-                      <img alt="placeholder image" src="https://bulma.io/images/placeholders/1280x960.png">
-                    </figure>
-                  </div>
-                </div>
-
-                <div class="tile is-parent">
-                  <div class="tile is-child" *ngIf="lodgings[i+2]">
-                    <p class="title">{{lodgings[i+2].name}}</p>
-                    <p class="content">{{lodgings[i+2].location.address.street}},
-                      {{lodgings[i+2].location.address.city}}, {{lodgings[i+2].location.address.stateProvince}}</p>
-                    <figure class="image is-16by9">
-                      <img alt="placeholder image" src="https://bulma.io/images/placeholders/1280x960.png">
-                    </figure>
-                  </div>
-                </div>
-              </div>
+              <div class="column has-text-centered">No Results Found</div>
             </ng-container>
 
-            <div class="tile is-parent">
+            <div *ngIf="lodgings[0]" class="tile is-parent">
               <div class="tile box has-background-dark is-child">
                 <div class="columns">
                   <div class="column is-4">
@@ -108,7 +72,7 @@
 
                   <div class="column">
                     <div class="content has-text-light">
-                      <p class="title has-text-light is-4">spotlight</p>
+                      <p class="title has-text-light is-4">Spotlight: {{lodgings[0].name}}</p>
                       <p>
                         Lorem ipsum dolor, sit amet consectetur adipisicing elit. Voluptatum quis sapiente sed
                         laudantium
@@ -132,6 +96,27 @@
                 </div>
               </div>
             </div>
+
+            <ng-container *ngFor="let lodgingsRow of lodgingsRow(lodgings)">
+              <div class="tile">
+                <div class="tile is-parent" *ngFor="let lodging of lodgingsRow">
+                  <div class="tile is-child" *ngIf="lodging" (click)="openModal($event)">
+                    <p class="title">{{lodging.name}}</p>
+                    <p class="content">{{lodging.location?.address?.street}},
+                      {{lodging.location?.address?.city}},
+                      {{lodging.location?.address?.stateProvince}}</p>
+                    <figure class="image is-16by9">
+                      <img alt="placeholder image" src="https://bulma.io/images/placeholders/1280x960.png">
+                    </figure>
+                    <div onclick="event.stopPropagation()">
+                      <a routerLink="/lodging/{{lodging.id}}" class="button is-white is-small">Details</a>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </ng-container>
+
           </ng-container>
 
         </div>
@@ -140,19 +125,19 @@
   </div>
 </section>
 
-<div class="modal is-active" #bookingModal>
-  <div class="modal-background"></div>
+<div class="modal" #bookingModal>
+  <div class="modal-background" (click)="closeModal($event)"></div>
   <div class="modal-card">
     <header class="modal-card-head">
       <p class="modal-card-title">Modal Title</p>
-      <button class="delete" aria-label="close" (click)="closeModal()"></button>
+      <button class="delete" aria-label="close" (click)="closeModal($event)"></button>
     </header>
     <section class="modal-card-body">
       <!--CREATE BOOKING FORM HERE-->
     </section>
     <footer class="modal-card-foot">
       <button class="button is-success">Create Booking</button>
-      <button class="button" (click)="closeModal()">Cancel</button>
+      <button class="button" (click)="closeModal($event)">Cancel</button>
     </footer>
   </div>
 </div>
