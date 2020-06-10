@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { LodgingService } from '../../../services/lodging/lodging.service';
 import { Lodging } from '../../../data/lodging.model';
@@ -15,7 +15,7 @@ import { Booking } from '../../../data/booking.model';
 })
 export class BookingComponent implements OnInit {
   lodgings$: Observable<Lodging[]>;
-  
+
   searchForm: FormGroup;
 
   constructor(private formBuilder: FormBuilder, private lodgingService: LodgingService, private bookingService: BookingService) {}
@@ -24,10 +24,10 @@ export class BookingComponent implements OnInit {
     // Set fields for form group
     this.searchForm = this.formBuilder.group({
       location: [''],
-      checkIn: [this.formatDate(this.getNewDateFromNowBy(1))],
-      checkOut: [this.formatDate(this.getNewDateFromNowBy(2))],
-      adults: [1],
-      children: [0],
+      checkIn: [this.formatDate(this.getNewDateFromNowBy(1)), Validators.required],
+      checkOut: [this.formatDate(this.getNewDateFromNowBy(2)), Validators.required],
+      adults: [1, Validators.required],
+      children: [0, Validators.required],
     });
   }
 
