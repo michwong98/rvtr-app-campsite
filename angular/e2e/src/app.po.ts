@@ -12,4 +12,8 @@ export class AppPage {
   getPageHeader(): Promise<string> {
     return element(by.css('uic-header')).getText() as Promise<string>;
   }
+
+  navigateToBooking(): Promise<unknown> {
+    return browser.get('/booking') as Promise<unknown>;
+  }
 }
