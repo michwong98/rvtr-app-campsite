@@ -149,9 +149,50 @@
     </header>
     <section class="modal-card-body">
       <!--CREATE BOOKING FORM HERE-->
+      <form [formGroup]='bookingForm'>
+
+        <!-- * Dynamic Guests input * -->
+        <label class="label">Guest(s) info</label>
+        <div class="guest-fields field" formArrayName="guests"
+          *ngFor="let guestInput of $any(bookingForm.controls['guests']).controls as guestControls; let i = index">
+          <div [formGroupName]="i" class="card" style="padding: 5px;">
+            <!-- First and last names -->
+            <div class="field has-addons">
+              <div class="control">
+                <input type="text" class="input" formControlName="given" placeholder="Given Name">
+              </div>
+              <div class="control">
+                <input type="text" class="input" formControlName="family" placeholder="Family Name">
+              </div>
+            </div>
+            <!-- Email and phone number -->
+            <div class="field has-addons">
+              <div class="control">
+                <input type="text" class="input" formControlName="email" placeholder="Email">
+              </div>
+              <div class="control">
+                <input type="text" class="input" formControlName="phone" placeholder="Phone">
+              </div>
+            </div>
+            <!-- Remove btn -->
+            <button class="button is-danger" (click)="removeGuessItem(i)">
+              Remove
+            </button>
+          </div>
+        </div>
+
+        <!-- * Add additional guest fields * -->
+        <div class="add-guest-input">
+          <button class="button is is-primary" type="button" (click)="addNextGuestItem()">
+            <span class="icon">
+              <i class="fas fa-plus"></i>
+            </span>
+          </button>
+        </div>
+      </form>
     </section>
     <footer class="modal-card-foot">
-      <button class="button is-success">Create Booking</button>
+      <button class="button is-success" (click)="onBookingFormSubmit()">Create Booking</button>
       <button class="button" (click)="closeModal()">Cancel</button>
     </footer>
   </div>
