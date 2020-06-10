@@ -45,7 +45,8 @@ export class BookingComponent implements OnInit {
       children: [0, Validators.required],
     });
 
-    this.lodgings$ = this.testLodgingsObservable();
+    //this.lodgings$ = this.testLodgingsObservable();
+    this.lodgings$ = this.lodgingService.getLodging();
   }
 
   /**
