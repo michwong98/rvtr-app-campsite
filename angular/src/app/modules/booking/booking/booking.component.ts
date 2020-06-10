@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable, of, concat } from 'rxjs';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Observable, of } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
@@ -15,8 +15,13 @@ import { delay, map } from 'rxjs/operators';
   templateUrl: './booking.component.html',
 })
 export class BookingComponent implements OnInit {
+  @ViewChild('bookingModal') bookingModal: ElementRef;
+
   lodgings$: Observable<Lodging[]>;
+  bookings$: Observable<Booking[]>;
+
   lodgings: Lodging[];
+
 
   /**
    * State used to determine if form was submitted
@@ -32,7 +37,7 @@ export class BookingComponent implements OnInit {
     private formBuilder: FormBuilder,
     private lodgingService: LodgingService,
     private bookingService: BookingService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     // Set fields for form group
@@ -135,5 +140,24 @@ export class BookingComponent implements OnInit {
       { id: '', name: 'My House', rentals: [], reviews: [], location: { id: '',address: { id: '', city: 'Los Angeles', country: 'USA', postalCode: '90030', stateProvince: 'CA', street: '5421 Whatever Dr', }, latitude: '', longitude: '', locale: '', }, },
     ];
     return of(dummyLodgings).pipe(delay(1000));
+  }
+
+  // For later.
+  public getLodgingsRow(lodgings: Lodging[]): Array<Lodging[]> {
+    return lodgings.reduce((accumulator, currentLodge, index, array) => {
+      if (index % 3 === 0) {
+        let lodgingsRow = [array[index], array[index + 1], array[index + 2]] as Lodging[];
+        accumulator.push(lodgingsRow.reduce((acc, curr) => {
+          if (curr != undefined)
+            acc.push(curr);
+          return acc;
+        }, []));
+      }
+      return accumulator;
+    }, []);
+  }
+
+  public closeModal(): void {
+    this.bookingModal.nativeElement.classList.remove('is-active');
   }
 }
