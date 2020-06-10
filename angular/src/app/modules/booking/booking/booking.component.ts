@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { LodgingService } from '../../../services/lodging/lodging.service';
 import { Lodging } from '../../../data/lodging.model';
@@ -15,19 +15,31 @@ import { Booking } from '../../../data/booking.model';
 })
 export class BookingComponent implements OnInit {
   lodgings$: Observable<Lodging[]>;
-  
+
+  /**
+   * State used to determine if form was submitted
+   */
+  submitted: boolean;
+  /**
+   * State used to determine if awaiting for data from AJAX request
+   */
+  laoding: boolean;
   searchForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private lodgingService: LodgingService, private bookingService: BookingService) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private lodgingService: LodgingService,
+    private bookingService: BookingService
+  ) {}
 
   ngOnInit(): void {
     // Set fields for form group
     this.searchForm = this.formBuilder.group({
       location: [''],
-      checkIn: [this.formatDate(this.getNewDateFromNowBy(1))],
-      checkOut: [this.formatDate(this.getNewDateFromNowBy(2))],
-      adults: [1],
-      children: [0],
+      checkIn: [this.formatDate(this.getNewDateFromNowBy(1)), Validators.required],
+      checkOut: [this.formatDate(this.getNewDateFromNowBy(2)), Validators.required],
+      adults: [1, Validators.required],
+      children: [0, Validators.required],
     });
   }
 
@@ -42,6 +54,11 @@ export class BookingComponent implements OnInit {
    * Submits seach data to httpRequest
    */
   onSubmit(): void {
+    if (this.searchForm.invalid) {
+      console.error('Invalid form submission');
+      return;
+    }
+
     // TODO: submit form data to http request
     console.log('Submitted...');
   }
