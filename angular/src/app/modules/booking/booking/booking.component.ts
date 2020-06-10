@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
@@ -8,6 +8,7 @@ import { Lodging } from '../../../data/lodging.model';
 
 import { BookingService } from '../../../services/booking/booking.service';
 import { Booking } from '../../../data/booking.model';
+import { delay } from 'rxjs/operators';
 
 @Component({
   selector: 'uic-booking',
@@ -41,6 +42,8 @@ export class BookingComponent implements OnInit {
       adults: [1, Validators.required],
       children: [0, Validators.required],
     });
+
+    this.lodgings$ = this.testLodgingsObservable();
   }
 
   /**
@@ -92,5 +95,17 @@ export class BookingComponent implements OnInit {
   private getNewDateFromNowBy(numMonths: number, numDays: number = 7): Date {
     const now = new Date();
     return new Date(now.getFullYear(), now.getMonth() + numMonths, now.getDate() + numDays);
+  }
+
+  private testLodgingsObservable(): Observable<Lodging[]> {
+    let dummyLodgings: Lodging[] = [
+      { id: "", name: "My Lodging", rentals: [], reviews: [], location: { id: "", address: { id: "", city: "New York", country: "USA", postalCode: "10001", stateProvince: "NY", street: "7421 Something Dr" }, latitude: "", longitude: "", locale: "" } },
+      { id: "", name: "My Lodge", rentals: [], reviews: [], location: { id: "", address: { id: "", city: "New York", country: "USA", postalCode: "10005", stateProvince: "NY", street: "4212 Whatever Something St" }, latitude: "", longitude: "", locale: "" } },
+      { id: "", name: "Your Lodging", rentals: [], reviews: [], location: { id: "", address: { id: "", city: "New York", country: "USA", postalCode: "10003", stateProvince: "NY", street: "4290 More St" }, latitude: "", longitude: "", locale: "" } },
+      { id: "", name: "Whose Lodging", rentals: [], reviews: [], location: { id: "", address: { id: "", city: "New York", country: "USA", postalCode: "10002", stateProvince: "NY", street: "4282 Someone Av" }, latitude: "", longitude: "", locale: "" } },
+      { id: "", name: "Mine Lodging", rentals: [], reviews: [], location: { id: "", address: { id: "", city: "New York", country: "USA", postalCode: "10001", stateProvince: "NY", street: "7320 Something Dr" }, latitude: "", longitude: "", locale: "" } },
+      { id: "", name: "My House", rentals: [], reviews: [], location: { id: "", address: { id: "", city: "Los Angeles", country: "USA", postalCode: "90030", stateProvince: "CA", street: "5421 Whatever Dr" }, latitude: "", longitude: "", locale: "" } },
+    ];
+    return of(dummyLodgings).pipe(delay(1000));
   }
 }
