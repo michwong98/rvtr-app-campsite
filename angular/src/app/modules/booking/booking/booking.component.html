@@ -57,6 +57,9 @@
           </ng-template>
 
           <ng-container *ngIf="lodgings$ | async as lodgings; else loading">
+            <ng-container *ngIf="!lodgings.length">
+              <div class="column has-text-centered">No Results found...</div>
+            </ng-container>
             <ng-container *ngFor="let lodging of lodgings; let i = index">
               <div *ngIf="i % 3 === 0" class="tile">
                 <div class="tile is-parent">

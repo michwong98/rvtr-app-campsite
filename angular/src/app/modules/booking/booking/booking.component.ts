@@ -8,7 +8,7 @@ import { Lodging } from '../../../data/lodging.model';
 
 import { BookingService } from '../../../services/booking/booking.service';
 import { Booking } from '../../../data/booking.model';
-import { delay } from 'rxjs/operators';
+import { delay, map } from 'rxjs/operators';
 
 @Component({
   selector: 'uic-booking',
@@ -19,6 +19,9 @@ export class BookingComponent implements OnInit {
 
   lodgings$: Observable<Lodging[]>;
   bookings$: Observable<Booking[]>;
+
+  lodgings: Lodging[];
+
 
   /**
    * State used to determine if form was submitted
@@ -50,6 +53,29 @@ export class BookingComponent implements OnInit {
   }
 
   /**
+   * Filter's results recieved from test observable using a given phrase
+   * @param phrase String used to filter results
+   */
+  retreiveLodgingsByPhrase(phrase: string): void {
+    // Return all results if string is empty
+    if (!phrase.length) {
+      this.lodgings$ = this.testLodgingsObservable();
+      return;
+    }
+
+    this.lodgings$ = this.testLodgingsObservable().pipe(
+      // return the list of lodgings filtered by the phrase
+      map((lodgings) =>
+        lodgings.filter((l) =>
+          `${l.location.address.street}, ${l.location.address.city}, ${l.location.address.country}`.includes(
+            phrase
+          )
+        )
+      )
+    );
+  }
+
+  /**
    * convencience getter for easy access to form fields
    */
   get f() {
@@ -60,10 +86,14 @@ export class BookingComponent implements OnInit {
    * Submits seach data to httpRequest
    */
   onSubmit(): void {
+    this.submitted = true;
+
     if (this.searchForm.invalid) {
       console.error('Invalid form submission');
       return;
     }
+
+    this.retreiveLodgingsByPhrase(this.f.location.value);
 
     // TODO: submit form data to http request
     console.log('Submitted...');
@@ -102,12 +132,12 @@ export class BookingComponent implements OnInit {
 
   private testLodgingsObservable(): Observable<Lodging[]> {
     let dummyLodgings: Lodging[] = [
-      { id: "", name: "My Lodging", rentals: [], reviews: [], location: { id: "", address: { id: "", city: "New York", country: "USA", postalCode: "10001", stateProvince: "NY", street: "7421 Something Dr" }, latitude: "", longitude: "", locale: "" } },
-      { id: "", name: "My Lodge", rentals: [], reviews: [], location: { id: "", address: { id: "", city: "New York", country: "USA", postalCode: "10005", stateProvince: "NY", street: "4212 Whatever Something St" }, latitude: "", longitude: "", locale: "" } },
-      { id: "", name: "Your Lodging", rentals: [], reviews: [], location: { id: "", address: { id: "", city: "New York", country: "USA", postalCode: "10003", stateProvince: "NY", street: "4290 More St" }, latitude: "", longitude: "", locale: "" } },
-      { id: "", name: "Whose Lodging", rentals: [], reviews: [], location: { id: "", address: { id: "", city: "New York", country: "USA", postalCode: "10002", stateProvince: "NY", street: "4282 Someone Av" }, latitude: "", longitude: "", locale: "" } },
-      { id: "", name: "Mine Lodging", rentals: [], reviews: [], location: { id: "", address: { id: "", city: "New York", country: "USA", postalCode: "10001", stateProvince: "NY", street: "7320 Something Dr" }, latitude: "", longitude: "", locale: "" } },
-      { id: "", name: "My House", rentals: [], reviews: [], location: { id: "", address: { id: "", city: "Los Angeles", country: "USA", postalCode: "90030", stateProvince: "CA", street: "5421 Whatever Dr" }, latitude: "", longitude: "", locale: "" } },
+      { id: '', name: 'My Lodging', rentals: [], reviews: [], location: { id: '',address: { id: '', city: 'New York', country: 'USA', postalCode: '10001', stateProvince: 'NY', street: '7421 Something Dr', }, latitude: '', longitude: '', locale: '', }, },
+      { id: '', name: 'My Lodge', rentals: [], reviews: [], location: { id: '',address: { id: '', city: 'New York', country: 'USA', postalCode: '10005', stateProvince: 'NY', street: '4212 Whatever Something St', }, latitude: '', longitude: '', locale: '', }, },
+      { id: '', name: 'Your Lodging', rentals: [], reviews: [], location: { id: '',address: { id: '', city: 'New York', country: 'USA', postalCode: '10003', stateProvince: 'NY', street: '4290 More St', }, latitude: '', longitude: '', locale: '', }, },
+      { id: '', name: 'Whose Lodging', rentals: [], reviews: [], location: { id: '',address: { id: '', city: 'New York', country: 'USA', postalCode: '10002', stateProvince: 'NY', street: '4282 Someone Av', }, latitude: '', longitude: '', locale: '', }, },
+      { id: '', name: 'Mine Lodging', rentals: [], reviews: [], location: { id: '',address: { id: '', city: 'New York', country: 'USA', postalCode: '10001', stateProvince: 'NY', street: '7320 Something Dr', }, latitude: '', longitude: '', locale: '', }, },
+      { id: '', name: 'My House', rentals: [], reviews: [], location: { id: '',address: { id: '', city: 'Los Angeles', country: 'USA', postalCode: '90030', stateProvince: 'CA', street: '5421 Whatever Dr', }, latitude: '', longitude: '', locale: '', }, },
     ];
     return of(dummyLodgings).pipe(delay(1000));
   }
