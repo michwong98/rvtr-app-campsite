@@ -46,6 +46,11 @@ export class BookingComponent implements OnInit {
    * Submits seach data to httpRequest
    */
   onSubmit(): void {
+    if (this.searchForm.invalid) {
+      console.error('Invalid form submission');
+      return;
+    }
+
     // TODO: submit form data to http request
     console.log('Submitted...');
   }
