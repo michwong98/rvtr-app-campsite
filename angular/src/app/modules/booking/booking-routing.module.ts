@@ -11,4 +11,4 @@ const routes: Routes = [{ component: BookingComponent, path: '' }];
   exports: [RouterModule],
   imports: [RouterModule.forChild(routes), CommonModule, ReactiveFormsModule],
 })
-export class BookingRoutingModule {}
+export class BookingRoutingModule { }

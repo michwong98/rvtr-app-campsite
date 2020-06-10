@@ -1,15 +1,24 @@
 import { Component, OnInit } from '@angular/core';
-import { Booking } from 'src/app/data/booking.model';
+import { Observable } from 'rxjs';
+import { CommonModule } from '@angular/common';
 import { FormGroup, FormBuilder } from '@angular/forms';
+
+import { LodgingService } from '../../../services/lodging/lodging.service';
+import { Lodging } from '../../../data/lodging.model';
+
+import { BookingService } from '../../../services/booking/booking.service';
+import { Booking } from '../../../data/booking.model';
 
 @Component({
   selector: 'uic-booking',
   templateUrl: './booking.component.html',
 })
 export class BookingComponent implements OnInit {
+  lodgings$: Observable<Lodging[]>;
+  
   searchForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(private formBuilder: FormBuilder, private lodgingService: LodgingService, private bookingService: BookingService) {}
 
   ngOnInit(): void {
     // Set fields for form group
