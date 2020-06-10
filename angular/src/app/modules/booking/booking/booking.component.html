@@ -5,7 +5,7 @@
       <h1 class="title is-2">Booking</h1>
       <div class="tile is-ancestor">
         <div class="tile is-vertical">
-          <form [formGroup]="searchForm" action="" (ngSubmit)="onSubmit()">
+          <form [formGroup]="searchForm" (ngSubmit)="onSubmit()">
             <div class="tile is-parent">
               <div class="tile is-child">
                 <div class="field">
@@ -43,7 +43,7 @@
                       type="number" min="0">
                   </div>
                   <div class="control">
-                    <button class="button is-primary" type="button">search</button>
+                    <button class="button is-primary" type="submit">search</button>
                   </div>
                 </div>
               </div>
