@@ -16,6 +16,14 @@ import { Booking } from '../../../data/booking.model';
 export class BookingComponent implements OnInit {
   lodgings$: Observable<Lodging[]>;
 
+  /**
+   * State used to determine if form was submitted
+   */
+  submitted: boolean;
+  /**
+   * State used to determine if awaiting for data from AJAX request
+   */
+  laoding: boolean;
   searchForm: FormGroup;
 
   constructor(
