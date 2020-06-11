@@ -1,0 +1,192 @@
+<section class="hero is-fullheight-with-navbar">
+    <div class="hero-head">
+    <form #editAccount="ngForm" (ngSubmit)="onSubmit()">
+      <div class="container">
+        <br>
+        <h1 class="title is-2">account</h1>
+        <div class="tile is-ancestor">
+          <div class="tile is-6">
+            <div class="tile is-parent is-vertical">
+              <div class="tile box has-background-dark is-child">
+                <h2 class="title has-text-light is-4">name</h2>
+                <input class="title has-text-dark is-4" [(ngModel)]="data.name" name="name">
+              </div>
+              <div class="tile box has-background-dark is-child">
+                <h2 class="title has-text-light is-4">address</h2>
+                <div class="level">
+                  <div class="level-left">
+                    <div class="level-item has-text-light">
+                      <div>
+                        <p class="heading">street</p>
+                        <input class="title has-text-dark is-6" [(ngModel)]="data.address.street" name="street">
+                      </div>
+                    </div>
+                    <div class="level-item has-text-light">
+                      <div>
+                        <p class="heading">apt / unit</p>
+                        <input class="title has-text-dark is-6" [(ngModel)]="data.address.unit" name="unit">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="level">
+                  <div class="level-left">
+                    <div class="level-item has-text-light">
+                      <div>
+                        <p class="heading">city</p>
+                        <input class="title has-text-dark is-6" [(ngModel)]="data.address.city" name="city">
+                      </div>
+                    </div>
+                    <div class="level-item has-text-light">
+                      <div>
+                        <p class="heading">state</p>
+                        <input class="title has-text-dark is-6" [(ngModel)]="data.address.stateProvince" name="state">
+                      </div>
+                    </div>
+                    <div class="level-item has-text-light">
+                      <div>
+                        <p class="heading">Postal Code</p>
+                        <input class="title has-text-dark is-6" [(ngModel)]="data.address.postalCode" name="zip">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="level">
+                  <div class="level-left">
+                    <div class="level-item has-text-light">
+                      <div>
+                        <p class="heading">country</p>
+                        <input class="title has-text-dark is-6" [(ngModel)]="data.address.country" name="country">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="tile box has-background-dark is-child">
+                <h2 class="title has-text-light is-4">payments</h2>
+                <div class="level-left">
+                    <div class="level-item has-text-light">
+                      <div>
+                        <p class="heading">bank</p>
+                        <input #cardName type="string" class="title has-text-dark is-6"/>
+                      </div>
+                    </div>
+                    <div class="level-item has-text-light">
+                      <div>
+                        <p class="heading">number</p>
+                        <input type="number" #cardNumber class="title has-text-dark is-6"/>
+                      </div>
+                    </div>
+                    <div class="level-item has-text-light">
+                      <div>
+                        <p class="heading">expiry</p>
+                        <input type="date" #cardExpi class="title has-text-dark is-6"/>
+                        <button type="button" (click)="addCard(cardName.value, cardNumber.value, cardExpi.value)">Add</button>
+                      </div>
+                    </div>
+                  </div>
+
+                <div class="level" *ngFor="let x of data.payments">
+                  <div class="level-left">
+                    <div class="level-item has-text-light">
+                      <div>
+                        <p class="heading">bank</p>
+                        <p class="title has-text-light is-6">{{x.cardName}}</p>
+                      </div>
+                    </div>
+                    <div class="level-item has-text-light">
+                      <div>
+                        <p class="heading">number</p>
+                        <p class="title has-text-light is-6">{{x.cardNumber}}</p>
+                      </div>
+                    </div>
+                    <div class="level-item has-text-light">
+                      <div>
+                        <p class="heading">expiry</p>
+                        <p class="title has-text-light is-6">{{x.cardExpirationDate | date:'shortDate'}} 
+                            <button type="button" (click)="removeCard(x)">Remove</button></p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tile is-7">
+            <div class="tile is-vertical">
+              <div class="tile is-parent">
+                <div class="tile box is-child">
+                  <h2 class="title is-4">profiles</h2>
+                  <div class="level-left">
+                    <div class="level-item has-text-dark">
+                      <div>
+                        <p class="heading">first name</p>
+                        <input #firstName class="title has-text-dark is-6"/>
+                      </div>
+                    </div>
+                    <div class="level-item has-text-dark">
+                      <div>
+                        <p class="heading">last name</p>
+                        <input #lastName class="title has-text-dark is-6"/>
+                      </div>
+                    </div>
+                    <div class="level-item has-text-dark">
+                        <div>
+                          <p class="heading">Age</p>
+                          <select #age>
+                            <option selected="selected"></option>
+                            <option value="Adult">Adult</option>
+                            <option value="Child">Child</option>
+                          </select>
+                        </div>
+                      </div>  
+                  </div>
+                  <div class="level-left">
+                    <div class="level-item has-text-dark">
+                      <div>
+                        <p class="heading">email</p>
+                        <input type="email" #email class="title has-text-dark is-6"/>
+                      </div>
+                    </div>
+                      <div class="level-item has-text-dark">
+                        <div>
+                          <p class="heading">phone</p>
+                          <input type="number" #phoneNumber class="title has-text-dark is-6"/>
+                          <button type="button" (click)="addProfile(firstName.value,lastName.value,age.value,email.value,phoneNumber.value)">Add</button>
+                        </div>  
+                    </div>
+                  </div>
+                  
+                  <br>
+
+                  <div class="level">
+                    <div class="level-left">
+                      <div class="level-item has-text-centered" *ngFor="let x of data.profiles">
+                        <div class="card">
+                          <div class="card-content">
+                            <figure class="image is-128x128">
+                              <img alt="placeholder image" class="is-rounded" src="https://bulma.io/images/placeholders/256x256.png">
+                            </figure>
+                            <br>
+                            <div>
+                              <p class="heading">{{x.age}}</p>
+                              <p class="title is-6">{{x.name.given}} {{x.name.family}}</p>
+                              <button type="button" (click)="removeProfile(x)">Remove</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="box is-centered has-text-centered">
+            <button type="submit">Update</button>
+        </div>
+      </div>
+      </form>
+    </div>
+  </section>

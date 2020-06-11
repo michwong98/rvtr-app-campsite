@@ -19,7 +19,7 @@
       }
     ],
     "header": [
-      { "text": "account", "url": "account" },
+      { "text": "account", "url": "account/1" },
       { "text": "booking", "url": "booking" },
       { "text": "lodging", "url": null }
     ]
