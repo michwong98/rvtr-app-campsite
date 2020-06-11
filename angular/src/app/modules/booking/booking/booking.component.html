@@ -5,9 +5,12 @@
       <h1 class="title is-2">Booking</h1>
       <div class="tile is-ancestor">
         <div class="tile is-vertical">
+
+          <!-- Search form -->
           <form [formGroup]="searchForm" (ngSubmit)="onSubmit()">
             <div class="tile is-parent">
 
+              <!-- Location fo search form -->
               <div class="tile is-child is-5">
                 <div class="field">
                   <label for="location" class="label">Location</label>
@@ -18,6 +21,7 @@
                 </div>
               </div>
 
+              <!-- Check in/check out for search form-->
               <div class="tile is-child is-5">
                 <label for="check-in" class="label">Check-In / Check-Out</label>
                 <div class="field has-addons">
@@ -32,6 +36,7 @@
                 </div>
               </div>
 
+              <!-- Guests for search form -->
               <div class="tile is-child is-2">
                 <label for="guests" class="label">Guests</label>
                 <div class="field has-addons">
@@ -47,6 +52,7 @@
             </div>
           </form>
 
+          <!-- Loading for lodgings$ -->
           <ng-template #loading>
             <div class="column has-text-centered">
               <p>Loading . . .</p>
@@ -71,24 +77,49 @@
                   <div class="column">
                     <div class="content has-text-light">
                       <p class="title has-text-light is-4">{{lodgings[0].name}}</p>
-                      <p>
-                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Voluptatum quis sapiente sed
-                        laudantium
-                        necessitatibus, reiciendis atque quae provident exercitationem eaque ullam quas fugit error.
-                        Necessitatibus labore dolore incidunt omnis possimus.
-                        Temporibus quis, dolorem omnis nulla, impedit illo a aperiam sapiente culpa velit animi saepe
-                        eum
-                        fuga at odio hic modi quia sequi repellendus. A, expedita assumenda esse dicta incidunt atque.
-                        Temporibus, vel fugiat amet adipisci nam veritatis dolore, accusamus nemo laboriosam assumenda
-                        in
-                        blanditiis ullam aut id velit debitis, doloremque aliquam laudantium at. Natus incidunt
-                        officiis,
-                        officia sapiente doloremque debitis.
-                        Modi similique, accusamus nam nobis voluptas eius commodi officiis maxime quibusdam, aliquid
-                        distinctio, provident ut porro odio ducimus soluta et molestiae. Error, autem ipsa quis
-                        dignissimos
-                        commodi voluptas maxime quo.
-                      </p>
+
+                      <div class="columns">
+
+                        <!-- Spotlight description-->
+                        <div class="column">
+                          <p>
+                            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Culpa sit praesentium, at tempore
+                            porro voluptates delectus vel exercitationem consectetur harum, odio eum vitae. Nostrum cum
+                            non, possimus laboriosam quas nesciunt!
+                          </p>
+                        </div>
+
+                        <!-- Spotlight reviews-->
+                        <div class="column">
+                          <p *ngIf="! lodgings[0].reviews.length; else reviews">
+                            There are no reviews for this lodging.
+                          </p>
+                          <ng-template #reviews>
+                            <ng-container *ngFor="let review of lodgings[0].reviews.slice(0,2)">
+                              <p *ngIf="review">
+                                <span class="icon"
+                                  [ngClass]="review.rating >= 1 ? 'has-text-white-bis' : 'has-text-grey'"><i
+                                    class="fa-star fas"></i></span>
+                                <span class="icon"
+                                  [ngClass]="review.rating >= 2 ? 'has-text-white-bis' : 'has-text-grey'"><i
+                                    class="fa-star fas"></i></span>
+                                <span class="icon"
+                                  [ngClass]="review.rating >= 3 ? 'has-text-white-bis' : 'has-text-grey'"><i
+                                    class="fa-star fas"></i></span>
+                                <span class="icon"
+                                  [ngClass]="review.rating >= 4 ? 'has-text-white-bis' : 'has-text-grey'"><i
+                                    class="fa-star fas"></i></span>
+                                <span class="icon"
+                                  [ngClass]="review.rating >= 5 ? 'has-text-white-bis' : 'has-text-grey'"><i
+                                    class="fa-star fas"></i></span>
+                                <span style="text-overflow: ellipsis;"
+                                  style="padding-left: 1rem;">{{review.comment}}</span>
+                              </p>
+                            </ng-container>
+                          </ng-template>
+                        </div>
+
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -96,10 +127,10 @@
             </div>
 
             <!-- Lodging Tile -->
-            <ng-container *ngFor="let lodgingsRow of lodgingsRow(lodgings, 4)">
+            <ng-container *ngFor="let lodgingsRow of lodgingsRow(lodgings, 3)">
               <div class="tile">
                 <div class="tile is-parent" *ngFor="let lodging of lodgingsRow">
-                  <div class="tile is-child" *ngIf="lodging" (click)="openModal($event, lodging)">
+                  <div class="tile is-child box" *ngIf="lodging" (click)="openModal($event, lodging)">
                     <p class="title">{{lodging.name}}</p>
                     <p class="content">{{lodging.location?.address?.street}},
                       {{lodging.location?.address?.city}},
