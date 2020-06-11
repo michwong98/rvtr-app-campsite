@@ -17,4 +17,5 @@ export interface Address {
   postalCode: string;
   stateProvince: string;
   street: string;
+  unit: string;
 }

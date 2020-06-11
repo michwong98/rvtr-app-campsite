@@ -2,16 +2,16 @@
   <div class="hero-head">
     <div class="container">
       <br>
-      <h1 class="title is-2">account</h1>
+      <h1 class="title is-2">account <a routerLink="../editaccount/{{data.id}}"><button>Edit</button></a></h1>
 
       <div class="tile is-ancestor">
         <div class="tile is-3">
           <div class="tile is-parent is-vertical">
             <div class="tile box has-background-dark is-child">
               <h2 class="title has-text-light is-4">name</h2>
-              <p class="title has-text-light is-6">lorem ipsum</p>
+              <p class="title has-text-light is-6">{{data.name}}</p>
             </div>
-
+ 
             <div class="tile box has-background-dark is-child">
               <h2 class="title has-text-light is-4">address</h2>
 
@@ -20,14 +20,14 @@
                   <div class="level-item has-text-light">
                     <div>
                       <p class="heading">street</p>
-                      <p class="title has-text-light is-6">987 Main Street</p>
+                      <p class="title has-text-light is-6">{{data.address.street}}</p>
                     </div>
                   </div>
 
                   <div class="level-item has-text-light">
                     <div>
                       <p class="heading">apt / unit</p>
-                      <p class="title has-text-light is-6">123</p>
+                      <p class="title has-text-light is-6">{{data.address.unit}}</p>
                     </div>
                   </div>
                 </div>
@@ -38,21 +38,21 @@
                   <div class="level-item has-text-light">
                     <div>
                       <p class="heading">city</p>
-                      <p class="title has-text-light is-6">Dallas</p>
+                      <p class="title has-text-light is-6">{{data.address.city}}</p>
                     </div>
                   </div>
 
                   <div class="level-item has-text-light">
                     <div>
                       <p class="heading">state</p>
-                      <p class="title has-text-light is-6">TX</p>
+                      <p class="title has-text-light is-6">{{data.address.stateProvince}}</p>
                     </div>
                   </div>
 
                   <div class="level-item has-text-light">
                     <div>
                       <p class="heading">Postal Code</p>
-                      <p class="title has-text-light is-6">75200</p>
+                      <p class="title has-text-light is-6">{{data.address.postalCode}}</p>
                     </div>
                   </div>
                 </div>
@@ -63,7 +63,7 @@
                   <div class="level-item has-text-light">
                     <div>
                       <p class="heading">country</p>
-                      <p class="title has-text-light is-6">United States</p>
+                      <p class="title has-text-light is-6">{{data.address.country}}</p>
                     </div>
                   </div>
                 </div>
@@ -73,52 +73,26 @@
             <div class="tile box has-background-dark is-child">
               <h2 class="title has-text-light is-4">payments</h2>
 
-              <div class="level">
+              <div class="level" *ngFor="let x of data.payments">
                 <div class="level-left">
                   <div class="level-item has-text-light">
                     <div>
                       <p class="heading">bank</p>
-                      <p class="title has-text-light is-6">Amex</p>
+                      <p class="title has-text-light is-6">{{x.cardName}}</p>
                     </div>
                   </div>
 
                   <div class="level-item has-text-light">
                     <div>
                       <p class="heading">number</p>
-                      <p class="title has-text-light is-6">*****01111</p>
+                      <p class="title has-text-light is-6">{{x.cardNumber}}</p>
                     </div>
                   </div>
 
                   <div class="level-item has-text-light">
                     <div>
                       <p class="heading">expiry</p>
-                      <p class="title has-text-light is-6">12/20</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <hr>
-              <div class="level">
-                <div class="level-left">
-                  <div class="level-item has-text-light">
-                    <div>
-                      <p class="heading">bank</p>
-                      <p class="title has-text-light is-6">Amex</p>
-                    </div>
-                  </div>
-
-                  <div class="level-item has-text-light">
-                    <div>
-                      <p class="heading">number</p>
-                      <p class="title has-text-light is-6">*****01111</p>
-                    </div>
-                  </div>
-
-                  <div class="level-item has-text-light">
-                    <div>
-                      <p class="heading">expiry</p>
-                      <p class="title has-text-light is-6">12/20</p>
+                      <p class="title has-text-light is-6">{{x.cardExpirationDate | date:'shortDate'}}</p>
                     </div>
                   </div>
                 </div>
@@ -135,7 +109,7 @@
 
                 <div class="level">
                   <div class="level-left">
-                    <div class="level-item has-text-centered">
+                    <div class="level-item has-text-centered" *ngFor="let x of data.profiles">
                       <div class="card">
                         <div class="card-content">
                           <figure class="image is-128x128">
@@ -144,24 +118,8 @@
 
                           <br>
                           <div>
-                            <p class="heading">adult</p>
-                            <p class="title is-6">Lorem Ipsum</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="level-item has-text-centered">
-                      <div class="card">
-                        <div class="card-content">
-                          <figure class="image is-128x128">
-                            <img alt="placeholder image" class="is-rounded" src="https://bulma.io/images/placeholders/256x256.png">
-                          </figure>
-
-                          <br>
-                          <div>
-                            <p class="heading">adult</p>
-                            <p class="title is-6">Lorem Ipsum</p>
+                            <p class="heading">{{x.unit}}</p>
+                            <p class="title is-6">{{x.name.given}} {{x.name.family}}</p>
                           </div>
                         </div>
                       </div>
@@ -176,7 +134,7 @@
                 <div class="tile box is-child">
                   <h2 class="title is-4">bookings</h2>
 
-                  <div class="level">
+                  <div class="level" *ngFor="let x of bookings">
                     <div class="level-item">
                       <figure class="image is-64x64">
                         <img alt="placeholder image" class="is-rounded" src="https://bulma.io/images/placeholders/128x128.png">
@@ -186,51 +144,21 @@
                     <div class="level-item has-text-centered">
                       <div>
                         <p class="heading">location</p>
-                        <p class="title is-6">Dallas</p>
+                        <p class="title is-6">{{x.lodgingId}}</p>
                       </div>
                     </div>
 
                     <div class="level-item has-text-centered">
                       <div>
                         <p class="heading">check-in</p>
-                        <p class="title is-6">2020-12-20</p>
+                        <p class="title is-6">{{x.stay.checkIn | date:'shortDate'}}</p>
                       </div>
                     </div>
 
                     <div class="level-item has-text-centered">
                       <div>
                         <p class="heading">check-out</p>
-                        <p class="title is-6">2020-12-29</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <hr>
-                  <div class="level">
-                    <div class="level-item">
-                      <figure class="image is-64x64">
-                        <img alt="placeholder image" class="is-rounded" src="https://bulma.io/images/placeholders/128x128.png">
-                      </figure>
-                    </div>
-
-                    <div class="level-item has-text-centered">
-                      <div>
-                        <p class="heading">location</p>
-                        <p class="title is-6">Dallas</p>
-                      </div>
-                    </div>
-
-                    <div class="level-item has-text-centered">
-                      <div>
-                        <p class="heading">check-in</p>
-                        <p class="title is-6">2020-12-20</p>
-                      </div>
-                    </div>
-
-                    <div class="level-item has-text-centered">
-                      <div>
-                        <p class="heading">check-out</p>
-                        <p class="title is-6">2020-12-29</p>
+                        <p class="title is-6">{{x.stay.checkOut | date:'shortDate'}}</p>
                       </div>
                     </div>
                   </div>
@@ -241,7 +169,7 @@
                 <div class="tile box is-child">
                   <h2 class="title is-4">reviews</h2>
 
-                  <div class="level">
+                  <div class="level" *ngFor="let x of reviews; let indexOfelement=index;">
                     <div class="level-item">
                       <figure class="image is-64x64">
                         <img alt="placeholder image" class="is-rounded" src="https://bulma.io/images/placeholders/128x128.png">
@@ -251,51 +179,21 @@
                     <div class="level-item has-text-centered">
                       <div>
                         <p class="heading">lodging</p>
-                        <p class="title is-6">Marriott</p>
+                        <p class="title is-6">{{reviewLocations[indexOfelement]}}</p>
                       </div>
                     </div>
 
                     <div class="level-item has-text-centered">
                       <div>
                         <p class="heading">rating</p>
-                        <p class="title is-6">8.0</p>
+                        <p class="title is-6">{{x.rating}}</p>
                       </div>
                     </div>
 
                     <div class="level-item has-text-centered">
                       <div>
                         <p class="heading">date</p>
-                        <p class="title is-6">2020-12-29</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <hr>
-                  <div class="level">
-                    <div class="level-item">
-                      <figure class="image is-64x64">
-                        <img alt="placeholder image" class="is-rounded" src="https://bulma.io/images/placeholders/128x128.png">
-                      </figure>
-                    </div>
-
-                    <div class="level-item has-text-centered">
-                      <div>
-                        <p class="heading">lodging</p>
-                        <p class="title is-6">Hilton</p>
-                      </div>
-                    </div>
-
-                    <div class="level-item has-text-centered">
-                      <div>
-                        <p class="heading">rating</p>
-                        <p class="title is-6">8.5</p>
-                      </div>
-                    </div>
-
-                    <div class="level-item has-text-centered">
-                      <div>
-                        <p class="heading">date</p>
-                        <p class="title is-6">2020-12-29</p>
+                        <p class="title is-6">{{x.dateCreated | date:'shortDate'}}</p>
                       </div>
                     </div>
                   </div>
