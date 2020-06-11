@@ -13,8 +13,6 @@ import { Booking } from '../../../data/booking.model';
 import { Profile } from '../../../data/profile.model';
 import { Stay } from 'src/app/data/stay.model';
 
-
-
 @Component({
   selector: 'uic-booking',
   templateUrl: './booking.component.html',
@@ -28,7 +26,6 @@ export class BookingComponent implements OnInit {
 
   lodgings: Lodging[];
   booking: Booking;
-
 
   /**
    * State used to determine if form was submitted
@@ -141,10 +138,10 @@ export class BookingComponent implements OnInit {
       checkIn: [this.formatDate(this.getNewDateFromNowBy(1)), Validators.required],
       checkOut: [this.formatDate(this.getNewDateFromNowBy(2)), Validators.required]
     });
-    
+
     const guests = this.f?.guests?.value ? this.f.guests.value : 0;
 
-    for(let i = 0; i < guests; i++) {
+    for (let i = 0; i < guests; i++) {
       this.addNextGuestItem();
     }
   }
@@ -210,8 +207,7 @@ export class BookingComponent implements OnInit {
   // For later.
   public lodgingsRow(lodgings: Lodging[], n: number): Array<Lodging[]> {
     return lodgings.reduce((accumulator, currentLodge, index, array) => {
-      if (index % n === 0)
-      {
+      if (index % n === 0) {
         const lodgingsSubarry = [];
         for (let i = index; i < index + n; i++)
           lodgingsSubarry.push(array[i]);
