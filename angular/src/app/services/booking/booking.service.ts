@@ -5,6 +5,7 @@ import { concatMap, map } from 'rxjs/operators';
 import { ConfigService } from '../config/config.service';
 import { Booking } from '../../data/booking.model';
 
+
 @Injectable({
   providedIn: 'root',
 })
