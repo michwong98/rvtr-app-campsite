@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { delay, map } from 'rxjs/operators';
+
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 
 import { LodgingService } from '../../../services/lodging/lodging.service';
@@ -8,7 +10,8 @@ import { Lodging } from '../../../data/lodging.model';
 
 import { BookingService } from '../../../services/booking/booking.service';
 import { Booking } from '../../../data/booking.model';
-import { delay, map } from 'rxjs/operators';
+import { Profile } from '../../../data/profile.model';
+
 
 
 @Component({
@@ -16,13 +19,14 @@ import { delay, map } from 'rxjs/operators';
   templateUrl: './booking.component.html',
 })
 export class BookingComponent implements OnInit {
-  @ViewChild('bookingModal') bookingModal: ElementRef;
-  bookingForm: FormGroup;
-
   lodgings$: Observable<Lodging[]>;
   bookings$: Observable<Booking[]>;
 
+  @ViewChild('bookingModal') bookingModal: ElementRef;
+  bookingForm: FormGroup;
+
   lodgings: Lodging[];
+  booking: Booking;
 
 
   /**
@@ -51,9 +55,7 @@ export class BookingComponent implements OnInit {
       children: [0, Validators.required],
     });
 
-    this.bookingForm = this.formBuilder.group({
-      guests: this.formBuilder.array([this.createGuestItem()])
-    });
+    this.newBookingForm();
     this.lodgings$ = this.lodgingService.getLodging();
   }
 
@@ -61,7 +63,7 @@ export class BookingComponent implements OnInit {
     return this.formBuilder.group({
       given: ['', Validators.required],
       family: ['', Validators.required],
-      email: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
       phone: ['']
     });
   }
@@ -88,11 +90,11 @@ export class BookingComponent implements OnInit {
   retreiveLodgingsByPhrase(phrase: string): void {
     // Return all results if string is empty
     if (!phrase.length) {
-      this.lodgings$ = this.testLodgingsObservable();
+      this.lodgings$ = this.lodgingService.getLodging();
       return;
     }
 
-    this.lodgings$ = this.testLodgingsObservable().pipe(
+    this.lodgings$ = this.lodgingService.getLodging().pipe(
       // return the list of lodgings filtered by the phrase
       map((lodgings) =>
         lodgings.filter((l) =>
@@ -133,22 +135,38 @@ export class BookingComponent implements OnInit {
     console.log('Submitted...');
   }
 
+  private newBookingForm(): void {
+    this.bookingForm = this.formBuilder.group({
+      guests: this.formBuilder.array([this.createGuestItem()]),
+      checkIn: [this.formatDate(this.getNewDateFromNowBy(1)), Validators.required],
+      checkOut: [this.formatDate(this.getNewDateFromNowBy(2)), Validators.required]
+    });
+  }
+
   onBookingFormSubmit(): void {
+    this.booking.guests = [];
+
     // TODO: set booking submitted state
-    if(this.bookingForm.invalid){
+    if (this.bookingForm.invalid) {
       // TODO: display invalidation message to user
       console.error('Invalid booking form');
       return;
     }
 
-    // TODO: send data as request
-    let formDataStr = '';
-    const formData = this.b_f.guests.value as [];
-
-    formData.forEach((data: any) => {
-      formDataStr += `Given name: ${data.given} Family name: ${data.family} Email: ${data.email} Phone#: ${data.phone}\n`;
+    (this.b_f.guests.value as []).forEach((data: any) => {
+      const guest = {
+        name: {
+          given: data.given,
+          family: data.family
+        },
+        email: data.email,
+        phone: data.phone
+      } as Profile;
+      this.booking.guests.push(guest);
     });
-    console.log(formDataStr);
+
+    // TODO: send data as request
+    console.log(this.booking);
   }
 
   /**
@@ -182,6 +200,7 @@ export class BookingComponent implements OnInit {
     return new Date(now.getFullYear(), now.getMonth() + numMonths, now.getDate() + numDays);
   }
 
+  /*
   private testLodgingsObservable(): Observable<Lodging[]> {
     let dummyLodgings: Lodging[] = [
       { id: '', name: 'My Lodging', rentals: [], reviews: [], location: { id: '', address: { id: '', city: 'New York', country: 'USA', postalCode: '10001', stateProvince: 'NY', street: '7421 Something Dr', }, latitude: '', longitude: '', locale: '', }, },
@@ -193,6 +212,7 @@ export class BookingComponent implements OnInit {
     ];
     return of(dummyLodgings).pipe(delay(1000));
   }
+  */
 
   // For later.
   public lodgingsRow(lodgings: Lodging[]): Array<Lodging[]> {
@@ -204,12 +224,18 @@ export class BookingComponent implements OnInit {
   }
 
   public closeModal(event: MouseEvent): void {
-    this.bookingModal.nativeElement.classList.remove('is-active');
     event?.stopPropagation();
+    this.bookingModal.nativeElement.classList.remove('is-active');
   }
 
   public openModal(event: MouseEvent, lodging?: Lodging): void {
-    this.bookingModal.nativeElement.classList.add('is-active');
     event?.stopPropagation();
+    this.bookingModal.nativeElement.classList.add('is-active');
+    this.newBookingForm();
+
+    if (lodging !== null) {
+      this.booking = {} as Booking;
+      this.booking.lodgingId = lodging.id;
+    }
   }
 }
