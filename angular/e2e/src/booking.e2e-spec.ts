@@ -24,23 +24,15 @@ describe('project rvtr-app-campsite', () => {
   it('should have form with location label', ()=>{
     booking.navigateToBooking();
     const allLabels = element.all(by.css('label')).getText();
-    expect(allLabels).toContain('Location');
-    expect(allLabels).toContain('Check-In / Check-Out');
-    expect(allLabels).toContain('Guests(Adults/Children)')
+    expect(allLabels).toMatch('Location');
+    expect(allLabels).toMatch('Check-In / Check-Out');
+    expect(allLabels).toMatch('Guests')
   });
 
   it('should have button with name search', ()=>{
     booking.navigateToBooking();
     const buttonName = element(by.css('button')).getText();
     expect(buttonName).toBe('search')
-  });
-
-  it('should do something when search is clicked', ()=>{
-    // TODO: after submit has been implemented, adjust test accordingly
-    booking.navigateToBooking();
-    const searchBtn = element(by.buttonText('search'));
-    searchBtn.click();
-    expect(searchBtn.getText()).toBe('search')
   });
 
   it('should have image', ()=>{
@@ -54,7 +46,7 @@ describe('project rvtr-app-campsite', () => {
   it('should have spotlight', ()=>{
     booking.navigateToBooking();
     const spotlight = element(by.className('title has-text-light is-4')).getText();
-    expect(spotlight).toBe('Spotlight: My Lodging');
+    expect(spotlight).toBe('My Lodging');
 
   });
 
