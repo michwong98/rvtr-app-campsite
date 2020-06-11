@@ -57,7 +57,7 @@ export class BookingComponent implements OnInit {
 
     this.newBookingForm();
 
-    this.lodgings$ = this.lodgingService.getLodging();
+    this.lodgings$ = this.lodgingService.get();
   }
 
   createGuestItem(): FormGroup {
@@ -91,11 +91,11 @@ export class BookingComponent implements OnInit {
   retreiveLodgingsByPhrase(phrase: string): void {
     // Return all results if string is empty
     if (!phrase.length) {
-      this.lodgings$ = this.lodgingService.getLodging();
+      this.lodgings$ = this.lodgingService.get();
       return;
     }
 
-    this.lodgings$ = this.lodgingService.getLodging().pipe(
+    this.lodgings$ = this.lodgingService.get().pipe(
       // return the list of lodgings filtered by the phrase
       map((lodgings) =>
         lodgings.filter((l) =>
