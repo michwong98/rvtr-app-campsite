@@ -88,7 +88,7 @@ export class BookingComponent implements OnInit {
   retreiveLodgingsByPhrase(phrase: string): void {
     // Return all results if string is empty
     if (!phrase.length) {
-      this.lodgings$ = this.lodgingService.get(phrase);
+      this.lodgings$ = this.lodgingService.get();
       return;
     }
 
