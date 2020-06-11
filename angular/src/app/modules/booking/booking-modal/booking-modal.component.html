@@ -1,0 +1,88 @@
+<div class="modal" #bookingModal>
+  <div class="modal-background" (click)="closeModal($event)"></div>
+  <div class="modal-card">f
+    <header class="modal-card-head">
+      <p class="modal-card-title">Create Booking</p>
+      <button class="delete" aria-label="close" (click)="closeModal($event)"></button>
+    </header>
+    <section class="modal-card-body">
+      <!--CREATE BOOKING FORM HERE-->
+      <form [formGroup]='bookingForm'>
+
+        <div class="columns">
+          <!-- * Dynamic Guests input * -->
+          <label class="label column">Guest Infomation</label>
+
+          <!-- * Add additional guest fields * -->
+          <span class="add-guest-input column" style="text-align: right;">
+            <button class="button is is-primary" type="button" (click)="addNextGuestItem()">
+              <span class="icon">
+                <i class="fas fa-plus"></i>
+              </span>
+            </button>
+          </span>
+        </div>
+
+        <div class="guest-fields field" formArrayName="guests">
+          <ng-container
+            *ngFor="let guestInput of $any(bookingForm.controls['guests']).controls as guestControls; let i = index">
+            <div [formGroupName]="i" class="card" style="padding: 5px;">
+              <!-- First and last names -->
+              <div class="field has-addons columns">
+                <div class="control column is-half">
+                  <input type="text" class="input" formControlName="given" placeholder="Given Name">
+                </div>
+                <div class="control column is-half">
+                  <input type="text" class="input" formControlName="family" placeholder="Family Name">
+                </div>
+              </div>
+              <!-- Email and phone number -->
+              <div class="field has-addons columns">
+                <div class="control column is-half">
+                  <input type="email" class="input" formControlName="email" placeholder="Email">
+                </div>
+                <div class="control column is-half">
+                  <input type="tel" pattern="[0-9]+" class="input" formControlName="phone" placeholder="Phone">
+                </div>
+              </div>
+              <!-- Remove btn -->
+              <button class="button is-danger" (click)="removeGuessItem(i)">
+                Remove
+              </button>
+            </div>
+          </ng-container>
+        </div>
+
+        <!-- Select Rental -->
+
+        <div class="field">
+          <label class="label column">Select Unit</label>
+          <div class="select">
+            <select>
+              <option>A</option>
+              <option>B</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Check in and check out -->
+        <label for="check-in" class="label">Check-In / Check-Out</label>
+        <div class="field has-addons">
+          <div class="control is-expanded">
+            <input formControlName="checkIn" class="input" id="check-in" name="check-in"
+              placeholder="Add the traveling date" type="date">
+          </div>
+          <div class="control is-expanded">
+            <input formControlName="checkOut" class="input" id="check-out" name="check-out"
+              placeholder="Add the returning date" type="date">
+          </div>
+        </div>
+
+      </form>
+    </section>
+    <footer class="modal-card-foot">
+      <button class="button is-success" (click)="onBookingFormSubmit()">Submit</button>
+      <button class="button is-danger" (click)="closeModal($event)">Cancel</button>
+    </footer>
+  </div>
+</div>
