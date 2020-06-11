@@ -22,6 +22,7 @@ export class BookingComponent implements OnInit {
   bookings$: Observable<Booking[]>;
 
   lodgings: Lodging[];
+  booking: Booking;
 
 
   /**
@@ -154,12 +155,19 @@ export class BookingComponent implements OnInit {
   }
 
   public closeModal(event: MouseEvent): void {
-    this.bookingModal.nativeElement.classList.remove('is-active');
     event?.stopPropagation();
+    this.bookingModal.nativeElement.classList.remove('is-active');
   }
 
   public openModal(event: MouseEvent, lodging?: Lodging): void {
-    this.bookingModal.nativeElement.classList.add('is-active');
     event?.stopPropagation();
+    this.bookingModal.nativeElement.classList.add('is-active');
+
+    if (lodging !== null) {
+      this.booking = {} as Booking;
+      this.booking.lodgingId = lodging.id;
+    }
+    console.log(lodging.name);
+    console.log(lodging.id);
   }
 }
