@@ -11,6 +11,7 @@ import { Lodging } from '../../../data/lodging.model';
 import { BookingService } from '../../../services/booking/booking.service';
 import { Booking } from '../../../data/booking.model';
 import { Profile } from '../../../data/profile.model';
+import { Stay } from 'src/app/data/stay.model';
 
 
 
@@ -56,6 +57,7 @@ export class BookingComponent implements OnInit {
     });
 
     this.newBookingForm();
+
     this.lodgings$ = this.lodgingService.getLodging();
   }
 
@@ -78,7 +80,7 @@ export class BookingComponent implements OnInit {
     const bookingFormArr: FormArray = this.bookingForm.controls['guests'] as FormArray;
 
     // Ensure there's alawys one
-    if (bookingFormArr.length <= 1) { return; }
+    if (bookingFormArr.length <= 0) { return; }
 
     bookingFormArr.removeAt(ind);
   }
@@ -137,15 +139,20 @@ export class BookingComponent implements OnInit {
 
   private newBookingForm(): void {
     this.bookingForm = this.formBuilder.group({
-      guests: this.formBuilder.array([this.createGuestItem()]),
+      guests: this.formBuilder.array([]),
       checkIn: [this.formatDate(this.getNewDateFromNowBy(1)), Validators.required],
       checkOut: [this.formatDate(this.getNewDateFromNowBy(2)), Validators.required]
     });
+    
+    const adults = this.f.adults?.value ? this.f.adults.value : 0;
+    const children = this.f.children?.value ? this.f.children.value : 0;
+
+    for(let i = 0; i < adults + children; i++) {
+      this.addNextGuestItem();
+    }
   }
 
   onBookingFormSubmit(): void {
-    this.booking.guests = [];
-
     // TODO: set booking submitted state
     if (this.bookingForm.invalid) {
       // TODO: display invalidation message to user
@@ -164,6 +171,9 @@ export class BookingComponent implements OnInit {
       } as Profile;
       this.booking.guests.push(guest);
     });
+
+    this.booking.stay.checkIn = this.b_f.checkIn.value as Date;
+    this.booking.stay.checkOut = this.b_f.checkOut.value as Date;
 
     // TODO: send data as request
     console.log(this.booking);
@@ -230,11 +240,16 @@ export class BookingComponent implements OnInit {
 
   public openModal(event: MouseEvent, lodging?: Lodging): void {
     event?.stopPropagation();
+
     this.bookingModal.nativeElement.classList.add('is-active');
+
     this.newBookingForm();
 
     if (lodging !== null) {
-      this.booking = {} as Booking;
+      this.booking = {
+        guests: [],
+        stay: {} as Stay
+      } as Booking;
       this.booking.lodgingId = lodging.id;
     }
   }
