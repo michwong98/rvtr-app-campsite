@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 
 import { LodgingService } from '../../../services/lodging/lodging.service';
 import { Lodging } from '../../../data/lodging.model';
@@ -17,6 +17,7 @@ import { delay, map } from 'rxjs/operators';
 })
 export class BookingComponent implements OnInit {
   @ViewChild('bookingModal') bookingModal: ElementRef;
+  bookingForm: FormGroup;
 
   lodgings$: Observable<Lodging[]>;
   bookings$: Observable<Booking[]>;
@@ -51,8 +52,34 @@ export class BookingComponent implements OnInit {
       children: [0, Validators.required],
     });
 
-    //this.lodgings$ = this.testLodgingsObservable();
+    this.bookingForm = this.formBuilder.group({
+      guests: this.formBuilder.array([this.createGuestItem()])
+    });
     this.lodgings$ = this.lodgingService.getLodging();
+  }
+
+  createGuestItem(): FormGroup {
+    return this.formBuilder.group({
+      given: ['', Validators.required],
+      family: ['', Validators.required],
+      email: ['', Validators.required],
+      phone: ['']
+    });
+  }
+
+  addNextGuestItem(): void {
+    // tslint:disable-next-line: no-string-literal
+    (this.bookingForm.controls['guests'] as FormArray).push(this.createGuestItem());
+  }
+
+  removeGuessItem(ind: number): void {
+    // tslint:disable-next-line: no-string-literal
+    const bookingFormArr: FormArray = this.bookingForm.controls['guests'] as FormArray;
+
+    // Ensure there's alawys one
+    if (bookingFormArr.length <= 1) { return; }
+
+    bookingFormArr.removeAt(ind);
   }
 
   /**
@@ -85,6 +112,10 @@ export class BookingComponent implements OnInit {
     return this.searchForm.controls;
   }
 
+  get b_f() {
+    return this.bookingForm.controls;
+  }
+
   /**
    * Submits seach data to httpRequest
    */
@@ -92,6 +123,7 @@ export class BookingComponent implements OnInit {
     this.submitted = true;
 
     if (this.searchForm.invalid) {
+      // TODO: display invalidation message to user
       console.error('Invalid form submission');
       return;
     }
@@ -100,6 +132,24 @@ export class BookingComponent implements OnInit {
 
     // TODO: submit form data to http request
     console.log('Submitted...');
+  }
+
+  onBookingFormSubmit(): void {
+    // TODO: set booking submitted state
+    if(this.bookingForm.invalid){
+      // TODO: display invalidation message to user
+      console.error('Invalid booking form');
+      return;
+    }
+
+    // TODO: send data as request
+    let formDataStr = '';
+    const formData = this.b_f.guests.value as [];
+
+    formData.forEach((data: any) => {
+      formDataStr += `Given name: ${data.given} Family name: ${data.family} Email: ${data.email} Phone#: ${data.phone}\n`;
+    });
+    console.log(formDataStr);
   }
 
   /**
