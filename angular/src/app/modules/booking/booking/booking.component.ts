@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { delay, map } from 'rxjs/operators';
+
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 
 import { LodgingService } from '../../../services/lodging/lodging.service';
@@ -8,7 +10,9 @@ import { Lodging } from '../../../data/lodging.model';
 
 import { BookingService } from '../../../services/booking/booking.service';
 import { Booking } from '../../../data/booking.model';
-import { delay, map } from 'rxjs/operators';
+import { Profile } from '../../../data/profile.model';
+import { Stay } from 'src/app/data/stay.model';
+
 
 
 @Component({
@@ -16,13 +20,14 @@ import { delay, map } from 'rxjs/operators';
   templateUrl: './booking.component.html',
 })
 export class BookingComponent implements OnInit {
-  @ViewChild('bookingModal') bookingModal: ElementRef;
-  bookingForm: FormGroup;
-
   lodgings$: Observable<Lodging[]>;
   bookings$: Observable<Booking[]>;
 
+  @ViewChild('bookingModal') bookingModal: ElementRef;
+  bookingForm: FormGroup;
+
   lodgings: Lodging[];
+  booking: Booking;
 
 
   /**
@@ -47,13 +52,11 @@ export class BookingComponent implements OnInit {
       location: [''],
       checkIn: [this.formatDate(this.getNewDateFromNowBy(1)), Validators.required],
       checkOut: [this.formatDate(this.getNewDateFromNowBy(2)), Validators.required],
-      adults: [1, Validators.required],
-      children: [0, Validators.required],
+      guests: [1, Validators.required],
     });
 
-    this.bookingForm = this.formBuilder.group({
-      guests: this.formBuilder.array([this.createGuestItem()])
-    });
+    this.newBookingForm();
+
     this.lodgings$ = this.lodgingService.get();
   }
 
@@ -61,7 +64,7 @@ export class BookingComponent implements OnInit {
     return this.formBuilder.group({
       given: ['', Validators.required],
       family: ['', Validators.required],
-      email: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
       phone: ['']
     });
   }
@@ -76,7 +79,7 @@ export class BookingComponent implements OnInit {
     const bookingFormArr: FormArray = this.bookingForm.controls['guests'] as FormArray;
 
     // Ensure there's alawys one
-    if (bookingFormArr.length <= 1) { return; }
+    if (bookingFormArr.length <= 0) { return; }
 
     bookingFormArr.removeAt(ind);
   }
@@ -110,7 +113,6 @@ export class BookingComponent implements OnInit {
   get f() {
     return this.searchForm.controls;
   }
-
   get b_f() {
     return this.bookingForm.controls;
   }
@@ -133,22 +135,45 @@ export class BookingComponent implements OnInit {
     console.log('Submitted...');
   }
 
+  private newBookingForm(): void {
+    this.bookingForm = this.formBuilder.group({
+      guests: this.formBuilder.array([]),
+      checkIn: [this.formatDate(this.getNewDateFromNowBy(1)), Validators.required],
+      checkOut: [this.formatDate(this.getNewDateFromNowBy(2)), Validators.required]
+    });
+    
+    const guests = this.f?.guests?.value ? this.f.guests.value : 0;
+
+    for(let i = 0; i < guests; i++) {
+      this.addNextGuestItem();
+    }
+  }
+
   onBookingFormSubmit(): void {
     // TODO: set booking submitted state
-    if(this.bookingForm.invalid){
+    if (this.bookingForm.invalid) {
       // TODO: display invalidation message to user
       console.error('Invalid booking form');
       return;
     }
 
-    // TODO: send data as request
-    let formDataStr = '';
-    const formData = this.b_f.guests.value as [];
-
-    formData.forEach((data: any) => {
-      formDataStr += `Given name: ${data.given} Family name: ${data.family} Email: ${data.email} Phone#: ${data.phone}\n`;
+    (this.b_f.guests.value as []).forEach((data: any) => {
+      const guest = {
+        name: {
+          given: data.given,
+          family: data.family
+        },
+        email: data.email,
+        phone: data.phone
+      } as Profile;
+      this.booking.guests.push(guest);
     });
-    console.log(formDataStr);
+
+    this.booking.stay.checkIn = this.b_f.checkIn.value as Date;
+    this.booking.stay.checkOut = this.b_f.checkOut.value as Date;
+
+    // TODO: send data as request
+    console.log(this.booking);
   }
 
   /**
@@ -182,34 +207,38 @@ export class BookingComponent implements OnInit {
     return new Date(now.getFullYear(), now.getMonth() + numMonths, now.getDate() + numDays);
   }
 
-  private testLodgingsObservable(): Observable<Lodging[]> {
-    let dummyLodgings: Lodging[] = [
-      { id: '', name: 'My Lodging', rentals: [], reviews: [], location: { id: '', address: { id: '', city: 'New York', country: 'USA', postalCode: '10001', stateProvince: 'NY', street: '7421 Something Dr', }, latitude: '', longitude: '', locale: '', }, },
-      { id: '', name: 'My Lodge', rentals: [], reviews: [], location: { id: '', address: { id: '', city: 'New York', country: 'USA', postalCode: '10005', stateProvince: 'NY', street: '4212 Whatever Something St', }, latitude: '', longitude: '', locale: '', }, },
-      { id: '', name: 'Your Lodging', rentals: [], reviews: [], location: { id: '', address: { id: '', city: 'New York', country: 'USA', postalCode: '10003', stateProvince: 'NY', street: '4290 More St', }, latitude: '', longitude: '', locale: '', }, },
-      { id: '', name: 'Whose Lodging', rentals: [], reviews: [], location: { id: '', address: { id: '', city: 'New York', country: 'USA', postalCode: '10002', stateProvince: 'NY', street: '4282 Someone Av', }, latitude: '', longitude: '', locale: '', }, },
-      { id: '', name: 'Mine Lodging', rentals: [], reviews: [], location: { id: '', address: { id: '', city: 'New York', country: 'USA', postalCode: '10001', stateProvince: 'NY', street: '7320 Something Dr', }, latitude: '', longitude: '', locale: '', }, },
-      { id: '', name: 'My House', rentals: [], reviews: [], location: { id: '', address: { id: '', city: 'Los Angeles', country: 'USA', postalCode: '90030', stateProvince: 'CA', street: '5421 Whatever Dr', }, latitude: '', longitude: '', locale: '', }, },
-    ];
-    return of(dummyLodgings).pipe(delay(1000));
-  }
-
   // For later.
-  public lodgingsRow(lodgings: Lodging[]): Array<Lodging[]> {
+  public lodgingsRow(lodgings: Lodging[], n: number): Array<Lodging[]> {
     return lodgings.reduce((accumulator, currentLodge, index, array) => {
-      if (index % 3 === 0)
-        accumulator.push([array[index], array[index + 1], array[index + 2]] as Lodging[]);
+      if (index % n === 0)
+      {
+        const lodgingsSubarry = [];
+        for (let i = index; i < index + n; i++)
+          lodgingsSubarry.push(array[i]);
+        accumulator.push(lodgingsSubarry);
+      }
       return accumulator;
     }, []);
   }
 
   public closeModal(event: MouseEvent): void {
-    this.bookingModal.nativeElement.classList.remove('is-active');
     event?.stopPropagation();
+    this.bookingModal.nativeElement.classList.remove('is-active');
   }
 
   public openModal(event: MouseEvent, lodging?: Lodging): void {
-    this.bookingModal.nativeElement.classList.add('is-active');
     event?.stopPropagation();
+
+    this.bookingModal.nativeElement.classList.add('is-active');
+
+    this.newBookingForm();
+
+    if (lodging !== null) {
+      this.booking = {
+        guests: [],
+        stay: {} as Stay
+      } as Booking;
+      this.booking.lodgingId = lodging.id;
+    }
   }
 }

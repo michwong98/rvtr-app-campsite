@@ -7,7 +7,8 @@
         <div class="tile is-vertical">
           <form [formGroup]="searchForm" (ngSubmit)="onSubmit()">
             <div class="tile is-parent">
-              <div class="tile is-child">
+
+              <div class="tile is-child is-5">
                 <div class="field">
                   <label for="location" class="label">Location</label>
                   <div class="control">
@@ -17,7 +18,7 @@
                 </div>
               </div>
 
-              <div class="tile is-child">
+              <div class="tile is-child is-5">
                 <label for="check-in" class="label">Check-In / Check-Out</label>
                 <div class="field has-addons">
                   <div class="control is-expanded">
@@ -31,16 +32,12 @@
                 </div>
               </div>
 
-              <div class="tile is-child">
-                <label for="adults" class="label">Guests(Adults/Children)</label>
+              <div class="tile is-child is-2">
+                <label for="guests" class="label">Guests</label>
                 <div class="field has-addons">
-                  <div class="control">
-                    <input formControlName="adults" class="input" id="adults" name="adults" placeholder="Adults"
-                      type="number" min="1">
-                  </div>
-                  <div class="control">
-                    <input formControlName="children" class="input" id="children" name="children" placeholder="Children"
-                      type="number" min="0">
+                  <div class="control is-expanded">
+                    <input formControlName="guests" class="input" id="guests" name="guests"
+                      placeholder="Number of Guests" type="number" min="0">
                   </div>
                   <div class="control">
                     <button class="button is-primary" type="submit">search</button>
@@ -61,6 +58,7 @@
               <div class="column has-text-centered">No Results Found</div>
             </ng-container>
 
+            <!-- Spotlight Lodging -->
             <div *ngIf="lodgings[0]" class="tile is-parent">
               <div class="tile box has-background-dark is-child">
                 <div class="columns">
@@ -72,7 +70,7 @@
 
                   <div class="column">
                     <div class="content has-text-light">
-                      <p class="title has-text-light is-4">Spotlight: {{lodgings[0].name}}</p>
+                      <p class="title has-text-light is-4">{{lodgings[0].name}}</p>
                       <p>
                         Lorem ipsum dolor, sit amet consectetur adipisicing elit. Voluptatum quis sapiente sed
                         laudantium
@@ -97,10 +95,11 @@
               </div>
             </div>
 
-            <ng-container *ngFor="let lodgingsRow of lodgingsRow(lodgings)">
+            <!-- Lodging Tile -->
+            <ng-container *ngFor="let lodgingsRow of lodgingsRow(lodgings, 4)">
               <div class="tile">
                 <div class="tile is-parent" *ngFor="let lodging of lodgingsRow">
-                  <div class="tile is-child" *ngIf="lodging" (click)="openModal($event)">
+                  <div class="tile is-child" *ngIf="lodging" (click)="openModal($event, lodging)">
                     <p class="title">{{lodging.name}}</p>
                     <p class="content">{{lodging.location?.address?.street}},
                       {{lodging.location?.address?.city}},
@@ -129,56 +128,75 @@
   <div class="modal-background" (click)="closeModal($event)"></div>
   <div class="modal-card">
     <header class="modal-card-head">
-      <p class="modal-card-title">Modal Title</p>
+      <p class="modal-card-title">Create Booking</p>
       <button class="delete" aria-label="close" (click)="closeModal($event)"></button>
     </header>
     <section class="modal-card-body">
       <!--CREATE BOOKING FORM HERE-->
       <form [formGroup]='bookingForm'>
 
-        <!-- * Dynamic Guests input * -->
-        <label class="label">Guest(s) info</label>
-        <div class="guest-fields field" formArrayName="guests"
-          *ngFor="let guestInput of $any(bookingForm.controls['guests']).controls as guestControls; let i = index">
-          <div [formGroupName]="i" class="card" style="padding: 5px;">
-            <!-- First and last names -->
-            <div class="field has-addons">
-              <div class="control">
-                <input type="text" class="input" formControlName="given" placeholder="Given Name">
-              </div>
-              <div class="control">
-                <input type="text" class="input" formControlName="family" placeholder="Family Name">
-              </div>
-            </div>
-            <!-- Email and phone number -->
-            <div class="field has-addons">
-              <div class="control">
-                <input type="text" class="input" formControlName="email" placeholder="Email">
-              </div>
-              <div class="control">
-                <input type="text" class="input" formControlName="phone" placeholder="Phone">
-              </div>
-            </div>
-            <!-- Remove btn -->
-            <button class="button is-danger" (click)="removeGuessItem(i)">
-              Remove
+        <div class="columns">
+          <!-- * Dynamic Guests input * -->
+          <label class="label column">Guest Infomation</label>
+
+          <!-- * Add additional guest fields * -->
+          <span class="add-guest-input column" style="text-align: right;">
+            <button class="button is is-primary" type="button" (click)="addNextGuestItem()">
+              <span class="icon">
+                <i class="fas fa-plus"></i>
+              </span>
             </button>
+          </span>
+        </div>
+
+        <div class="guest-fields field" formArrayName="guests">
+          <ng-container
+            *ngFor="let guestInput of $any(bookingForm.controls['guests']).controls as guestControls; let i = index">
+            <div [formGroupName]="i" class="card" style="padding: 5px;">
+              <!-- First and last names -->
+              <div class="field has-addons columns">
+                <div class="control column is-half">
+                  <input type="text" class="input" formControlName="given" placeholder="Given Name">
+                </div>
+                <div class="control column is-half">
+                  <input type="text" class="input" formControlName="family" placeholder="Family Name">
+                </div>
+              </div>
+              <!-- Email and phone number -->
+              <div class="field has-addons columns">
+                <div class="control column is-half">
+                  <input type="email" class="input" formControlName="email" placeholder="Email">
+                </div>
+                <div class="control column is-half">
+                  <input type="tel" pattern="[0-9]+" class="input" formControlName="phone" placeholder="Phone">
+                </div>
+              </div>
+              <!-- Remove btn -->
+              <button class="button is-danger" (click)="removeGuessItem(i)">
+                Remove
+              </button>
+            </div>
+          </ng-container>
+        </div>
+
+        <!-- Check in and check out -->
+        <label for="check-in" class="label">Check-In / Check-Out</label>
+        <div class="field has-addons">
+          <div class="control is-expanded">
+            <input formControlName="checkIn" class="input" id="check-in" name="check-in"
+              placeholder="Add the traveling date" type="date">
+          </div>
+          <div class="control is-expanded">
+            <input formControlName="checkOut" class="input" id="check-out" name="check-out"
+              placeholder="Add the returning date" type="date">
           </div>
         </div>
 
-        <!-- * Add additional guest fields * -->
-        <div class="add-guest-input">
-          <button class="button is is-primary" type="button" (click)="addNextGuestItem()">
-            <span class="icon">
-              <i class="fas fa-plus"></i>
-            </span>
-          </button>
-        </div>
       </form>
     </section>
     <footer class="modal-card-foot">
-      <button class="button is-success" (click)="onBookingFormSubmit()">Create Booking</button>
-      <button class="button" (click)="closeModal($event)">Cancel</button>
+      <button class="button is-success" (click)="onBookingFormSubmit()">Submit</button>
+      <button class="button is-danger" (click)="closeModal($event)">Cancel</button>
     </footer>
   </div>
 </div>
