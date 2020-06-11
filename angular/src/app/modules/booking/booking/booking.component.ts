@@ -52,8 +52,7 @@ export class BookingComponent implements OnInit {
       location: [''],
       checkIn: [this.formatDate(this.getNewDateFromNowBy(1)), Validators.required],
       checkOut: [this.formatDate(this.getNewDateFromNowBy(2)), Validators.required],
-      adults: [1, Validators.required],
-      children: [0, Validators.required],
+      guests: [1, Validators.required],
     });
 
     this.newBookingForm();
@@ -114,7 +113,6 @@ export class BookingComponent implements OnInit {
   get f() {
     return this.searchForm.controls;
   }
-
   get b_f() {
     return this.bookingForm.controls;
   }
@@ -144,10 +142,9 @@ export class BookingComponent implements OnInit {
       checkOut: [this.formatDate(this.getNewDateFromNowBy(2)), Validators.required]
     });
     
-    const adults = this.f.adults?.value ? this.f.adults.value : 0;
-    const children = this.f.children?.value ? this.f.children.value : 0;
+    const guests = this.f?.guests?.value ? this.f.guests.value : 0;
 
-    for(let i = 0; i < adults + children; i++) {
+    for(let i = 0; i < guests; i++) {
       this.addNextGuestItem();
     }
   }
@@ -210,25 +207,16 @@ export class BookingComponent implements OnInit {
     return new Date(now.getFullYear(), now.getMonth() + numMonths, now.getDate() + numDays);
   }
 
-  /*
-  private testLodgingsObservable(): Observable<Lodging[]> {
-    let dummyLodgings: Lodging[] = [
-      { id: '', name: 'My Lodging', rentals: [], reviews: [], location: { id: '', address: { id: '', city: 'New York', country: 'USA', postalCode: '10001', stateProvince: 'NY', street: '7421 Something Dr', }, latitude: '', longitude: '', locale: '', }, },
-      { id: '', name: 'My Lodge', rentals: [], reviews: [], location: { id: '', address: { id: '', city: 'New York', country: 'USA', postalCode: '10005', stateProvince: 'NY', street: '4212 Whatever Something St', }, latitude: '', longitude: '', locale: '', }, },
-      { id: '', name: 'Your Lodging', rentals: [], reviews: [], location: { id: '', address: { id: '', city: 'New York', country: 'USA', postalCode: '10003', stateProvince: 'NY', street: '4290 More St', }, latitude: '', longitude: '', locale: '', }, },
-      { id: '', name: 'Whose Lodging', rentals: [], reviews: [], location: { id: '', address: { id: '', city: 'New York', country: 'USA', postalCode: '10002', stateProvince: 'NY', street: '4282 Someone Av', }, latitude: '', longitude: '', locale: '', }, },
-      { id: '', name: 'Mine Lodging', rentals: [], reviews: [], location: { id: '', address: { id: '', city: 'New York', country: 'USA', postalCode: '10001', stateProvince: 'NY', street: '7320 Something Dr', }, latitude: '', longitude: '', locale: '', }, },
-      { id: '', name: 'My House', rentals: [], reviews: [], location: { id: '', address: { id: '', city: 'Los Angeles', country: 'USA', postalCode: '90030', stateProvince: 'CA', street: '5421 Whatever Dr', }, latitude: '', longitude: '', locale: '', }, },
-    ];
-    return of(dummyLodgings).pipe(delay(1000));
-  }
-  */
-
   // For later.
-  public lodgingsRow(lodgings: Lodging[]): Array<Lodging[]> {
+  public lodgingsRow(lodgings: Lodging[], n: number): Array<Lodging[]> {
     return lodgings.reduce((accumulator, currentLodge, index, array) => {
-      if (index % 3 === 0)
-        accumulator.push([array[index], array[index + 1], array[index + 2]] as Lodging[]);
+      if (index % n === 0)
+      {
+        const lodgingsSubarry = [];
+        for (let i = index; i < index + n; i++)
+          lodgingsSubarry.push(array[i]);
+        accumulator.push(lodgingsSubarry);
+      }
       return accumulator;
     }, []);
   }

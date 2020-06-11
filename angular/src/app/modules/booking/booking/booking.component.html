@@ -7,7 +7,8 @@
         <div class="tile is-vertical">
           <form [formGroup]="searchForm" (ngSubmit)="onSubmit()">
             <div class="tile is-parent">
-              <div class="tile is-child">
+
+              <div class="tile is-child is-5">
                 <div class="field">
                   <label for="location" class="label">Location</label>
                   <div class="control">
@@ -17,7 +18,7 @@
                 </div>
               </div>
 
-              <div class="tile is-child">
+              <div class="tile is-child is-5">
                 <label for="check-in" class="label">Check-In / Check-Out</label>
                 <div class="field has-addons">
                   <div class="control is-expanded">
@@ -31,16 +32,12 @@
                 </div>
               </div>
 
-              <div class="tile is-child">
-                <label for="adults" class="label">Guests(Adults/Children)</label>
+              <div class="tile is-child is-2">
+                <label for="guests" class="label">Guests</label>
                 <div class="field has-addons">
-                  <div class="control">
-                    <input formControlName="adults" class="input" id="adults" name="adults" placeholder="Adults"
-                      type="number" min="1">
-                  </div>
-                  <div class="control">
-                    <input formControlName="children" class="input" id="children" name="children" placeholder="Children"
-                      type="number" min="0">
+                  <div class="control is-expanded">
+                    <input formControlName="guests" class="input" id="guests" name="guests"
+                      placeholder="Number of Guests" type="number" min="0">
                   </div>
                   <div class="control">
                     <button class="button is-primary" type="submit">search</button>
@@ -99,7 +96,7 @@
             </div>
 
             <!-- Lodging Tile -->
-            <ng-container *ngFor="let lodgingsRow of lodgingsRow(lodgings)">
+            <ng-container *ngFor="let lodgingsRow of lodgingsRow(lodgings, 4)">
               <div class="tile">
                 <div class="tile is-parent" *ngFor="let lodging of lodgingsRow">
                   <div class="tile is-child" *ngIf="lodging" (click)="openModal($event, lodging)">
