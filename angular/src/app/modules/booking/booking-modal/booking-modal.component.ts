@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
-import { FormGroup, Validators, FormArray, FormBuilder, AbstractControl } from '@angular/forms';
+import { FormGroup, Validators, FormArray, FormBuilder, AbstractControl, FormControl } from '@angular/forms';
 import { Profile } from 'src/app/data/profile.model';
 import { LodgingService } from 'src/app/services/lodging/lodging.service';
 import { BookingService } from 'src/app/services/booking/booking.service';
@@ -34,9 +34,13 @@ export class BookingModalComponent implements OnInit {
     return this.bookingForm.controls;
   }
 
+  get Math() {
+    return Math;
+  }
+
   private newBookingForm(): void {
     this.bookingForm = this.formBuilder.group({
-      rentals: this.formBuilder.array([]),
+      rentals: new FormControl(),
       guests: this.formBuilder.array([]),
       checkIn: [formatDate(getNewDateFromNowBy(1)), Validators.required],
       checkOut: [formatDate(getNewDateFromNowBy(2)), Validators.required],
@@ -50,8 +54,6 @@ export class BookingModalComponent implements OnInit {
   }
 
   createGuestItem(): FormGroup {
-    // const rentalSelect = this.bookingModal?.nativeElement.querySelector('.rental-select');
-    // if (rentalSelect) rentalSelect.disabled = true;
     return this.formBuilder.group({
       given: ['', Validators.required],
       family: ['', Validators.required],
@@ -80,6 +82,11 @@ export class BookingModalComponent implements OnInit {
   public openModal(event: MouseEvent, lodging?: Lodging): void {
     event?.stopPropagation();
 
+    //Disable body scrolling.
+    document.querySelector('body').style.overflow = 'hidden';
+    document.querySelector('body').style.height = '100vh';
+
+
     this.bookingModal.nativeElement.classList.add('is-active');
 
     this.newBookingForm();
@@ -97,6 +104,11 @@ export class BookingModalComponent implements OnInit {
 
   public closeModal(event: MouseEvent): void {
     event?.stopPropagation();
+
+    // Enable body scrolling.
+    document.querySelector('body').style.overflow = 'auto';
+    document.querySelector('body').style.height = 'auto';
+
     this.bookingModal.nativeElement.classList.remove('is-active');
   }
 
@@ -108,7 +120,7 @@ export class BookingModalComponent implements OnInit {
       return;
     }
 
-    // Sets the guests property for booking
+    // Sets the guests property for booking.
     (this.f.guests.value as []).forEach((data: any) => {
       const guest = {
         name: {
@@ -121,11 +133,10 @@ export class BookingModalComponent implements OnInit {
       this.booking.guests.push(guest);
     });
 
-    (this.f.rentals.value as []).forEach((data: any) => {
-      this.booking.rentals.push(data);
-    });
+    // Sets the rentals property for booking.
+    this.booking.rentals = this.f.rentals.value;
 
-    // Sets the stay property for booking
+    // Sets the stay property for booking.
     this.booking.stay.checkIn = this.searchData.checkIn.value;
     this.booking.stay.checkOut = this.searchData.checkOut.value;
 

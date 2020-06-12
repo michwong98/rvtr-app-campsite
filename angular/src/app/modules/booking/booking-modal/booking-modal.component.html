@@ -25,7 +25,7 @@
 
         <div class="guest-fields field" formArrayName="guests">
           <ng-container
-            *ngFor="let guestInput of $any(bookingForm.controls['guests']).controls as guestControls; let i = index">
+            *ngFor="let guestInput of $any(bookingForm.controls['guests']).controls; let i = index">
             <div [formGroupName]="i" class="card" style="padding: 5px;">
               <!-- First and last names -->
               <div class="field has-addons columns">
@@ -54,12 +54,11 @@
         </div>
 
         <!-- Select Rental -->
-        <div class="field" *ngIf="lodging?.rentals" formArrayName="rentals" style="margin-bottom: 1.5rem;">
+        <div class="field" *ngIf="lodging?.rentals" style="margin-bottom: 1.5rem;">
           <label class="label">Select Unit</label>
           <div class="columns control">
-            <div class="select column is-half">
-              <select class="rental-select" style="width: 100%;">
-                <option selected disabled>Choose Rental</option>
+            <div class="column is-half select is-multiple">
+              <select [size]="Math.min(3, lodging.rentals.length)" multiple class="form-control rental-select" formControlName="rentals" style="width: 100%;">
                 <option *ngFor="let rental of lodging.rentals" [ngValue]="rental">{{rental.name}}</option>
               </select>
             </div>
