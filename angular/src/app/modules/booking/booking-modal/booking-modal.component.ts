@@ -36,7 +36,7 @@ export class BookingModalComponent implements OnInit {
 
   private newBookingForm(): void {
     this.bookingForm = this.formBuilder.group({
-      rentals: this.formBuilder.array([]),
+      rentals: ['', Validators.required],
       guests: this.formBuilder.array([]),
       checkIn: [formatDate(getNewDateFromNowBy(1)), Validators.required],
       checkOut: [formatDate(getNewDateFromNowBy(2)), Validators.required],
@@ -121,9 +121,7 @@ export class BookingModalComponent implements OnInit {
       this.booking.guests.push(guest);
     });
 
-    (this.f.rentals.value as []).forEach((data: any) => {
-      this.booking.rentals.push(data);
-    });
+    this.booking.rentals = this.f.rentals.value;
 
     // Sets the stay property for booking
     this.booking.stay.checkIn = this.searchData.checkIn.value;
