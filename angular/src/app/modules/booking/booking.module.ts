@@ -8,7 +8,7 @@ import { BookingRoutingModule } from './booking-routing.module';
   declarations: [],
   imports: [
     CommonModule,
-    BookingRoutingModule
+    BookingRoutingModule,
   ]
 })
 export class BookingModule { }
