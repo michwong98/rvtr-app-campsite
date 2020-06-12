@@ -1,13 +1,13 @@
 import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
 import { FormGroup, Validators, FormArray, FormBuilder, AbstractControl, FormControl } from '@angular/forms';
+import { getNewDateFromNowBy, formatDate } from '../utils/date-helpers';
+import { ValidationService } from '../../../services/validation/validation.service';
+
 import { Profile } from 'src/app/data/profile.model';
 import { LodgingService } from 'src/app/services/lodging/lodging.service';
 import { BookingService } from 'src/app/services/booking/booking.service';
 import { Booking } from 'src/app/data/booking.model';
-import { getNewDateFromNowBy, formatDate } from '../utils/date-helpers';
 import { Lodging } from 'src/app/data/lodging.model';
-import { Stay } from 'src/app/data/stay.model';
-import { delay } from 'rxjs/operators';
 
 @Component({
   selector: 'uic-booking-modal',
@@ -52,18 +52,13 @@ export class BookingModalComponent implements OnInit {
     } as Booking;
 
     // Creates new booking form.
+    const guests = this.searchData?.guests?.value ? this.searchData.guests.value : 0;
     this.bookingForm = this.formBuilder.group({
       checkIn: [this.searchData.checkIn.value ? this.searchData.checkIn.value : formatDate(getNewDateFromNowBy(1)), Validators.required],
       checkOut: [this.searchData.checkOut.value ? this.searchData.checkOut.value : formatDate(getNewDateFromNowBy(1)), Validators.required],
-      guests: this.formBuilder.array([]),
-      rentals: new FormControl()
+      guests: this.formBuilder.array(this.createGuestItem(guests) as FormGroup[], [Validators.required, ValidationService.guestsValidator]),
+      rentals: new FormControl(null, [Validators.required, ValidationService.rentalsValidator])
     });
-
-    // Populates guests array.
-    const guests = this.searchData?.guests?.value ? this.searchData.guests.value : 0;
-    for (let i = 0; i < guests; i++) {
-      this.addNextGuestItem();
-    }
   }
 
   /**
@@ -102,18 +97,31 @@ export class BookingModalComponent implements OnInit {
     console.log(this.booking);
   }
 
-  createGuestItem(): FormGroup {
-    return this.formBuilder.group({
-      given: [null, Validators.required],
-      family: [null, Validators.required],
-      email: [null, [Validators.required, Validators.email]],
-      phone: [null],
-    });
+  createGuestItem(n?: number): FormGroup | FormGroup[] {
+    if (n == null) {
+      return this.formBuilder.group({
+        given: [null, Validators.required],
+        family: [null, Validators.required],
+        email: [null, [Validators.required, Validators.email]],
+        phone: [null],
+      });
+    } else {
+      let guests = [];
+      for (let i = 0; i < n; i++) {
+        guests.push(this.formBuilder.group({
+          given: [null, Validators.required],
+          family: [null, Validators.required],
+          email: [null, [Validators.required, Validators.email]],
+          phone: [null],
+        }));
+      }
+      return guests;
+    }
   }
 
   addNextGuestItem(): void {
     // tslint:disable-next-line: no-string-literal
-    (this.bookingForm.controls['guests'] as FormArray).push(this.createGuestItem());
+    (this.bookingForm.controls['guests'] as FormArray).push(this.createGuestItem() as FormGroup);
   }
 
   removeGuestItem(ind: number): void {
