@@ -56,9 +56,11 @@ export class BookingModalComponent implements OnInit {
     this.bookingForm = this.formBuilder.group({
       checkIn: [this.searchData.checkIn.value ? this.searchData.checkIn.value : formatDate(getNewDateFromNowBy(1)), Validators.required],
       checkOut: [this.searchData.checkOut.value ? this.searchData.checkOut.value : formatDate(getNewDateFromNowBy(1)), Validators.required],
-      guests: this.formBuilder.array(this.createGuestItem(guests) as FormGroup[], [Validators.required, ValidationService.guestsValidator]),
-      rentals: new FormControl(null, [Validators.required, ValidationService.rentalsValidator])
+      guests: this.formBuilder.array(this.createGuestItem(guests) as FormGroup[], [ValidationService.guestsValidator, Validators.required]),
+      rentals: new FormControl(null, [ValidationService.rentalsValidator, Validators.required])
     });
+    this.bookingForm.controls['guests'].markAsTouched();
+    this.bookingForm.controls['rentals'].markAsTouched();
   }
 
   /**

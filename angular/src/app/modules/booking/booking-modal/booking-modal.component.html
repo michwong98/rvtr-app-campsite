@@ -24,9 +24,10 @@
           </div>
         </div>
 
-        <div class="columns">
+        <div class="columns is-vcentered">
           <!-- * Dynamic Guests input * -->
-          <label class="label column">Guest Infomation</label>
+          <div class="label column">Guest Infomation</div>
+          <control-messages [control]="bookingForm.get('guests')"></control-messages>
 
           <!-- * Add additional guest fields * -->
           <span class="add-guest-input column" style="text-align: right;">
@@ -39,24 +40,28 @@
         </div>
 
         <div class="guest-fields field" formArrayName="guests" style="margin-bottom: 1.5rem;">
-          <ng-container *ngFor="let guestInput of $any(bookingForm?.controls['guests']).controls; let i = index">
+          <ng-container *ngFor="let guestInput of bookingForm?.get('guests')?.controls; let i = index">
             <div [formGroupName]="i" class="card" style="padding: 5px;">
               <!-- First and last names -->
               <div class="field has-addons columns">
                 <div class="control column is-half">
                   <input type="text" class="input" formControlName="given" placeholder="Given Name">
+                  <control-messages [control]="guestInput.get('given')"></control-messages>
                 </div>
                 <div class="control column is-half">
                   <input type="text" class="input" formControlName="family" placeholder="Family Name">
+                  <control-messages [control]="guestInput.get('family')"></control-messages>
                 </div>
               </div>
               <!-- Email and phone number -->
               <div class="field has-addons columns">
                 <div class="control column is-half">
                   <input type="email" class="input" formControlName="email" placeholder="Email">
+                  <control-messages [control]="guestInput.get('email')"></control-messages>
                 </div>
                 <div class="control column is-half">
                   <input type="tel" pattern="[0-9]+" class="input" formControlName="phone" placeholder="Phone">
+                  <control-messages [control]="guestInput.get('phone')"></control-messages>
                 </div>
               </div>
               <!-- Remove btn -->
@@ -77,10 +82,11 @@
               <label class="label">Selected Rentals</label>
             </div>
           </div>
+          <control-messages [control]="bookingForm.get('rentals')"></control-messages>
           <div class="columns is-vcentered">
             <div class="column is-half select is-multiple">
-              <select [size]="Math.min(3, lodging.rentals.length > 0 ? lodging.rentals.length : 0)" multiple class="form-control rental-select"
-                formControlName="rentals" style="width: 100%;">
+              <select [size]="Math.min(3, lodging.rentals.length > 0 ? lodging.rentals.length : 0)" multiple
+                class="form-control rental-select" formControlName="rentals" style="width: 100%;">
                 <option *ngFor="let rental of lodging.rentals" [ngValue]="rental">{{rental.name}}</option>
               </select>
             </div>
@@ -98,7 +104,8 @@
       </form>
     </section>
     <footer class="modal-card-foot">
-      <button class="button is-success" (click)="onBookingFormSubmit()" [disabled]="! bookingForm?.valid">Submit</button>
+      <button class="button is-success" (click)="onBookingFormSubmit()"
+        [disabled]="! bookingForm?.valid">Submit</button>
       <button class="button is-danger" (click)="closeModal($event)">Cancel</button>
     </footer>
   </div>
