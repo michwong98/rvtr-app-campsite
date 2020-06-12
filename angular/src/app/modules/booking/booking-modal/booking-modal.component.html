@@ -54,27 +54,34 @@
         </div>
 
         <!-- Select Rental -->
-
-        <div class="field">
-          <label class="label column">Select Unit</label>
-          <div class="select">
-            <select>
-              <option>A</option>
-              <option>B</option>
-            </select>
+        <div class="field" *ngIf="lodging?.rentals" formArrayName="rentals" style="margin-bottom: 1.5rem;">
+          <label class="label">Select Unit</label>
+          <div class="columns control">
+            <div class="select column is-half">
+              <select class="rental-select" style="width: 100%;">
+                <option selected disabled>Choose Rental</option>
+                <option *ngFor="let rental of lodging.rentals" [ngValue]="rental">{{rental.name}}</option>
+              </select>
+            </div>
+            <div class="column is-half">
+              <span>Placeholder Text</span>
+            </div>
           </div>
         </div>
 
+
         <!-- Check in and check out -->
-        <label for="check-in" class="label">Check-In / Check-Out</label>
-        <div class="field has-addons">
-          <div class="control is-expanded">
-            <input formControlName="checkIn" class="input" id="check-in" name="check-in"
-              placeholder="Add the traveling date" type="date">
-          </div>
-          <div class="control is-expanded">
-            <input formControlName="checkOut" class="input" id="check-out" name="check-out"
-              placeholder="Add the returning date" type="date">
+        <div>
+          <label for="check-in" class="label">Check-In / Check-Out</label>
+          <div class="field has-addons">
+            <div class="control is-expanded">
+              <input formControlName="checkIn" class="input" id="check-in" name="check-in"
+                placeholder="Add the traveling date" type="date">
+            </div>
+            <div class="control is-expanded">
+              <input formControlName="checkOut" class="input" id="check-out" name="check-out"
+                placeholder="Add the returning date" type="date">
+            </div>
           </div>
         </div>
 

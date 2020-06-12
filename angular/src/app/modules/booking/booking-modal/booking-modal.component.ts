@@ -7,6 +7,7 @@ import { Booking } from 'src/app/data/booking.model';
 import { getNewDateFromNowBy, formatDate } from '../utils/date-helpers';
 import { Lodging } from 'src/app/data/lodging.model';
 import { Stay } from 'src/app/data/stay.model';
+import { delay } from 'rxjs/operators';
 
 @Component({
   selector: 'uic-booking-modal',
@@ -35,6 +36,7 @@ export class BookingModalComponent implements OnInit {
 
   private newBookingForm(): void {
     this.bookingForm = this.formBuilder.group({
+      rentals: this.formBuilder.array([]),
       guests: this.formBuilder.array([]),
       checkIn: [formatDate(getNewDateFromNowBy(1)), Validators.required],
       checkOut: [formatDate(getNewDateFromNowBy(2)), Validators.required],
@@ -48,6 +50,8 @@ export class BookingModalComponent implements OnInit {
   }
 
   createGuestItem(): FormGroup {
+    // const rentalSelect = this.bookingModal?.nativeElement.querySelector('.rental-select');
+    // if (rentalSelect) rentalSelect.disabled = true;
     return this.formBuilder.group({
       given: ['', Validators.required],
       family: ['', Validators.required],
@@ -75,18 +79,19 @@ export class BookingModalComponent implements OnInit {
 
   public openModal(event: MouseEvent, lodging?: Lodging): void {
     event?.stopPropagation();
-    console.log('clack');
 
     this.bookingModal.nativeElement.classList.add('is-active');
 
     this.newBookingForm();
 
     if (lodging !== null) {
+      this.lodging = lodging;
       this.booking = {
+        lodgingId: this.lodging.id,
+        rentals: [],
         guests: [],
         stay: {} as Stay
       } as Booking;
-      this.booking.lodgingId = lodging.id;
     }
   }
 
@@ -103,6 +108,7 @@ export class BookingModalComponent implements OnInit {
       return;
     }
 
+    // Sets the guests property for booking
     (this.f.guests.value as []).forEach((data: any) => {
       const guest = {
         name: {
@@ -115,6 +121,11 @@ export class BookingModalComponent implements OnInit {
       this.booking.guests.push(guest);
     });
 
+    (this.f.rentals.value as []).forEach((data: any) => {
+      this.booking.rentals.push(data);
+    });
+
+    // Sets the stay property for booking
     this.booking.stay.checkIn = this.searchData.checkIn.value;
     this.booking.stay.checkOut = this.searchData.checkOut.value;
 
