@@ -45,7 +45,6 @@ export class BookingModalComponent implements OnInit {
   private newBookingForm(): void {
     // Sets up booking properties.
     this.booking = {
-      lodgingId: this.lodging?.id,
       stay: {},
       guests: [],
       rentals: []
@@ -68,12 +67,11 @@ export class BookingModalComponent implements OnInit {
    * Sends post request to booking api
    */
   onBookingFormSubmit(): void {
-    // TODO: set booking submitted state
-    if (this.bookingForm.invalid) {
-      // TODO: display invalidation message to user
-      console.error('Invalid booking form');
+    if (this.bookingForm.invalid)
       return;
-    }
+
+    this.booking.lodgingId = this.lodging.id;
+    this.booking.accountId = "PLACEHOLDERID";
 
     // Sets the stay property for booking.
     this.booking.stay.checkIn = this.searchData.checkIn.value;
@@ -96,7 +94,13 @@ export class BookingModalComponent implements OnInit {
     this.booking.rentals = this.f.rentals.value;
 
     // TODO: send data as request
-    console.log(this.booking);
+    this.closeModal();
+    this.bookingService.post(this.booking)
+      .subscribe(
+        res => console.log(this.booking),
+        err => console.log(this.booking),
+        () => console.log('HTTP request completed.')
+      );
   }
 
   createGuestItem(n?: number): FormGroup | FormGroup[] {
@@ -148,7 +152,7 @@ export class BookingModalComponent implements OnInit {
     this.lodging = lodging;
   }
 
-  public closeModal(event: MouseEvent): void {
+  public closeModal(event?: MouseEvent): void {
     event?.stopPropagation();
 
     // Enable body scrolling.
