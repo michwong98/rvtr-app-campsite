@@ -39,7 +39,7 @@
         </div>
 
         <div class="guest-fields field" formArrayName="guests" style="margin-bottom: 1.5rem;">
-          <ng-container *ngFor="let guestInput of $any(bookingForm.controls['guests']).controls; let i = index">
+          <ng-container *ngFor="let guestInput of $any(bookingForm?.controls['guests']).controls; let i = index">
             <div [formGroupName]="i" class="card" style="padding: 5px;">
               <!-- First and last names -->
               <div class="field has-addons columns">
@@ -98,7 +98,7 @@
       </form>
     </section>
     <footer class="modal-card-foot">
-      <button class="button is-success" (click)="onBookingFormSubmit()">Submit</button>
+      <button class="button is-success" (click)="onBookingFormSubmit()" [disabled]="! bookingForm?.valid">Submit</button>
       <button class="button is-danger" (click)="closeModal($event)">Cancel</button>
     </footer>
   </div>

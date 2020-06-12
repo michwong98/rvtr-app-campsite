@@ -38,7 +38,20 @@ export class BookingModalComponent implements OnInit {
     return Math;
   }
 
+  /**
+   * Creates a new booking form
+   * Clears existing booking properties
+   */
   private newBookingForm(): void {
+    // Sets up booking properties.
+    this.booking = {
+      lodgingId: this.lodging?.id,
+      stay: {},
+      guests: [],
+      rentals: []
+    } as Booking;
+
+    // Creates new booking form.
     this.bookingForm = this.formBuilder.group({
       checkIn: [this.searchData.checkIn.value ? this.searchData.checkIn.value : formatDate(getNewDateFromNowBy(1)), Validators.required],
       checkOut: [this.searchData.checkOut.value ? this.searchData.checkOut.value : formatDate(getNewDateFromNowBy(1)), Validators.required],
@@ -46,8 +59,8 @@ export class BookingModalComponent implements OnInit {
       rentals: new FormControl()
     });
 
+    // Populates guests array.
     const guests = this.searchData?.guests?.value ? this.searchData.guests.value : 0;
-
     for (let i = 0; i < guests; i++) {
       this.addNextGuestItem();
     }
@@ -91,10 +104,10 @@ export class BookingModalComponent implements OnInit {
 
   createGuestItem(): FormGroup {
     return this.formBuilder.group({
-      given: ['', Validators.required],
-      family: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      phone: [''],
+      given: [null, Validators.required],
+      family: [null, Validators.required],
+      email: [null, [Validators.required, Validators.email]],
+      phone: [null],
     });
   }
 
@@ -123,15 +136,6 @@ export class BookingModalComponent implements OnInit {
 
     // Sets lodging property.
     this.lodging = lodging;
-
-    // Sets up booking properties.
-    this.booking = {
-      lodgingId: this.lodging.id,
-      stay: {},
-      guests: [],
-      rentals: []
-    } as Booking;
-
   }
 
   public closeModal(event: MouseEvent): void {
