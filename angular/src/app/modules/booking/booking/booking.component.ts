@@ -1,6 +1,5 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { CommonModule } from '@angular/common';
 import { delay, map } from 'rxjs/operators';
 
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
@@ -10,8 +9,6 @@ import { Lodging } from '../../../data/lodging.model';
 
 import { BookingService } from '../../../services/booking/booking.service';
 import { Booking } from '../../../data/booking.model';
-import { Profile } from '../../../data/profile.model';
-import { Stay } from 'src/app/data/stay.model';
 import { BookingModalComponent } from '../booking-modal/booking-modal.component';
 import { getNewDateFromNowBy, formatDate } from '../utils/date-helpers';
 
@@ -40,6 +37,13 @@ export class BookingComponent implements OnInit {
    */
   laoding: boolean;
   searchForm: FormGroup;
+
+  /**
+   * convencience getter for easy access to form fields
+   */
+  get f() {
+    return this.searchForm.controls;
+  }
 
   constructor(
     private formBuilder: FormBuilder,
@@ -83,28 +87,17 @@ export class BookingComponent implements OnInit {
   }
 
   /**
-   * convencience getter for easy access to form fields
-   */
-  get f() {
-    return this.searchForm.controls;
-  }
-
-  /**
    * Submits seach data to httpRequest
    */
   onSubmit(): void {
     this.submitted = true;
 
-    if (this.searchForm.invalid) {
-      // TODO: display invalidation message to user
-      console.error('Invalid form submission');
+    if (this.searchForm.invalid)
       return;
-    }
 
     this.retreiveLodgingsByPhrase(this.f.location.value);
 
     // TODO: submit form data to http request
-    console.log('Submitted...');
   }
 
   // For later.
