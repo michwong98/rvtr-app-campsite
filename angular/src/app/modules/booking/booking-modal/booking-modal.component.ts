@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
-import { FormGroup, Validators, FormArray, FormBuilder, AbstractControl } from '@angular/forms';
+import { FormGroup, Validators, FormArray, FormBuilder, AbstractControl, FormControl } from '@angular/forms';
 import { Profile } from 'src/app/data/profile.model';
 import { LodgingService } from 'src/app/services/lodging/lodging.service';
 import { BookingService } from 'src/app/services/booking/booking.service';
@@ -34,9 +34,13 @@ export class BookingModalComponent implements OnInit {
     return this.bookingForm.controls;
   }
 
+  get Math() {
+    return Math;
+  }
+
   private newBookingForm(): void {
     this.bookingForm = this.formBuilder.group({
-      rentals: ['', Validators.required],
+      rentals: new FormControl(),
       guests: this.formBuilder.array([]),
       checkIn: [formatDate(getNewDateFromNowBy(1)), Validators.required],
       checkOut: [formatDate(getNewDateFromNowBy(2)), Validators.required],
@@ -80,6 +84,10 @@ export class BookingModalComponent implements OnInit {
   public openModal(event: MouseEvent, lodging?: Lodging): void {
     event?.stopPropagation();
 
+    //Disable body scrolling.
+    document.querySelector('body').style.overflow = 'hidden';
+    document.querySelector('body').style.height = '100vh';
+
     this.bookingModal.nativeElement.classList.add('is-active');
 
     this.newBookingForm();
@@ -97,6 +105,11 @@ export class BookingModalComponent implements OnInit {
 
   public closeModal(event: MouseEvent): void {
     event?.stopPropagation();
+
+    // Enable body scrolling.
+    document.querySelector('body').style.overflow = 'auto';
+    document.querySelector('body').style.height = 'auto';
+
     this.bookingModal.nativeElement.classList.remove('is-active');
   }
 

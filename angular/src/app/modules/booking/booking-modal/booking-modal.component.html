@@ -57,9 +57,8 @@
         <div class="field" *ngIf="lodging?.rentals" style="margin-bottom: 1.5rem;">
           <label class="label">Select Unit</label>
           <div class="columns control">
-            <div class="select column is-half">
-              <select class="form-control rental-select" formControlName="rentals" style="width: 100%;">
-                <option selected disabled>Choose Rental</option>
+            <div class="column is-half select is-multiple">
+              <select [size]="Math.min(3, lodging.rentals.length)" multiple class="form-control rental-select" formControlName="rentals" style="width: 100%;">
                 <option *ngFor="let rental of lodging.rentals" [ngValue]="rental">{{rental.name}}</option>
               </select>
             </div>
@@ -69,7 +68,7 @@
           </div>
         </div>
 
-        <!-- Check in and check out
+        <!-- Check in and check out -->
         <div>
           <label for="check-in" class="label">Check-In / Check-Out</label>
           <div class="field has-addons">
@@ -83,7 +82,6 @@
             </div>
           </div>
         </div>
-        -->
 
       </form>
     </section>
