@@ -54,8 +54,6 @@ export class BookingModalComponent implements OnInit {
   }
 
   createGuestItem(): FormGroup {
-    // const rentalSelect = this.bookingModal?.nativeElement.querySelector('.rental-select');
-    // if (rentalSelect) rentalSelect.disabled = true;
     return this.formBuilder.group({
       given: ['', Validators.required],
       family: ['', Validators.required],
@@ -87,6 +85,7 @@ export class BookingModalComponent implements OnInit {
     //Disable body scrolling.
     document.querySelector('body').style.overflow = 'hidden';
     document.querySelector('body').style.height = '100vh';
+
 
     this.bookingModal.nativeElement.classList.add('is-active');
 
@@ -121,7 +120,7 @@ export class BookingModalComponent implements OnInit {
       return;
     }
 
-    // Sets the guests property for booking
+    // Sets the guests property for booking.
     (this.f.guests.value as []).forEach((data: any) => {
       const guest = {
         name: {
@@ -134,9 +133,10 @@ export class BookingModalComponent implements OnInit {
       this.booking.guests.push(guest);
     });
 
+    // Sets the rentals property for booking.
     this.booking.rentals = this.f.rentals.value;
 
-    // Sets the stay property for booking
+    // Sets the stay property for booking.
     this.booking.stay.checkIn = this.searchData.checkIn.value;
     this.booking.stay.checkOut = this.searchData.checkOut.value;
 
