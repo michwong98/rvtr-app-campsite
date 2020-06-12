@@ -2,12 +2,27 @@
   <div class="modal-background" (click)="closeModal($event)"></div>
   <div class="modal-card">f
     <header class="modal-card-head">
-      <p class="modal-card-title">Create Booking</p>
+      <p class="modal-card-title">{{lodging?.name ? lodging.name : 'Create Booking'}}</p>
       <button class="delete" aria-label="close" (click)="closeModal($event)"></button>
     </header>
     <section class="modal-card-body">
-      <!--CREATE BOOKING FORM HERE-->
+      <!-- Booking form -->
       <form [formGroup]='bookingForm'>
+
+        <!-- Check in and check out -->
+        <div style="margin-bottom: 1.5rem;">
+          <label for="check-in" class="label">Check-In / Check-Out</label>
+          <div class="field has-addons">
+            <div class="control is-expanded">
+              <input formControlName="checkIn" class="input" id="check-in" name="check-in"
+                placeholder="Add the traveling date" type="date">
+            </div>
+            <div class="control is-expanded">
+              <input formControlName="checkOut" class="input" id="check-out" name="check-out"
+                placeholder="Add the returning date" type="date">
+            </div>
+          </div>
+        </div>
 
         <div class="columns">
           <!-- * Dynamic Guests input * -->
@@ -23,9 +38,8 @@
           </span>
         </div>
 
-        <div class="guest-fields field" formArrayName="guests">
-          <ng-container
-            *ngFor="let guestInput of $any(bookingForm.controls['guests']).controls; let i = index">
+        <div class="guest-fields field" formArrayName="guests" style="margin-bottom: 1.5rem;">
+          <ng-container *ngFor="let guestInput of $any(bookingForm.controls['guests']).controls; let i = index">
             <div [formGroupName]="i" class="card" style="padding: 5px;">
               <!-- First and last names -->
               <div class="field has-addons columns">
@@ -46,44 +60,41 @@
                 </div>
               </div>
               <!-- Remove btn -->
-              <button class="button is-danger" (click)="removeGuessItem(i)">
+              <button class="button is-danger" (click)="removeGuestItem(i)">
                 Remove
               </button>
             </div>
           </ng-container>
         </div>
 
-        <!-- Select Rental -->
+        <!-- Rentals -->
         <div class="field" *ngIf="lodging?.rentals" style="margin-bottom: 1.5rem;">
-          <label class="label">Select Unit</label>
-          <div class="columns control">
+          <div class="columns">
+            <div class="column is-half">
+              <label class="label">Select Rentals</label>
+            </div>
+            <div class="column is-half">
+              <label class="label">Selected Rentals</label>
+            </div>
+          </div>
+          <div class="columns is-vcentered">
             <div class="column is-half select is-multiple">
-              <select [size]="Math.min(3, lodging.rentals.length)" multiple class="form-control rental-select" formControlName="rentals" style="width: 100%;">
+              <select [size]="Math.min(3, lodging.rentals.length > 0 ? lodging.rentals.length : 0)" multiple class="form-control rental-select"
+                formControlName="rentals" style="width: 100%;">
                 <option *ngFor="let rental of lodging.rentals" [ngValue]="rental">{{rental.name}}</option>
               </select>
             </div>
             <div class="column is-half">
-              <span>Placeholder Text</span>
+              <div *ngFor="let rental of f.rentals.value">
+                <p><span>{{rental.name}}</span>, <span>Occupancy: {{rental.rentalUnit.occupancy}}</span></p>
+                <p><span>Bedrooms: {{rental.rentalUnit.bedrooms.length}}, Bathrooms:
+                    {{rental.rentalUnit.bathrooms.length}}</span></p>
+              </div>
             </div>
           </div>
         </div>
 
-
-        <!-- Check in and check out -->
-        <div>
-          <label for="check-in" class="label">Check-In / Check-Out</label>
-          <div class="field has-addons">
-            <div class="control is-expanded">
-              <input formControlName="checkIn" class="input" id="check-in" name="check-in"
-                placeholder="Add the traveling date" type="date">
-            </div>
-            <div class="control is-expanded">
-              <input formControlName="checkOut" class="input" id="check-out" name="check-out"
-                placeholder="Add the returning date" type="date">
-            </div>
-          </div>
-        </div>
-
+        <!-- Booking form -->
       </form>
     </section>
     <footer class="modal-card-foot">

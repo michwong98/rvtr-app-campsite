@@ -24,7 +24,7 @@ export class BookingModalComponent implements OnInit {
     private formBuilder: FormBuilder,
     private lodgingService: LodgingService,
     private bookingService: BookingService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.newBookingForm();
@@ -40,10 +40,10 @@ export class BookingModalComponent implements OnInit {
 
   private newBookingForm(): void {
     this.bookingForm = this.formBuilder.group({
-      rentals: new FormControl(),
+      checkIn: [this.searchData.checkIn.value ? this.searchData.checkIn.value : formatDate(getNewDateFromNowBy(1)), Validators.required],
+      checkOut: [this.searchData.checkOut.value ? this.searchData.checkOut.value : formatDate(getNewDateFromNowBy(1)), Validators.required],
       guests: this.formBuilder.array([]),
-      checkIn: [formatDate(getNewDateFromNowBy(1)), Validators.required],
-      checkOut: [formatDate(getNewDateFromNowBy(2)), Validators.required],
+      rentals: new FormControl()
     });
 
     const guests = this.searchData?.guests?.value ? this.searchData.guests.value : 0;
@@ -53,65 +53,10 @@ export class BookingModalComponent implements OnInit {
     }
   }
 
-  createGuestItem(): FormGroup {
-    return this.formBuilder.group({
-      given: ['', Validators.required],
-      family: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      phone: [''],
-    });
-  }
-
-  addNextGuestItem(): void {
-    // tslint:disable-next-line: no-string-literal
-    (this.bookingForm.controls['guests'] as FormArray).push(this.createGuestItem());
-  }
-
-  removeGuessItem(ind: number): void {
-    // tslint:disable-next-line: no-string-literal
-    const bookingFormArr: FormArray = this.bookingForm.controls['guests'] as FormArray;
-
-    // Ensure there's alawys one
-    if (bookingFormArr.length <= 0) {
-      return;
-    }
-
-    bookingFormArr.removeAt(ind);
-  }
-
-  public openModal(event: MouseEvent, lodging?: Lodging): void {
-    event?.stopPropagation();
-
-    //Disable body scrolling.
-    document.querySelector('body').style.overflow = 'hidden';
-    document.querySelector('body').style.height = '100vh';
-
-
-    this.bookingModal.nativeElement.classList.add('is-active');
-
-    this.newBookingForm();
-
-    if (lodging !== null) {
-      this.lodging = lodging;
-      this.booking = {
-        lodgingId: this.lodging.id,
-        rentals: [],
-        guests: [],
-        stay: {} as Stay
-      } as Booking;
-    }
-  }
-
-  public closeModal(event: MouseEvent): void {
-    event?.stopPropagation();
-
-    // Enable body scrolling.
-    document.querySelector('body').style.overflow = 'auto';
-    document.querySelector('body').style.height = 'auto';
-
-    this.bookingModal.nativeElement.classList.remove('is-active');
-  }
-
+  /**
+   * Binds booking form data to booking object
+   * Sends post request to booking api
+   */
   onBookingFormSubmit(): void {
     // TODO: set booking submitted state
     if (this.bookingForm.invalid) {
@@ -119,6 +64,10 @@ export class BookingModalComponent implements OnInit {
       console.error('Invalid booking form');
       return;
     }
+
+    // Sets the stay property for booking.
+    this.booking.stay.checkIn = this.searchData.checkIn.value;
+    this.booking.stay.checkOut = this.searchData.checkOut.value;
 
     // Sets the guests property for booking.
     (this.f.guests.value as []).forEach((data: any) => {
@@ -136,12 +85,62 @@ export class BookingModalComponent implements OnInit {
     // Sets the rentals property for booking.
     this.booking.rentals = this.f.rentals.value;
 
-    // Sets the stay property for booking.
-    this.booking.stay.checkIn = this.searchData.checkIn.value;
-    this.booking.stay.checkOut = this.searchData.checkOut.value;
-
     // TODO: send data as request
     console.log(this.booking);
+  }
+
+  createGuestItem(): FormGroup {
+    return this.formBuilder.group({
+      given: ['', Validators.required],
+      family: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      phone: [''],
+    });
+  }
+
+  addNextGuestItem(): void {
+    // tslint:disable-next-line: no-string-literal
+    (this.bookingForm.controls['guests'] as FormArray).push(this.createGuestItem());
+  }
+
+  removeGuestItem(ind: number): void {
+    // tslint:disable-next-line: no-string-literal
+    const bookingFormArr: FormArray = this.bookingForm.controls['guests'] as FormArray;
+
+    bookingFormArr.removeAt(ind);
+  }
+
+  public openModal(event: MouseEvent, lodging: Lodging): void {
+    event?.stopPropagation();
+
+    // Disable body scrolling.
+    document.querySelector('html').classList.add('is-clipped');
+
+    // Opens modal.
+    this.bookingModal.nativeElement.classList.add('is-active');
+
+    this.newBookingForm();
+
+    // Sets lodging property.
+    this.lodging = lodging;
+
+    // Sets up booking properties.
+    this.booking = {
+      lodgingId: this.lodging.id,
+      stay: {},
+      guests: [],
+      rentals: []
+    } as Booking;
+
+  }
+
+  public closeModal(event: MouseEvent): void {
+    event?.stopPropagation();
+
+    // Enable body scrolling.
+    document.querySelector('html').classList.remove('is-clipped');
+
+    this.bookingModal.nativeElement.classList.remove('is-active');
   }
 }
 
