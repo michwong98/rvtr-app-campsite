@@ -10,7 +10,7 @@
           <form [formGroup]="searchForm" (ngSubmit)="onSubmit()">
             <div class="tile is-parent">
 
-              <!-- Location fo search form -->
+              <!-- Location of search form -->
               <div class="tile is-child is-5">
                 <div class="field">
                   <label for="location" class="label">Location</label>
@@ -143,16 +143,14 @@
                     </div>
                   </div>
                 </div>
-
               </div>
             </ng-container>
-
+          <!-- Observable Pipe -->
           </ng-container>
-
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<uic-booking-modal [booking]="booking" [searchData]="this.f"></uic-booking-modal>
+<uic-booking-modal [booking]="booking" [lodging]="lodging" [searchData]="this.f"></uic-booking-modal>

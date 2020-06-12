@@ -16,6 +16,7 @@ export class BookingModalComponent implements OnInit {
   @ViewChild('bookingModal') bookingModal: ElementRef;
   bookingForm: FormGroup;
   @Input() booking: Booking;
+  @Input() lodging: Lodging;
   @Input() searchData: BookingSearchData;
 
   constructor(

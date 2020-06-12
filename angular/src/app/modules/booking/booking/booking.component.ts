@@ -28,6 +28,7 @@ export class BookingComponent implements OnInit {
   bookingForm: FormGroup;
 
   lodgings: Lodging[];
+  lodging: Lodging;
   booking: Booking;
 
   /**
