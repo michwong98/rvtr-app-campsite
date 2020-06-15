@@ -7,50 +7,52 @@
         <div class="tile is-vertical">
 
           <!-- Search form -->
-          <form [formGroup]="searchForm" (ngSubmit)="onSubmit()">
-            <div class="tile is-parent">
+          <div id="search-form">
+            <form [formGroup]="searchForm" (ngSubmit)="onSubmit()">
+              <div class="tile is-parent">
 
-              <!-- Location of search form -->
-              <div class="tile is-child is-5">
-                <div class="field">
-                  <label for="location" class="label">Location</label>
-                  <div class="control">
-                    <input formControlName="location" class="input" id="location" name="location"
-                      placeholder="Search by Location" type="text">
+                <!-- Location fo search form -->
+                <div class="tile is-child is-5">
+                  <div class="field">
+                    <label for="location" class="label">Location</label>
+                    <div class="control">
+                      <input formControlName="location" class="input" id="location" name="location"
+                        placeholder="Search by Location" type="text">
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Check in/check out for search form-->
+                <div class="tile is-child is-5">
+                  <label for="check-in" class="label">Check-In / Check-Out</label>
+                  <div class="field has-addons">
+                    <div class="control is-expanded">
+                      <input formControlName="checkIn" class="input" id="check-in" name="check-in"
+                        placeholder="Add the traveling date" type="date">
+                    </div>
+                    <div class="control is-expanded">
+                      <input formControlName="checkOut" class="input" id="check-out" name="check-out"
+                        placeholder="Add the returning date" type="date">
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Guests for search form -->
+                <div class="tile is-child is-2">
+                  <label for="guests" class="label">Guests</label>
+                  <div class="field has-addons">
+                    <div class="control is-expanded">
+                      <input formControlName="guests" class="input" id="guests" name="guests"
+                        placeholder="Number of Guests" type="number" min="0">
+                    </div>
+                    <div class="control">
+                      <button class="button is-primary" type="submit">search</button>
+                    </div>
                   </div>
                 </div>
               </div>
-
-              <!-- Check in/check out for search form-->
-              <div class="tile is-child is-5">
-                <label for="check-in" class="label">Check-In / Check-Out</label>
-                <div class="field has-addons">
-                  <div class="control is-expanded">
-                    <input formControlName="checkIn" class="input" id="check-in" name="check-in"
-                      placeholder="Add the traveling date" type="date">
-                  </div>
-                  <div class="control is-expanded">
-                    <input formControlName="checkOut" class="input" id="check-out" name="check-out"
-                      placeholder="Add the returning date" type="date">
-                  </div>
-                </div>
-              </div>
-
-              <!-- Guests for search form -->
-              <div class="tile is-child is-2">
-                <label for="guests" class="label">Guests</label>
-                <div class="field has-addons">
-                  <div class="control is-expanded">
-                    <input formControlName="guests" class="input" id="guests" name="guests"
-                      placeholder="Number of Guests" type="number" min="0">
-                  </div>
-                  <div class="control">
-                    <button class="button is-primary" type="submit">search</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </form>
+            </form>
+          </div>
 
           <!-- Loading for lodgings$ -->
           <ng-template #loading>
@@ -65,7 +67,7 @@
             </ng-container>
 
             <!-- Spotlight Lodging -->
-            <div *ngIf="lodgings[0]" class="tile is-parent">
+            <div *ngIf="lodgings[0]" class="tile is-parent spotlight">
               <div class="tile box has-background-dark is-child">
                 <div class="columns">
                   <div class="column is-4">
