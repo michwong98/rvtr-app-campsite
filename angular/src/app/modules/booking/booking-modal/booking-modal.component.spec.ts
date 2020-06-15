@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BookingModalComponent } from './booking-modal.component';
+<<<<<<< HEAD
 import { FormGroup, Validators, FormArray, FormBuilder } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DebugElement } from '@angular/core';
@@ -9,6 +10,11 @@ import { Booking } from 'src/app/data/booking.model';
 import { Lodging } from 'src/app/data/lodging.model';
 import { BookingSearchData } from '../@types/booking-search-data';
 import { mockBookings, mockLodgings, mockBookingSearchDataSet } from '../mock-booking-data';
+=======
+import { FormGroup, Validators, FormArray, FormBuilder,} from '@angular/forms';
+import { HttpClientTestingModule} from '@angular/common/http/testing'
+import { element } from 'protractor';
+>>>>>>> refs/remotes/origin/bookingModalTesting
 
 describe('BookingModalComponent', () => {
   let component: BookingModalComponent;
@@ -22,10 +28,18 @@ describe('BookingModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+<<<<<<< HEAD
       declarations: [BookingModalComponent],
       providers: [FormBuilder],
       imports: [HttpClientTestingModule],
     }).compileComponents();
+=======
+      declarations: [ BookingModalComponent,],
+      providers: [FormBuilder,],
+      imports: [HttpClientTestingModule,],
+    })
+    .compileComponents();
+>>>>>>> refs/remotes/origin/bookingModalTesting
   }));
 
   beforeEach(() => {
