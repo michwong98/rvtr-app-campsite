@@ -56,6 +56,7 @@ describe('BookingModalComponent', () => {
     expect(component).toBeTruthy();
   });
 
+<<<<<<< HEAD
   it('createGuestItem should return FromGroup', () => {
     const guestItem: FormGroup | FormGroup[] = component.createGuestItem();
     expect(guestItem).toBeInstanceOf(FormGroup);
@@ -104,4 +105,6 @@ describe('BookingModalComponent', () => {
     const resultNumGuestFormGroups = (component.bookingForm.controls['guests'] as FormArray).length;
     expect(resultNumGuestFormGroups).toBe(numToAdd - 1);
   });
+=======
+>>>>>>> 52e24f3... removes old booking modal test
 });

@@ -81,7 +81,7 @@ describe('project rvtr-app-campsite', () => {
     expect(locationElement.getText()).toContain('Great Lodge');
     locationElement.click();
     const modal = element(by.className('modal-card-title'));
-    expect(modal.getText()).toMatch('Create Booking');
+    expect(modal.getText()).toMatch('Great Lodge');
     expect(modal.isDisplayed()).toBeTruthy();
 
   });
@@ -138,13 +138,4 @@ describe('project rvtr-app-campsite', () => {
     expect(modalCard.count()).toBe(0);
   });
 
-  afterEach(async () => {
-    // Assert that there are no errors emitted from the browser
-    const logs = await browser.manage().logs().get(logging.Type.BROWSER);
-    expect(logs).not.toContain(
-      jasmine.objectContaining({
-        level: logging.Level.SEVERE,
-      } as logging.Entry)
-    );
-  });
 });
