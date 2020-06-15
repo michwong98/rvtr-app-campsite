@@ -20,7 +20,6 @@ export class BookingComponent implements OnInit {
   lodgings$: Observable<Lodging[]>;
   bookings$: Observable<Booking[]>;
 
-  // @ViewChild('bookingModal') bookingModal: ElementRef;
   @ViewChild(BookingModalComponent) bookingModal: BookingModalComponent;
   bookingForm: FormGroup;
 
@@ -49,7 +48,7 @@ export class BookingComponent implements OnInit {
     private formBuilder: FormBuilder,
     private lodgingService: LodgingService,
     private bookingService: BookingService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     // Set fields for form group
@@ -92,21 +91,22 @@ export class BookingComponent implements OnInit {
   onSubmit(): void {
     this.submitted = true;
 
-    if (this.searchForm.invalid)
-      return;
+    if (this.searchForm.invalid) return;
 
     this.retreiveLodgingsByPhrase(this.f.location.value);
 
     // TODO: submit form data to http request
   }
-
-  // For later.
+  /**
+   * Creates a 2-dimensional array of lodgings from the original 1D lodging array
+   * @param lodgings Lodging array to convert
+   * @param n number of Lodging items to insert for each row
+   */
   public lodgingsRow(lodgings: Lodging[], n: number): Array<Lodging[]> {
     return lodgings.reduce((accumulator, currentLodge, index, array) => {
       if (index % n === 0) {
         const lodgingsSubarry = [];
-        for (let i = index; i < index + n; i++)
-          lodgingsSubarry.push(array[i]);
+        for (let i = index; i < index + n; i++) lodgingsSubarry.push(array[i]);
         accumulator.push(lodgingsSubarry);
       }
       return accumulator;
