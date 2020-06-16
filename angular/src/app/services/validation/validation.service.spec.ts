@@ -11,7 +11,7 @@ describe('ValidationService', () => {
     controlFake = {value: 'value'};
     TestBed.configureTestingModule({
       providers: [ValidationService,
-        {provide: AbstractControl, useValue: <AbstractControl>controlFake}],
+        {provide: AbstractControl, useValue: controlFake as AbstractControl}],
     });
     service = TestBed.inject(ValidationService);
   });
@@ -20,34 +20,33 @@ describe('ValidationService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should get validator error message Required', ()=>{
-    let message: any = ValidationService.getValidatorErrorMessage('required');
+  it('should get validator error message Required', () => {
+    const message: any = ValidationService.getValidatorErrorMessage('required');
     expect(message).toBe('Required.');
   });
 
-  it('should get validator error message invalidRentals', ()=>{
-    let message: any = ValidationService.getValidatorErrorMessage('invalidRentals');
+  it('should get validator error message invalidRentals', () => {
+    const message: any = ValidationService.getValidatorErrorMessage('invalidRentals');
     expect(message).toBe('One rental required.');
   });
 
-  it('should get validator error message invalidGuests', ()=>{
-    let message: any = ValidationService.getValidatorErrorMessage('invalidGuests');
+  it('should get validator error message invalidGuests', () => {
+    const message: any = ValidationService.getValidatorErrorMessage('invalidGuests');
     expect(message).toBe('One guest required.');
   });
 
-  it('should get validator error message email', ()=>{
-    let message: any = ValidationService.getValidatorErrorMessage('email');
+  it('should get validator error message email', () => {
+    const message: any = ValidationService.getValidatorErrorMessage('email');
     expect(message).toBe('Invalid email format.');
   });
 
-  it('should return null for rentalsValidator',()=>{
-    let result: any = ValidationService.rentalsValidator(<AbstractControl>controlFake);
+  it('should return null for rentalsValidator', () => {
+    const result: any = ValidationService.rentalsValidator(controlFake as AbstractControl);
     expect(result).toBeNull;
-  })
-  
-  it('should return null for guestsValidator',()=>{
-    let result: any = ValidationService.guestsValidator(<AbstractControl>controlFake);
+  });
+  it('should return null for guestsValidator', () => {
+    const result: any = ValidationService.guestsValidator(controlFake as AbstractControl);
     expect(result).toBeNull;
-  })
+  });
 
 });

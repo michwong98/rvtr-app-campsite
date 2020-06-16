@@ -15,5 +15,4 @@ export interface Profile {
   email: string;
   name: Name;
   phone: string;
-  age: "Adult" | "Child";
 }

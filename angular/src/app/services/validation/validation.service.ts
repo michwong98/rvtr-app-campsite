@@ -2,7 +2,7 @@ import { AbstractControl } from '@angular/forms';
 
 export class ValidationService {
   static getValidatorErrorMessage(validatorName: string, validatorValue?: any): string {
-    let config = {
+    const config = {
       invalidRentals: 'One rental required.',
       invalidGuests: 'One guest required.',
       email: 'Invalid email format.',

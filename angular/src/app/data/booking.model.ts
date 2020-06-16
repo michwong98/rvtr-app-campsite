@@ -22,5 +22,5 @@ export interface Booking {
   guests: Profile[];
   rentals: Rental[];
   stay: Stay;
-  status: "Active" | "Cancelled" | "Complete";
+  status: 'Active' | 'Cancelled' | 'Complete';
 }
