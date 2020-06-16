@@ -52,10 +52,10 @@ describe('project rvtr-app-campsite', () => {
   });
 
   it('should contain spotlight text', () => {
-    // TODO: when search has been implemented text should change based on 
-    // location searched. 
+    // TODO: when search has been implemented text should change based on
+    // location searched.
     booking.navigateToBooking();
-    const spotlightText = element.all(by.css('p')).getText()
+    const spotlightText = element.all(by.css('p')).getText();
     expect(spotlightText).toBeTruthy();
     expect(spotlightText).toMatch('Lorem ipsum');
   });
@@ -77,7 +77,7 @@ describe('project rvtr-app-campsite', () => {
    */
   it('should display modal when lodging is clicked', () => {
     booking.navigateToBooking();
-    const locationElement = element(by.cssContainingText('.title','Great Lodge'));
+    const locationElement = element(by.cssContainingText('.title', 'Great Lodge'));
     expect(locationElement.getText()).toContain('Great Lodge');
     locationElement.click();
     const modal = element(by.className('modal-card-title'));
@@ -88,7 +88,7 @@ describe('project rvtr-app-campsite', () => {
 
   it('should close the modal when "x" button or "cancel" button are clicked', () => {
     booking.navigateToBooking();
-    const locationElement = element(by.cssContainingText('.title','Great Lodge'));
+    const locationElement = element(by.cssContainingText('.title', 'Great Lodge'));
     expect(locationElement.getText()).toContain('Great Lodge');
     locationElement.click();
     const modal = element(by.className('modal-card-title'));
@@ -101,11 +101,11 @@ describe('project rvtr-app-campsite', () => {
     const cancelBtn = element(by.buttonText('Cancel'));
     cancelBtn.click();
     expect(modal.isDisplayed()).toBeFalse;
-  })
+  });
 
   it('modal should contain one card by default', () => {
     booking.navigateToBooking();
-    const locationElement = element(by.cssContainingText('.title','Great Lodge'));
+    const locationElement = element(by.cssContainingText('.title', 'Great Lodge'));
     expect(locationElement.getText()).toContain('Great Lodge');
     locationElement.click();
     const modalCard = element.all(by.className('card ng-untouched ng-pristine ng-invalid'));
@@ -114,7 +114,7 @@ describe('project rvtr-app-campsite', () => {
 
   it('modal should add one card when + button is clicked', () => {
     booking.navigateToBooking();
-    const locationElement = element(by.cssContainingText('.title','Great Lodge'));
+    const locationElement = element(by.cssContainingText('.title', 'Great Lodge'));
     expect(locationElement.getText()).toContain('Great Lodge');
     locationElement.click();
     let modalCard = element.all(by.className('card ng-untouched ng-pristine ng-invalid'));
@@ -127,7 +127,7 @@ describe('project rvtr-app-campsite', () => {
 
   it('modal should remove card when Remove button is clicked', () => {
     booking.navigateToBooking();
-    const locationElement = element(by.cssContainingText('.title','Great Lodge'));
+    const locationElement = element(by.cssContainingText('.title', 'Great Lodge'));
     expect(locationElement.getText()).toContain('Great Lodge');
     locationElement.click();
     let modalCard = element.all(by.className('card ng-untouched ng-pristine ng-invalid'));
