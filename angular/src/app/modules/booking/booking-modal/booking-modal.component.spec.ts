@@ -22,10 +22,11 @@ describe('BookingModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [BookingModalComponent],
+      declarations: [ BookingModalComponent],
       providers: [FormBuilder],
       imports: [HttpClientTestingModule],
-    }).compileComponents();
+    })
+    .compileComponents();
   }));
 
   beforeEach(() => {

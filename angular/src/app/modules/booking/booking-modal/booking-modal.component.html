@@ -27,7 +27,7 @@
         <div class="columns is-vcentered">
           <!-- * Dynamic Guests input * -->
           <div class="label column">Guest Infomation</div>
-          <control-messages [control]="bookingForm.get('guests')"></control-messages>
+          <uic-control-messages [control]="bookingForm.get('guests')"></uic-control-messages>
 
           <!-- * Add additional guest fields * -->
           <span class="add-guest-input column" style="text-align: right;">
@@ -46,22 +46,22 @@
               <div class="field has-addons columns">
                 <div class="control column is-half">
                   <input type="text" class="input" formControlName="given" placeholder="Given Name">
-                  <control-messages [control]="guestInput.get('given')"></control-messages>
+                  <uic-control-messages [control]="guestInput.get('given')"></uic-control-messages>
                 </div>
                 <div class="control column is-half">
                   <input type="text" class="input" formControlName="family" placeholder="Family Name">
-                  <control-messages [control]="guestInput.get('family')"></control-messages>
+                  <uic-control-messages [control]="guestInput.get('family')"></uic-control-messages>
                 </div>
               </div>
               <!-- Email and phone number -->
               <div class="field has-addons columns">
                 <div class="control column is-half">
                   <input type="email" class="input" formControlName="email" placeholder="Email">
-                  <control-messages [control]="guestInput.get('email')"></control-messages>
+                  <uic-control-messages [control]="guestInput.get('email')"></uic-control-messages>
                 </div>
                 <div class="control column is-half">
                   <input type="tel" pattern="[0-9]+" class="input" formControlName="phone" placeholder="Phone">
-                  <control-messages [control]="guestInput.get('phone')"></control-messages>
+                  <uic-control-messages [control]="guestInput.get('phone')"></uic-control-messages>
                 </div>
               </div>
               <!-- Remove btn -->
@@ -82,7 +82,7 @@
               <label class="label">Selected Rentals</label>
             </div>
           </div>
-          <control-messages [control]="bookingForm.get('rentals')"></control-messages>
+          <uic-control-messages [control]="bookingForm.get('rentals')"></uic-control-messages>
           <div class="columns is-vcentered">
             <div class="column is-half select is-multiple">
               <select [size]="Math.min(3, lodging.rentals.length > 0 ? lodging.rentals.length : 0)" multiple
