@@ -84,8 +84,8 @@ export class AccountService {
 
   }
 
-  get(id?: string): Observable<Account[]> {
-    let acc: Account[] = [{
+  get(id?: string): Observable<Account> {
+    let acc: Account = {
         id:'1',
         address: {
             id:'1',
@@ -93,8 +93,7 @@ export class AccountService {
             country:'US',
             postalCode:'12345',
             stateProvince:'Texas',
-            street:'1234 testing st.',
-            unit:'24'
+            street:'1234 testing st.'
         }
         ,
         name: 'John Doe',
@@ -119,8 +118,7 @@ export class AccountService {
                 family:'Doe',
                 given:'John'
             },
-            phone:'1234567891',
-            age:"Adult"
+            phone:'1234567891'
         },
         {
             id: '2',
@@ -130,9 +128,8 @@ export class AccountService {
                 family:'Doe',
                 given:'Jane'
             },
-            phone:'9876543219',
-            age:"Adult"
-        }]}]
+            phone:'9876543219'
+        }]}
         let obvAcc = of(acc);
         return obvAcc;
   }
