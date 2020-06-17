@@ -206,7 +206,9 @@ export class BookingModalComponent implements OnInit {
    * @param lodging Lodging selected.
    */
   public openModal(event: MouseEvent, lodging: Lodging): void {
-    event?.stopPropagation();
+    if (event) {
+      event.stopPropagation();
+    }
 
     // Disable body scrolling.
     document.querySelector('html').classList.add('is-clipped');
@@ -226,7 +228,9 @@ export class BookingModalComponent implements OnInit {
    * @param event Mouse event information. Used to stop propagation.
    */
   public closeModal(event?: MouseEvent): void {
-    event?.stopPropagation();
+    if (event) {
+      event.stopPropagation();
+    }
 
     // Enable body scrolling.
     document.querySelector('html').classList.remove('is-clipped');
