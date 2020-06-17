@@ -47,8 +47,6 @@ export class BookingModalComponent implements OnInit {
   /**
    * Getter for booking form's controls.
    *
-   * @readonly
-   * @memberof BookingModalComponent
    */
   get f() {
     return this.bookingForm.controls;
@@ -57,8 +55,6 @@ export class BookingModalComponent implements OnInit {
   /**
    * Used in template to access Math functions.
    *
-   * @readonly
-   * @memberof BookingModalComponent
    */
   get Math() {
     return Math;
@@ -67,8 +63,6 @@ export class BookingModalComponent implements OnInit {
   /**
    * Creates a new booking form. Clears existing booking form information.
    *
-   * @private
-   * @memberof BookingModalComponent
    */
   private newBookingForm(): void {
     // Sets up booking properties.
@@ -117,8 +111,7 @@ export class BookingModalComponent implements OnInit {
    * Binding booking form data to booking object.
    * Sends an HTTP Post request to the API with the booking object.
    *
-   * @returns {void}
-   * @memberof BookingModalComponent
+   * @returns void
    */
   onBookingFormSubmit(): void {
     if (this.bookingForm.invalid) {
@@ -188,7 +181,6 @@ export class BookingModalComponent implements OnInit {
   /**
    * Create a guest information form group.
    *
-   * @memberof BookingModalComponent
    */
   addNextGuestItem(): void {
     // tslint:disable-next-line: no-string-literal
@@ -198,8 +190,7 @@ export class BookingModalComponent implements OnInit {
   /**
    * Remove guest information form group.
    *
-   * @param {number} ind Index of the form group to remove.
-   * @memberof BookingModalComponent
+   * @param ind Index of the form group to remove.
    */
   removeGuestItem(ind: number): void {
     // tslint:disable-next-line: no-string-literal
@@ -211,9 +202,8 @@ export class BookingModalComponent implements OnInit {
   /**
    * Displays the booking form modal. Sets the lodging property with the lodging selected.
    *
-   * @param {MouseEvent} event Mouse event information. Used to stop propagation.
-   * @param {Lodging} lodging Lodging selected.
-   * @memberof BookingModalComponent
+   * @param event Mouse event information. Used to stop propagation.
+   * @param lodging Lodging selected.
    */
   public openModal(event: MouseEvent, lodging: Lodging): void {
     event?.stopPropagation();
@@ -233,8 +223,7 @@ export class BookingModalComponent implements OnInit {
   /**
    * Hides the booking form modal.
    *
-   * @param {MouseEvent} [event] Mouse event information. Used to stop propagation.
-   * @memberof BookingModalComponent
+   * @param event Mouse event information. Used to stop propagation.
    */
   public closeModal(event?: MouseEvent): void {
     event?.stopPropagation();
