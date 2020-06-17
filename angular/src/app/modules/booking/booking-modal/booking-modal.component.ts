@@ -78,7 +78,7 @@ export class BookingModalComponent implements OnInit {
       rentals: [],
     } as Booking;
 
-    const guests = this.searchData.guests.value ? this.searchData.guests.value : 0;
+    const guests = this.searchData?.guests?.value ? this.searchData.guests.value : 0;
 
     // Creates a new booking form.
     this.bookingForm = this.formBuilder.group({
