@@ -4,7 +4,6 @@ import {
   Validators,
   FormArray,
   FormBuilder,
-  AbstractControl,
   FormControl,
 } from '@angular/forms';
 import { getNewDateFromNowBy, formatDate } from '../utils/date-helpers';
@@ -22,33 +21,56 @@ import { BookingSearchData } from '../@types/booking-search-data';
   templateUrl: './booking-modal.component.html',
 })
 export class BookingModalComponent implements OnInit {
+  // Element reference for the booking modal html element.
   @ViewChild('bookingModal') bookingModal: ElementRef;
+
+  // Form group for the booking form.
   bookingForm: FormGroup;
+
+  // Booking object containing information on the current booking.
   @Input() booking: Booking;
+
+  // Lodging object containing information on the current lodging.
   @Input() lodging: Lodging;
+
+  // Search data information.
   @Input() searchData: BookingSearchData;
 
   constructor(
     private formBuilder: FormBuilder,
     private lodgingService: LodgingService,
     private bookingService: BookingService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.newBookingForm();
   }
 
+  /**
+   * Getter for booking form's controls.
+   *
+   * @readonly
+   * @memberof BookingModalComponent
+   */
   get f() {
     return this.bookingForm.controls;
   }
 
+  /**
+   * Used in template to access Math functions.
+   *
+   * @readonly
+   * @memberof BookingModalComponent
+   */
   get Math() {
     return Math;
   }
 
   /**
-   * Creates a new booking form
-   * Clears existing booking properties
+   * Creates a new booking form. Clears existing booking form information.
+   *
+   * @private
+   * @memberof BookingModalComponent
    */
   private newBookingForm(): void {
     // Sets up booking properties.
@@ -58,9 +80,11 @@ export class BookingModalComponent implements OnInit {
       rentals: [],
     } as Booking;
 
-    // Creates new booking form.
     const guests = this.searchData?.guests?.value ? this.searchData.guests.value : 0;
+
+    // Creates a new booking form.
     this.bookingForm = this.formBuilder.group({
+      // Check in.
       checkIn: [
         this.searchData.checkIn.value
           ? this.searchData.checkIn.value
@@ -68,6 +92,7 @@ export class BookingModalComponent implements OnInit {
         Validators.required,
       ],
 
+      // Check out.
       checkOut: [
         this.searchData.checkOut.value
           ? this.searchData.checkOut.value
@@ -75,21 +100,27 @@ export class BookingModalComponent implements OnInit {
         Validators.required,
       ],
 
+      // Form fields for guest information.
       guests: this.formBuilder.array(this.createGuestItem(guests) as FormGroup[], [
         ValidationService.guestsValidator,
         Validators.required,
       ]),
 
+      // Rentals.
       rentals: new FormControl(null, [ValidationService.rentalsValidator, Validators.required]),
     });
 
+    // Display error messages for guests and rentals.
     this.bookingForm.controls['guests'].markAsTouched();
     this.bookingForm.controls['rentals'].markAsTouched();
   }
 
   /**
-   * Binds booking form data to booking object
-   * Sends post request to booking api
+   * Binding booking form data to booking object.
+   * Sends an HTTP Post request to the API with the booking object.
+   *
+   * @returns {void}
+   * @memberof BookingModalComponent
    */
   onBookingFormSubmit(): void {
     if (this.bookingForm.invalid) return;
@@ -154,11 +185,22 @@ export class BookingModalComponent implements OnInit {
     }
   }
 
+  /**
+   * Create a guest information form group.
+   *
+   * @memberof BookingModalComponent
+   */
   addNextGuestItem(): void {
     // tslint:disable-next-line: no-string-literal
     (this.bookingForm.controls['guests'] as FormArray).push(this.createGuestItem() as FormGroup);
   }
 
+  /**
+   * Remove guest information form group.
+   *
+   * @param {number} ind Index of the form group to remove.
+   * @memberof BookingModalComponent
+   */
   removeGuestItem(ind: number): void {
     // tslint:disable-next-line: no-string-literal
     const bookingFormArr: FormArray = this.bookingForm.controls['guests'] as FormArray;
@@ -166,6 +208,13 @@ export class BookingModalComponent implements OnInit {
     bookingFormArr.removeAt(ind);
   }
 
+  /**
+   * Displays the booking form modal. Sets the lodging property with the lodging selected.
+   *
+   * @param {MouseEvent} event Mouse event information. Used to stop propagation.
+   * @param {Lodging} lodging Lodging selected.
+   * @memberof BookingModalComponent
+   */
   public openModal(event: MouseEvent, lodging: Lodging): void {
     event?.stopPropagation();
 
@@ -181,6 +230,12 @@ export class BookingModalComponent implements OnInit {
     this.lodging = lodging;
   }
 
+  /**
+   * Hides the booking form modal.
+   *
+   * @param {MouseEvent} [event] Mouse event information. Used to stop propagation.
+   * @memberof BookingModalComponent
+   */
   public closeModal(event?: MouseEvent): void {
     event?.stopPropagation();
 
