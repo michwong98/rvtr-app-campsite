@@ -1,13 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { delay, map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { LodgingService } from '../../../services/lodging/lodging.service';
 import { Lodging } from '../../../data/lodging.model';
 
-import { BookingService } from '../../../services/booking/booking.service';
 import { Booking } from '../../../data/booking.model';
 import { BookingModalComponent } from '../booking-modal/booking-modal.component';
 import { getNewDateFromNowBy, formatDate } from '../utils/date-helpers';
@@ -27,18 +26,13 @@ export class BookingComponent implements OnInit {
   lodging: Lodging;
   booking: Booking;
 
-  /**
-   * State used to determine if form was submitted
-   */
-  submitted: boolean;
-  /**
-   * State used to determine if awaiting for data from AJAX request
-   */
-  laoding: boolean;
   searchForm: FormGroup;
 
   /**
-   * convencience getter for easy access to form fields
+   * Getter for the search form's controls.
+   *
+   * @readonly
+   * @memberof BookingComponent
    */
   get f() {
     return this.searchForm.controls;
@@ -47,7 +41,6 @@ export class BookingComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private lodgingService: LodgingService,
-    private bookingService: BookingService
   ) {}
 
   ngOnInit(): void {
@@ -86,11 +79,12 @@ export class BookingComponent implements OnInit {
   }
 
   /**
-   * Submits seach data to httpRequest
+   * Filters lodgings by search form's location value.
+   *
+   * @returns {void}
+   * @memberof BookingComponent
    */
   onSubmit(): void {
-    this.submitted = true;
-
     if (this.searchForm.invalid) return;
 
     this.retreiveLodgingsByPhrase(this.f.location.value);
@@ -98,9 +92,9 @@ export class BookingComponent implements OnInit {
     // TODO: submit form data to http request
   }
   /**
-   * Creates a 2-dimensional array of lodgings from the original 1D lodging array
-   * @param lodgings Lodging array to convert
-   * @param n number of Lodging items to insert for each row
+   * Creates a 2-dimensional array of lodgings from the original 1D lodging array. Used to format lodging items to display in the template.
+   * @param lodgings Lodging array to convert.
+   * @param n Number of lodgings items to display per row.
    */
   public lodgingsRow(lodgings: Lodging[], n: number): Array<Lodging[]> {
     return lodgings.reduce((accumulator, currentLodge, index, array) => {
