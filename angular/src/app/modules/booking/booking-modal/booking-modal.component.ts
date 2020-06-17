@@ -10,7 +10,6 @@ import { getNewDateFromNowBy, formatDate } from '../utils/date-helpers';
 import { ValidationService } from '../../../services/validation/validation.service';
 
 import { Profile } from 'src/app/data/profile.model';
-import { LodgingService } from 'src/app/services/lodging/lodging.service';
 import { BookingService } from 'src/app/services/booking/booking.service';
 import { Booking } from 'src/app/data/booking.model';
 import { Lodging } from 'src/app/data/lodging.model';
@@ -38,7 +37,6 @@ export class BookingModalComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private lodgingService: LodgingService,
     private bookingService: BookingService
   ) { }
 
@@ -80,7 +78,7 @@ export class BookingModalComponent implements OnInit {
       rentals: [],
     } as Booking;
 
-    const guests = this.searchData?.guests?.value ? this.searchData.guests.value : 0;
+    const guests = this.searchData.guests.value ? this.searchData.guests.value : 0;
 
     // Creates a new booking form.
     this.bookingForm = this.formBuilder.group({
@@ -123,7 +121,9 @@ export class BookingModalComponent implements OnInit {
    * @memberof BookingModalComponent
    */
   onBookingFormSubmit(): void {
-    if (this.bookingForm.invalid) return;
+    if (this.bookingForm.invalid) {
+      return;
+    }
 
     this.booking.lodgingId = this.lodging.id;
     this.booking.accountId = 'PLACEHOLDERID';

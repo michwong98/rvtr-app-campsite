@@ -41,7 +41,7 @@ export class BookingComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private lodgingService: LodgingService,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     // Set fields for form group
@@ -85,7 +85,9 @@ export class BookingComponent implements OnInit {
    * @memberof BookingComponent
    */
   onSubmit(): void {
-    if (this.searchForm.invalid) return;
+    if (this.searchForm.invalid) {
+      return;
+    }
 
     this.retreiveLodgingsByPhrase(this.f.location.value);
 
