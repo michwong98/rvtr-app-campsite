@@ -31,8 +31,6 @@ export class BookingComponent implements OnInit {
   /**
    * Getter for the search form's controls.
    *
-   * @readonly
-   * @memberof BookingComponent
    */
   get f() {
     return this.searchForm.controls;
@@ -81,8 +79,7 @@ export class BookingComponent implements OnInit {
   /**
    * Filters lodgings by search form's location value.
    *
-   * @returns {void}
-   * @memberof BookingComponent
+   * @returns void
    */
   onSubmit(): void {
     if (this.searchForm.invalid) {
