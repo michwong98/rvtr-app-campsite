@@ -1,8 +1,13 @@
 import { AbstractControl } from '@angular/forms';
 
 export class ValidationService {
+  /**
+   * Returns the appropriate validation error message for the validator name.
+   *
+   * @returns Validation error message.
+   */
   static getValidatorErrorMessage(validatorName: string, validatorValue?: any): string {
-    let config = {
+    const config = {
       invalidRentals: 'One rental required.',
       invalidGuests: 'One guest required.',
       email: 'Invalid email format.',
@@ -11,7 +16,12 @@ export class ValidationService {
     return config[validatorName];
   }
 
-  static rentalsValidator(control: AbstractControl) {
+  /**
+   * Validates that at least one rental was selected.
+   *
+   * @returns Object with invalidRentals property.
+   */
+  static rentalsValidator(control: AbstractControl): object {
     if (control.value?.length >= 1) {
       return null;
     } else {
@@ -19,6 +29,11 @@ export class ValidationService {
     }
   }
 
+  /**
+   * Validates that at least one guest was selected.
+   *
+   * @returns Object with invalidGuests property.
+   */
   static guestsValidator(control: AbstractControl) {
     if (control.value?.length >= 1) {
       return null;

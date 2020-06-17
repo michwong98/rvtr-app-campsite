@@ -12,6 +12,7 @@ import { of } from 'rxjs';
 import { LayoutModule } from 'src/app/layout/layout.module';
 import { Review } from 'src/app/data/review.model';
 import { mockLodgings } from '../mock-booking-data';
+import { doesNotReject } from 'assert';
 
 describe('BookingComponent', () => {
   // *
@@ -69,4 +70,30 @@ describe('BookingComponent', () => {
 
     expect(resultLodgingRow).toEqual(expectedLodginRow);
   });
+
+  it('should retrive lodging by phrase', () => {
+    component.retreiveLodgingsByPhrase('');
+    component.lodgings$.subscribe((lodgings: Lodging[]) => {
+      expect(lodgings.length).toBe(2);
+    });
+    component.retreiveLodgingsByPhrase('Los Angeles');
+    component.lodgings$.subscribe((lodgings: Lodging[]) => {
+      expect(lodgings.length).toBe(1);
+    });
+  });
+
+  it('should submit', () => {
+    const retrieveLodgingSpy: any = spyOn(component, 'retreiveLodgingsByPhrase');
+    component.onSubmit();
+    expect(retrieveLodgingSpy).toHaveBeenCalled();
+  });
+
+  it('should not call retrieveLodgingByPhrase on invalid search form', () => {
+    const retrieveLodgingSpy: any = spyOn(component, 'retreiveLodgingsByPhrase');
+    component.searchForm.controls.guests.setValue(undefined);
+    fixture.detectChanges();
+    component.onSubmit();
+    expect(retrieveLodgingSpy).not.toHaveBeenCalled();
+  });
+
 });
