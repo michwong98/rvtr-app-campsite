@@ -93,8 +93,8 @@ export class BookingModalComponent implements OnInit {
       }, [ValidationService.guestsValidator]),
 
       // Rentals.
-      rentals: new FormControl(null, [ValidationService.rentalsValidator, Validators.required]),
-    });
+      rentals: new FormControl(null, [Validators.required]),
+    }, [ValidationService.rentalsValidator, ValidationService.occupancyValidator]);
 
     // Display error messages for guests and rentals.
     this.bookingForm.controls['guests'].markAsTouched();
@@ -112,8 +112,9 @@ export class BookingModalComponent implements OnInit {
       return;
     }
 
-    this.booking.lodgingId = this.lodging.id as string;
-    this.booking.accountId = '0';
+    this.booking.lodgingId = this.lodging.id;
+    this.booking.accountId = this.lodging.id;
+    this.booking.status = 'Valid';
 
     // Sets the stay property for booking.
     this.booking.stay.checkIn = this.searchData.checkIn.value;
@@ -137,9 +138,7 @@ export class BookingModalComponent implements OnInit {
     // TODO: send data as request
     this.closeModal();
     this.bookingService.post(this.booking).subscribe(
-      (res) => console.log(this.booking),
-      (err) => console.log(this.booking),
-      () => console.log('HTTP request completed.')
+      () => console.log(this.booking)
     );
   }
 
