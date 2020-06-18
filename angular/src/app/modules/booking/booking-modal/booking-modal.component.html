@@ -25,29 +25,35 @@
         </div>
 
 
-        <!-- * Dynamic Guests input * -->
-        <div class="label column">Guest Infomation</div>
-        <uic-control-messages [control]="bookingForm.get('guests')"></uic-control-messages>
-        <div class="guests-fields field column" style="margin-bottom: 1.5rem;">
-          <div class="columns" formGroupName="guests">
-            <div class="column is-quarter">
+        <!-- Guests input -->
+        <div class="column">
+          <span class="label" style="display: inline; margin-right: 1rem;">Guest Infomation</span> <uic-control-messages [control]="bookingForm.get('guests')"></uic-control-messages>
+        </div>
+        <div class="guests-fields field column" formGroupName="guests">
+          <div class="columns is-vcentered">
+            <div class="column is-2">
               <span>Adults</span>
             </div>
-            <div class="column is-quarter">
+            <div class="column is-4">
               <input formControlName="adults" class="input" type="number" min="1">
             </div>
-            <div class="column is-quarter">
+            <div class="column is-2">
               <span>Children</span>
             </div>
-            <div class="column is-quarter">
+            <div class="column is-4">
               <input formControlName="children" class="input" type="number" min="0">
             </div>
           </div>
+          <div class="columns">
+            <uic-control-messages [control]="bookingForm.get('guests').get('adults')" class="column is-half">
+            </uic-control-messages>
+            <uic-control-messages [control]="bookingForm.get('guests').get('children')" class="column is-half">
+            </uic-control-messages>
+          </div>
         </div>
 
-
         <!-- Rentals -->
-        <div class="field column" *ngIf="lodging?.rentals" style="margin-bottom: 1.5rem;">
+        <div class="field column" *ngIf="lodging?.rentals">
           <div class="columns">
             <div class="column is-half">
               <label class="label">Select Rentals</label>
@@ -56,7 +62,6 @@
               <label class="label">Selected Rentals</label>
             </div>
           </div>
-          <uic-control-messages [control]="bookingForm.get('rentals')"></uic-control-messages>
           <div class="columns is-vcentered">
             <div class="column is-half select is-multiple">
               <select [size]="Math.min(3, lodging.rentals.length > 0 ? lodging.rentals.length : 1)" multiple
@@ -66,16 +71,17 @@
                 </ng-container>
                 <option *ngFor="let rental of lodging.rentals" [ngValue]="rental">{{rental.name}}</option>
               </select>
+              <uic-control-messages [control]="bookingForm.get('rentals')"></uic-control-messages>
             </div>
             <div class="column is-half">
               <div *ngFor="let rental of bookingForm.controls['rentals'].value">
                 <p><span>{{rental.name}}</span>, <span>Occupancy: {{rental.rentalUnit.occupancy}}</span></p>
                 <p><span>Bedrooms: {{rental.rentalUnit.bedrooms.length}}, Bathrooms:
-                    {{rental.rentalUnit.bathrooms.length}}</span></p>
+                  {{rental.rentalUnit.bathrooms.length}}</span></p>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
         <!-- Booking form -->
       </form>

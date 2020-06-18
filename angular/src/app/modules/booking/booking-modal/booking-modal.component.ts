@@ -69,27 +69,27 @@ export class BookingModalComponent implements OnInit {
     const guests = this.searchData?.guests?.value ? this.searchData.guests.value : 0;
 
     // Creates a new booking form.
-    this.bookingForm = this.formBuilder.group({
+    this.bookingForm = new FormGroup({
       // Check in.
-      checkIn: [
+      checkIn: new FormControl(
         this.searchData.checkIn.value
           ? this.searchData.checkIn.value
           : formatDate(getNewDateFromNowBy(1)),
         Validators.required,
-      ],
+      ),
 
       // Check out.
-      checkOut: [
+      checkOut: new FormControl(
         this.searchData.checkOut.value
           ? this.searchData.checkOut.value
           : formatDate(getNewDateFromNowBy(1)),
         Validators.required,
-      ],
+      ),
 
       // Guests count.
       guests: new FormGroup({
-        adults: new FormControl(null, Validators.required),
-        children: new FormControl(null, Validators.required)
+        adults: new FormControl(1, [Validators.required, Validators.min(1)]),
+        children: new FormControl(0, [Validators.required, Validators.min(0)])
       }, ValidationService.guestsValidator),
 
       // Rentals.
@@ -112,8 +112,8 @@ export class BookingModalComponent implements OnInit {
       return;
     }
 
-    this.booking.lodgingId = this.lodging.id;
-    this.booking.accountId = 'PLACEHOLDERID';
+    this.booking.lodgingId = this.lodging.id as string;
+    this.booking.accountId = '0';
 
     // Sets the stay property for booking.
     this.booking.stay.checkIn = this.searchData.checkIn.value;
@@ -143,61 +143,6 @@ export class BookingModalComponent implements OnInit {
     );
   }
 
-  /**
-   * Creates one or more guest form groups
-   * @param n Optional parameter of number of form groups to create
-   */
-  createGuestItem(n?: number): FormGroup | FormGroup[] {
-    if (n == null) {
-      return this.formBuilder.group({
-        given: [null, Validators.required],
-        family: [null, Validators.required],
-        email: [null, [Validators.required, Validators.email]],
-        phone: [null],
-      });
-    } else {
-      const guests = [];
-      for (let i = 0; i < n; i++) {
-        guests.push(
-          this.formBuilder.group({
-            given: [null, Validators.required],
-            family: [null, Validators.required],
-            email: [null, [Validators.required, Validators.email]],
-            phone: [null],
-          })
-        );
-      }
-      return guests;
-    }
-  }
-
-  /**
-   * Create a guest information form group.
-   *
-   */
-  addNextGuestItem(): void {
-    // tslint:disable-next-line: no-string-literal
-    (this.bookingForm.controls['guests'] as FormArray).push(this.createGuestItem() as FormGroup);
-  }
-
-  /**
-   * Remove guest information form group.
-   *
-   * @param ind Index of the form group to remove.
-   */
-  removeGuestItem(ind: number): void {
-    // tslint:disable-next-line: no-string-literal
-    const bookingFormArr: FormArray = this.bookingForm.controls['guests'] as FormArray;
-
-    bookingFormArr.removeAt(ind);
-  }
-
-  /**
-   * Displays the booking form modal. Sets the lodging property with the lodging selected.
-   *
-   * @param event Mouse event information. Used to stop propagation.
-   * @param lodging Lodging selected.
-   */
   public openModal(event: MouseEvent, lodging: Lodging): void {
     if (event) {
       event.stopPropagation();
