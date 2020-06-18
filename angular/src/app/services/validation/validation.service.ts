@@ -44,9 +44,22 @@ export class ValidationService {
 
   static occupancyValidator(control: AbstractControl): object {
     const guests = control.get('guests') as FormGroup;
+    if (!guests) {
+      return null;
+    }
+
+    const children = guests.get('children')?.value;
+    if (children == null || children < 0) {
+      return null;
+    }
+
     const adults = guests.get('adults').value;
-    const children = guests.get('children').value;
     const rentals = control.get('rentals').value;
+
+    if (rentals.length < 1) {
+      return null;
+    }
+
     const occupancy = rentals.reduce((accumulator: number, rental: Rental) => {
       accumulator += rental.rentalUnit.occupancy;
     }, 0);

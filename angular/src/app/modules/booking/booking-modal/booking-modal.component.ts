@@ -90,7 +90,7 @@ export class BookingModalComponent implements OnInit {
       guests: new FormGroup({
         adults: new FormControl(1, [Validators.required, Validators.min(1)]),
         children: new FormControl(0, [Validators.required, Validators.min(0)])
-      }, ValidationService.guestsValidator),
+      }, [ValidationService.guestsValidator]),
 
       // Rentals.
       rentals: new FormControl(null, [ValidationService.rentalsValidator, Validators.required]),
