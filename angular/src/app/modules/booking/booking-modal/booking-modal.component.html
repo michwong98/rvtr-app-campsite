@@ -85,13 +85,16 @@
           <uic-control-messages [control]="bookingForm.get('rentals')"></uic-control-messages>
           <div class="columns is-vcentered">
             <div class="column is-half select is-multiple">
-              <select [size]="Math.min(3, lodging.rentals.length > 0 ? lodging.rentals.length : 0)" multiple
+              <select [size]="Math.min(3, lodging.rentals.length > 0 ? lodging.rentals.length : 1)" multiple
                 class="form-control rental-select" formControlName="rentals" style="width: 100%;">
+                <ng-container *ngIf="lodging.rentals.length === 0">
+                  <option disabled>No rental units available.</option>
+                </ng-container>
                 <option *ngFor="let rental of lodging.rentals" [ngValue]="rental">{{rental.name}}</option>
               </select>
             </div>
             <div class="column is-half">
-              <div *ngFor="let rental of f.rentals.value">
+              <div *ngFor="let rental of bookingForm.controls['rentals'].value">
                 <p><span>{{rental.name}}</span>, <span>Occupancy: {{rental.rentalUnit.occupancy}}</span></p>
                 <p><span>Bedrooms: {{rental.rentalUnit.bedrooms.length}}, Bathrooms:
                     {{rental.rentalUnit.bathrooms.length}}</span></p>

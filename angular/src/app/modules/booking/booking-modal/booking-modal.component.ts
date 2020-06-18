@@ -45,14 +45,6 @@ export class BookingModalComponent implements OnInit {
   }
 
   /**
-   * Getter for booking form's controls.
-   *
-   */
-  get f() {
-    return this.bookingForm.controls;
-  }
-
-  /**
    * Used in template to access Math functions.
    *
    */
@@ -126,7 +118,7 @@ export class BookingModalComponent implements OnInit {
     this.booking.stay.checkOut = this.searchData.checkOut.value;
 
     // Sets the guests property for booking.
-    (this.f.guests.value as []).forEach((data: any) => {
+    (this.bookingForm.controls['guests'].value as []).forEach((data: any) => {
       const guest = {
         name: {
           given: data.given,
@@ -139,7 +131,7 @@ export class BookingModalComponent implements OnInit {
     });
 
     // Sets the rentals property for booking.
-    this.booking.rentals = this.f.rentals.value;
+    this.booking.rentals = this.bookingForm.controls.rentals.value;
 
     // TODO: send data as request
     this.closeModal();
