@@ -80,7 +80,7 @@ const mockBookings: Booking[] = [
     guests: [],
     rentals: [],
     stay: null,
-    status: 'Active',
+    status: 'Valid',
   },
 ];
 
