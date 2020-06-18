@@ -1,4 +1,4 @@
-import { AbstractControl } from '@angular/forms';
+import { AbstractControl, FormGroup } from '@angular/forms';
 
 export class ValidationService {
   /**
@@ -34,11 +34,9 @@ export class ValidationService {
    *
    * @returns Object with invalidGuests property.
    */
-  static guestsValidator(control: AbstractControl) {
-    if (control.value?.length >= 1) {
-      return null;
-    } else {
-      return { invalidGuests: true };
-    }
+  static guestsValidator(control: AbstractControl): object {
+    console.log((control as FormGroup).get('adults').value);
+    console.log((control as FormGroup).get('children').value);
+    return (control.get('adults').value + control.get('children').value) <= 0 ? { invalidGuests: true } : null;
   }
 }

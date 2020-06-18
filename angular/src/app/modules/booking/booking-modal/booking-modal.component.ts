@@ -14,6 +14,8 @@ import { BookingService } from 'src/app/services/booking/booking.service';
 import { Booking } from 'src/app/data/booking.model';
 import { Lodging } from 'src/app/data/lodging.model';
 import { BookingSearchData } from '../@types/booking-search-data';
+import { RentalUnit } from 'src/app/data/rental-unit.model';
+import { Rental } from 'src/app/data/rental.model';
 
 @Component({
   selector: 'uic-booking-modal',
@@ -84,11 +86,11 @@ export class BookingModalComponent implements OnInit {
         Validators.required,
       ],
 
-      // Form fields for guest information.
-      guests: this.formBuilder.array(this.createGuestItem(guests) as FormGroup[], [
-        ValidationService.guestsValidator,
-        Validators.required,
-      ]),
+      // Guests count.
+      guests: new FormGroup({
+        adults: new FormControl(null, Validators.required),
+        children: new FormControl(null, Validators.required)
+      }, ValidationService.guestsValidator),
 
       // Rentals.
       rentals: new FormControl(null, [ValidationService.rentalsValidator, Validators.required]),
@@ -118,20 +120,19 @@ export class BookingModalComponent implements OnInit {
     this.booking.stay.checkOut = this.searchData.checkOut.value;
 
     // Sets the guests property for booking.
-    (this.bookingForm.controls['guests'].value as []).forEach((data: any) => {
-      const guest = {
-        name: {
-          given: data.given,
-          family: data.family,
-        },
-        email: data.email,
-        phone: data.phone,
-      } as Profile;
-      this.booking.guests.push(guest);
+    const guestsControl = this.bookingForm.controls['guests'] as FormGroup;
+    Array.from(new Array(guestsControl.controls['adults'].value + guestsControl.controls['children'].value)).forEach(() => {
+      this.booking.guests.push({} as Profile);
     });
 
     // Sets the rentals property for booking.
-    this.booking.rentals = this.bookingForm.controls.rentals.value;
+    this.bookingForm.controls['rentals'].value.forEach((rental: Rental) => {
+      this.booking.rentals.push({
+        rentalUnit: {
+          id: rental.rentalUnit.id
+        } as RentalUnit
+      } as Rental)
+    });
 
     // TODO: send data as request
     this.closeModal();

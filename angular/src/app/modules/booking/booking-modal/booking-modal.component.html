@@ -24,56 +24,30 @@
           </div>
         </div>
 
-        <div class="columns is-vcentered">
-          <!-- * Dynamic Guests input * -->
-          <div class="label column">Guest Infomation</div>
-          <uic-control-messages [control]="bookingForm.get('guests')"></uic-control-messages>
 
-          <!-- * Add additional guest fields * -->
-          <span class="add-guest-input column" style="text-align: right;">
-            <button class="button is is-primary" type="button" (click)="addNextGuestItem()">
-              <span class="icon">
-                <em class="fas fa-plus"></em>
-              </span>
-            </button>
-          </span>
-        </div>
-
-        <div class="guest-fields field" formArrayName="guests" style="margin-bottom: 1.5rem;">
-          <ng-container *ngFor="let guestInput of bookingForm?.get('guests')?.controls; let i = index">
-            <div [formGroupName]="i" class="card" style="padding: 5px;">
-              <!-- First and last names -->
-              <div class="field has-addons columns">
-                <div class="control column is-half">
-                  <input type="text" class="input" formControlName="given" placeholder="Given Name">
-                  <uic-control-messages [control]="guestInput.get('given')"></uic-control-messages>
-                </div>
-                <div class="control column is-half">
-                  <input type="text" class="input" formControlName="family" placeholder="Family Name">
-                  <uic-control-messages [control]="guestInput.get('family')"></uic-control-messages>
-                </div>
-              </div>
-              <!-- Email and phone number -->
-              <div class="field has-addons columns">
-                <div class="control column is-half">
-                  <input type="email" class="input" formControlName="email" placeholder="Email">
-                  <uic-control-messages [control]="guestInput.get('email')"></uic-control-messages>
-                </div>
-                <div class="control column is-half">
-                  <input type="tel" pattern="[0-9]+" class="input" formControlName="phone" placeholder="Phone">
-                  <uic-control-messages [control]="guestInput.get('phone')"></uic-control-messages>
-                </div>
-              </div>
-              <!-- Remove btn -->
-              <button class="button is-danger" (click)="removeGuestItem(i)">
-                Remove
-              </button>
+        <!-- * Dynamic Guests input * -->
+        <div class="label column">Guest Infomation</div>
+        <uic-control-messages [control]="bookingForm.get('guests')"></uic-control-messages>
+        <div class="guests-fields field column" style="margin-bottom: 1.5rem;">
+          <div class="columns" formGroupName="guests">
+            <div class="column is-quarter">
+              <span>Adults</span>
             </div>
-          </ng-container>
+            <div class="column is-quarter">
+              <input formControlName="adults" class="input" type="number" min="1">
+            </div>
+            <div class="column is-quarter">
+              <span>Children</span>
+            </div>
+            <div class="column is-quarter">
+              <input formControlName="children" class="input" type="number" min="0">
+            </div>
+          </div>
         </div>
+
 
         <!-- Rentals -->
-        <div class="field" *ngIf="lodging?.rentals" style="margin-bottom: 1.5rem;">
+        <div class="field column" *ngIf="lodging?.rentals" style="margin-bottom: 1.5rem;">
           <div class="columns">
             <div class="column is-half">
               <label class="label">Select Rentals</label>
