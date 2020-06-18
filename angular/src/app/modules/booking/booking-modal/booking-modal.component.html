@@ -71,7 +71,7 @@
                 </ng-container>
                 <option *ngFor="let rental of lodging.rentals" [ngValue]="rental">{{rental.name}}</option>
               </select>
-              <uic-control-messages [control]="bookingForm.get('rentals')"></uic-control-messages>
+              <uic-control-messages [control]="bookingForm"></uic-control-messages>
             </div>
             <div class="column is-half">
               <div *ngFor="let rental of bookingForm.controls['rentals'].value">
