@@ -57,5 +57,4 @@ export class BookingSearchFormComponent implements OnInit {
     );
     this.lodgingsChange.emit(this.lodgings$);
   }
-
 }

@@ -70,5 +70,4 @@ describe('BookingComponent', () => {
 
     expect(resultLodgingRow).toEqual(expectedLodginRow);
   });
-  
 });

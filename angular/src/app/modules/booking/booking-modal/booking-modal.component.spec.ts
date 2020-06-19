@@ -72,7 +72,7 @@ describe('BookingModalComponent', () => {
       checkOut: '2020-02-01',
       guests: {
         adults: 1,
-        children: 1,        
+        children: 1,
       },
       rentals: [{
         id: 11,

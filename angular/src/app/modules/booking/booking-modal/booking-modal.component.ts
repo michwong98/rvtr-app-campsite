@@ -130,9 +130,9 @@ export class BookingModalComponent implements OnInit {
     this.bookingForm.controls['rentals'].value.forEach((rental: Rental) => {
       this.booking.rentals.push({
         rentalUnit: {
-          id: rental.rentalUnit.id
+          id: rental.rentalUnit.id,
         } as RentalUnit
-      } as Rental)
+      } as Rental);
     });
 
     // TODO: send data as request

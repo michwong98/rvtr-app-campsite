@@ -6,9 +6,14 @@ import { invalid } from '@angular/compiler/src/render3/view/util';
 
 describe('ValidationService', () => {
   let service: ValidationService;
-  let controlFake: Partial<AbstractControl>;
+  const controlFake: Partial<AbstractControl> = {value: 'value'};
+  const controlMock = {
+    get(value: string){
+      return 1;
+    }
+  };
+
   beforeEach(() => {
-    controlFake = {value: 'value'};
     TestBed.configureTestingModule({
       providers: [ValidationService,
         {provide: AbstractControl, useValue: controlFake as AbstractControl}],
@@ -41,14 +46,14 @@ describe('ValidationService', () => {
   });
 
   it('should return null for rentalsValidator', () => {
-    const formGroup = new FormGroup({rentals: new FormControl(['',''])});
+    const formGroup = new FormGroup({rentals: new FormControl(['', ''])});
     const result: any = ValidationService.rentalsValidator(formGroup as AbstractControl);
     expect(result).toBeNull();
   });
 
   it('should return null for guestsValidator', () => {
-    const formGroup = new FormGroup({rentals: new FormControl(['',''])});
-    const result: any = ValidationService.guestsValidator(formGroup as AbstractControl);
+    // const formGroup = new FormGroup({rentals: new FormControl(['',''])});
+    const result: any = ValidationService.guestsValidator( controlMock as unknown as AbstractControl );
     expect(result).toBeNull();
   });
 
