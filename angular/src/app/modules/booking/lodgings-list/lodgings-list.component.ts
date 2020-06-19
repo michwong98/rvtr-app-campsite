@@ -25,6 +25,9 @@ export class LodgingsListComponent implements OnInit {
    * @param n Number of lodgings items to display per row.
    */
   public lodgingsRow(lodgings: Lodging[], n: number): Lodging[][] {
+    if (lodgings === null) {
+      return [];
+    }
     return lodgings.reduce((accumulator, currentLodge, index, array) => {
       if (index % n === 0) {
         const lodgingsSubarry = [];
