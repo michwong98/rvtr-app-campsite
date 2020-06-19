@@ -36,7 +36,7 @@ export class BookingComponent implements OnInit {
       location: [''],
       checkIn: [formatDate(getNewDateFromNowBy(1)), Validators.required],
       checkOut: [formatDate(getNewDateFromNowBy(2)), Validators.required],
-      guests: [1, Validators.required],
+      guests: [1, Validators.required]
     });
   }
 

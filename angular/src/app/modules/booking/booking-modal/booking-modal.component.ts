@@ -78,7 +78,8 @@ export class BookingModalComponent implements OnInit {
       }, [ValidationService.guestsValidator]),
 
       // Rentals.
-      rentals: new FormControl(null, [Validators.required]),
+      rentals: new FormControl(null, [Validators.required])
+
     }, [ValidationService.rentalsValidator, ValidationService.occupancyValidator]);
 
     // Display error messages for guests and rentals.
