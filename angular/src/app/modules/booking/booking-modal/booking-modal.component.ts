@@ -128,6 +128,10 @@ export class BookingModalComponent implements OnInit {
     );
   }
 
+  /**
+   * Displays the booking form modal.
+   * @param lodging Lodging selected for booking
+   */
   public openModal(event: MouseEvent, lodging: Lodging): void {
     if (event) {
       event.stopPropagation();
@@ -147,7 +151,6 @@ export class BookingModalComponent implements OnInit {
 
   /**
    * Hides the booking form modal.
-   *
    * @param event Mouse event information. Used to stop propagation.
    */
   public closeModal(event?: MouseEvent): void {
