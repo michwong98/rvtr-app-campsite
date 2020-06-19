@@ -27,7 +27,6 @@
           </div>
         </div>
 
-
         <!-- Guests input -->
         <div class="column">
           <span class="label" style="display: inline; margin-right: 1rem;">Guest Infomation</span>
@@ -73,13 +72,13 @@
                 <ng-container *ngIf="lodging.rentals.length === 0">
                   <option disabled>No rental units available.</option>
                 </ng-container>
-                <option *ngFor="let rental of lodging.rentals" [ngValue]="rental">{{rental.name}}</option>
+                <option *ngFor="let rental of lodging.rentals" [ngValue]="rental">{{rental.rentalUnit?.name}}</option>
               </select>
               <uic-control-messages [control]="bookingForm"></uic-control-messages>
             </div>
             <div class="column is-half">
               <div *ngFor="let rental of bookingForm.controls['rentals'].value">
-                <p><span>{{rental.name}}</span>, <span>Occupancy: {{rental.rentalUnit.occupancy}}</span></p>
+                <p><span>{{rental.rentalUnit?.name}}</span>, <span>Occupancy: {{rental.rentalUnit.occupancy}}</span></p>
                 <p><span>Bedrooms: {{rental.rentalUnit.bedrooms.length}}, Bathrooms:
                     {{rental.rentalUnit.bathrooms.length}}</span></p>
               </div>

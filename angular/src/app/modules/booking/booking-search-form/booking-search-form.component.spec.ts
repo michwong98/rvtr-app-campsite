@@ -1,6 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BookingSearchFormComponent } from './booking-search-form.component';
+import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+import { LodgingService } from 'src/app/services/lodging/lodging.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Lodging } from 'src/app/data/lodging.model';
 
 describe('BookingSearchFormComponent', () => {
@@ -9,9 +12,11 @@ describe('BookingSearchFormComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ BookingSearchFormComponent ]
+      declarations: [BookingSearchFormComponent],
+      providers: [FormBuilder, LodgingService],
+      imports: [HttpClientTestingModule],
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -36,6 +41,12 @@ describe('BookingSearchFormComponent', () => {
   });
 
   it('should submit', () => {
+    component.searchForm = new FormGroup({
+      location: new FormControl(''),
+      checkIn: new FormControl(''),
+      checkOut: new FormControl(''),
+      guests: new FormControl(1)
+    });
     const retrieveLodgingSpy: any = spyOn(component, 'retreiveLodgingsByPhrase');
     component.onSubmit();
     expect(retrieveLodgingSpy).toHaveBeenCalled();
@@ -43,7 +54,12 @@ describe('BookingSearchFormComponent', () => {
 
   it('should not call retrieveLodgingByPhrase on invalid search form', () => {
     const retrieveLodgingSpy: any = spyOn(component, 'retreiveLodgingsByPhrase');
-    component.searchForm.controls.guests.setValue(undefined);
+    component.searchForm = new FormGroup({
+      location: new FormControl(''),
+      checkIn: new FormControl(''),
+      checkOut: new FormControl(''),
+      guests: new FormControl(null, Validators.required)
+    });
     fixture.detectChanges();
     component.onSubmit();
     expect(retrieveLodgingSpy).not.toHaveBeenCalled();

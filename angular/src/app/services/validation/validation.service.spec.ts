@@ -1,14 +1,19 @@
 import { TestBed } from '@angular/core/testing';
 
 import { ValidationService } from './validation.service';
-import { AbstractControl } from '@angular/forms';
+import { AbstractControl, FormGroup, FormControl } from '@angular/forms';
 import { invalid } from '@angular/compiler/src/render3/view/util';
 
 describe('ValidationService', () => {
   let service: ValidationService;
-  let controlFake: Partial<AbstractControl>;
+  const controlFake: Partial<AbstractControl> = {value: 'value'};
+  const controlMock = {
+    get(value: string){
+      return 1;
+    }
+  };
+
   beforeEach(() => {
-    controlFake = {value: 'value'};
     TestBed.configureTestingModule({
       providers: [ValidationService,
         {provide: AbstractControl, useValue: controlFake as AbstractControl}],
@@ -32,7 +37,7 @@ describe('ValidationService', () => {
 
   it('should get validator error message invalidGuests', () => {
     const message: any = ValidationService.getValidatorErrorMessage('invalidGuests');
-    expect(message).toBe('One guest required.');
+    expect(message).toBe('One adult required.');
   });
 
   it('should get validator error message email', () => {
@@ -41,11 +46,14 @@ describe('ValidationService', () => {
   });
 
   it('should return null for rentalsValidator', () => {
-    const result: any = ValidationService.rentalsValidator(controlFake as AbstractControl);
+    const formGroup = new FormGroup({rentals: new FormControl(['', ''])});
+    const result: any = ValidationService.rentalsValidator(formGroup as AbstractControl);
     expect(result).toBeNull();
   });
+
   it('should return null for guestsValidator', () => {
-    const result: any = ValidationService.guestsValidator(controlFake as AbstractControl);
+    // const formGroup = new FormGroup({rentals: new FormControl(['',''])});
+    const result: any = ValidationService.guestsValidator( controlMock as unknown as AbstractControl );
     expect(result).toBeNull();
   });
 
