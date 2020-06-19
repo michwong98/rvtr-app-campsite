@@ -11,11 +11,10 @@ import { BookingModalComponent } from '../booking-modal/booking-modal.component'
 
 @Component({
   selector: 'uic-booking',
-  templateUrl: './booking.component.html'
+  templateUrl: './booking.component.html',
 })
 export class BookingComponent implements OnInit {
-  lodgings$: Observable<Lodging[]> = this.lodgingService.get();
-  bookings$: Observable<Booking[]>;
+  lodgings$: Observable<Lodging[]>;
 
   @ViewChild(BookingModalComponent) bookingModal: BookingModalComponent;
   bookingForm: FormGroup;
@@ -25,10 +24,7 @@ export class BookingComponent implements OnInit {
 
   searchForm: FormGroup;
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private lodgingService: LodgingService,
-  ) { }
+  constructor(private formBuilder: FormBuilder, private lodgingService: LodgingService) {}
 
   ngOnInit(): void {
     // Set fields for form group
@@ -36,9 +32,7 @@ export class BookingComponent implements OnInit {
       location: [''],
       checkIn: [formatDate(getNewDateFromNowBy(1)), Validators.required],
       checkOut: [formatDate(getNewDateFromNowBy(2)), Validators.required],
-      guests: [1, Validators.required]
+      guests: [1, Validators.required],
     });
   }
-
-
 }
