@@ -41,19 +41,5 @@ export class BookingComponent implements OnInit {
     });
   }
 
-  /**
-   * Creates a 2-dimensional array of lodgings from the original 1D lodging array. Used to format lodging items to display in the template.
-   * @param lodgings Lodging array to convert.
-   * @param n Number of lodgings items to display per row.
-   */
-  public lodgingsRow(lodgings: Lodging[], n: number): Array<Lodging[]> {
-    return lodgings.reduce((accumulator, currentLodge, index, array) => {
-      if (index % n === 0) {
-        const lodgingsSubarry = [];
-        for (let i = index; i < index + n; i++) lodgingsSubarry.push(array[i]);
-        accumulator.push(lodgingsSubarry);
-      }
-      return accumulator;
-    }, []);
-  }
+
 }
