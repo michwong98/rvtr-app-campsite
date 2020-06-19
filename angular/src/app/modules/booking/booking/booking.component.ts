@@ -39,5 +39,5 @@ export class BookingComponent implements OnInit {
       guests: [1, Validators.required]
     });
   }
-  
+
 }
