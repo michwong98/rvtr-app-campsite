@@ -16,7 +16,6 @@ import { BookingModalComponent } from '../booking-modal/booking-modal.component'
 })
 export class BookingComponent implements OnInit {
   lodgings$: Observable<Lodging[]>;
-  bookings$: Observable<Booking[]>;
 
   @ViewChild(BookingModalComponent) bookingModal: BookingModalComponent;
   bookingForm: FormGroup;
