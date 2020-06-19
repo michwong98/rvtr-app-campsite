@@ -15,7 +15,7 @@ import { BookingModalComponent } from '../booking-modal/booking-modal.component'
   templateUrl: './booking.component.html',
 })
 export class BookingComponent implements OnInit {
-  lodgings$: Observable<Lodging[]> = this.lodgingService.get();
+  lodgings$: Observable<Lodging[]>;
   bookings$: Observable<Booking[]>;
 
   @ViewChild(BookingModalComponent) bookingModal: BookingModalComponent;
@@ -26,10 +26,7 @@ export class BookingComponent implements OnInit {
 
   searchForm: FormGroup;
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private lodgingService: LodgingService,
-  ) { }
+  constructor(private formBuilder: FormBuilder, private lodgingService: LodgingService) {}
 
   ngOnInit(): void {
     // Set fields for form group
@@ -39,7 +36,11 @@ export class BookingComponent implements OnInit {
       checkOut: [formatDate(getNewDateFromNowBy(2)), Validators.required],
       guests: [1, Validators.required],
     });
+
+    this.getLodgings();
   }
 
-
+  getLodgings(): void {
+    this.lodgings$ = this.lodgingService.get();
+  }
 }
