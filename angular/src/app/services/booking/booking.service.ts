@@ -47,6 +47,17 @@ export class BookingService {
   }
 
   /**
+   * Returns a list of Booking records from the api server based on a
+   * provided offset and limit
+   * @param limit The amount of records to retreive from the request
+   * @param offset The amount of booking records to skip
+   */
+  getPartial(limit: string = '5', offset: string = '5'): Observable<Booking[]> {
+    const options = { params: new HttpParams().append('limit', limit).append('offset', offset) };
+    return this.apiUrl$.pipe(concatMap((url) => this.http.get<Booking[]>(url, options)));
+  }
+
+  /**
    * Represents the _Booking Service_ `post` method
    * @param booking Booking
    */
