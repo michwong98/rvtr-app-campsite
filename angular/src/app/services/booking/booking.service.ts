@@ -4,6 +4,7 @@ import { Observable, from } from 'rxjs';
 import { concatMap, map } from 'rxjs/operators';
 import { ConfigService } from '../config/config.service';
 import { Booking } from '../../data/booking.model';
+import { BookingApiFetchedRecords } from 'src/app/modules/booking/@types/BookingApiFetchedRecords';
 
 /**
  * The booking service is the main form of communication from the angular app
@@ -52,9 +53,9 @@ export class BookingService {
    * @param limit The amount of records to retreive from the request
    * @param offset The amount of booking records to skip
    */
-  getPage(limit: string = '5', offset: string = '5'): Observable<Booking[]> {
+  getPage(limit: string = '5', offset: string = '5'): Observable<BookingApiFetchedRecords<Booking>> {
     const options = { params: new HttpParams().append('limit', limit).append('offset', offset) };
-    return this.apiUrl$.pipe(concatMap((url) => this.http.get<Booking[]>(url, options)));
+    return this.apiUrl$.pipe(concatMap((url) => this.http.get<BookingApiFetchedRecords<Booking>>(url, options)));
   }
 
   /**
