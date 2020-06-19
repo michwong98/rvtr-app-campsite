@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BookingsListComponent implements OnInit {
 
-  constructor() { }
+  constructor(private bookingsService: BookingService) { }
 
   ngOnInit(): void {
   }
