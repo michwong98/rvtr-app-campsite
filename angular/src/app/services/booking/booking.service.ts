@@ -7,7 +7,7 @@ import { Booking } from '../../data/booking.model';
 
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class BookingService {
   private readonly apiUrl$: Observable<string>;

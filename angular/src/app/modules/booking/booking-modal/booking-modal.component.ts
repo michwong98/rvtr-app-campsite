@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
-import { map } from 'rxjs/operators';
 import { getNewDateFromNowBy, formatDate } from '../utils/date-helpers';
 
 import { ValidationService } from '../../../services/validation/validation.service';
@@ -10,13 +9,11 @@ import { BookingService } from 'src/app/services/booking/booking.service';
 import { Booking } from 'src/app/data/booking.model';
 import { Lodging } from 'src/app/data/lodging.model';
 import { BookingSearchData } from '../@types/booking-search-data';
-import { RentalUnit } from 'src/app/data/rental-unit.model';
 import { Rental } from 'src/app/data/rental.model';
-import { Stay } from 'src/app/data/stay.model';
 
 @Component({
   selector: 'uic-booking-modal',
-  templateUrl: './booking-modal.component.html',
+  templateUrl: './booking-modal.component.html'
 })
 export class BookingModalComponent implements OnInit {
   // Element reference for the booking modal html element.
