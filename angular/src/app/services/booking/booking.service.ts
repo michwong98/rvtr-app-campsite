@@ -1,9 +1,10 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, from } from 'rxjs';
 import { concatMap, map } from 'rxjs/operators';
 import { ConfigService } from '../config/config.service';
 import { Booking } from '../../data/booking.model';
+import { Stay } from '../../data/stay.model'
 
 
 @Injectable({
@@ -14,7 +15,6 @@ export class BookingService {
 
   /**
    * Represents the _Booking Service_ `constructor` method
-   *
    * @param config ConfigService
    * @param http HttpClient
    */
@@ -24,7 +24,6 @@ export class BookingService {
 
   /**
    * Represents the _Booking Service_ `delete` method
-   *
    * @param id string
    */
   delete(id: string): Observable<boolean> {
@@ -35,7 +34,6 @@ export class BookingService {
 
   /**
    * Represents the _Booking Service_ `get` method
-   *
    * @param id string
    */
   get(id?: string): Observable<Booking[]> {
@@ -45,7 +43,6 @@ export class BookingService {
 
   /**
    * Represents the _Booking Service_ `post` method
-   *
    * @param booking Booking
    */
   post(booking: Booking): Observable<boolean> {
@@ -54,7 +51,6 @@ export class BookingService {
 
   /**
    * Represents the _Booking Service_ `put` method
-   *
    * @param booking Booking
    */
   put(booking: Booking): Observable<Booking> {

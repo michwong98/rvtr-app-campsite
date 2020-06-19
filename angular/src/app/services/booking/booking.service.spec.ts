@@ -20,7 +20,7 @@ describe('BookingService', () => {
       guests: [],
       rentals: [],
       stay: null,
-      status: 'Active',
+      status: 'Valid',
     },
   ];
 
