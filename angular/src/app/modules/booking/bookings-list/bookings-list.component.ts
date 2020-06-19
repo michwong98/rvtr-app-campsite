@@ -1,5 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 
+/**
+ * Component that fetches a list of bookings from `BookingService` and
+ * displays the results in the template
+ *
+ * @class BookingsListComponent
+ * @implements {OnInit}
+ */
 @Component({
   selector: 'uic-bookings-list',
   templateUrl: './bookings-list.component.html',
