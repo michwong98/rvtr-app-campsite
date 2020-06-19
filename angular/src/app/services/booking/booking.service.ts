@@ -6,7 +6,12 @@ import { ConfigService } from '../config/config.service';
 import { Booking } from '../../data/booking.model';
 import { Stay } from '../../data/stay.model'
 
-
+/**
+ * The booking service is the main form of communication from the angular app
+ * to the BookingApi application.
+ *
+ * @export BookingService
+ */
 @Injectable({
   providedIn: 'root',
 })
