@@ -41,7 +41,7 @@ export class BookingsListComponent implements OnInit {
    * fetching a list of `Booking`s from teh `BookingApi`.
    */
   getBookings(): void {
-    this.bookings$ = this.bookingsService.getPartial(`${this.limit}`, `${this.offset}`);
+    this.bookings$ = this.bookingsService.getPage(`${this.limit}`, `${this.offset}`);
   }
 
 }
