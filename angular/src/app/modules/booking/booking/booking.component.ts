@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { map } from 'rxjs/operators';
 import { getNewDateFromNowBy, formatDate } from '../utils/date-helpers';
 
 import { LodgingService } from '../../../services/lodging/lodging.service';
@@ -35,11 +34,5 @@ export class BookingComponent implements OnInit {
       checkOut: [formatDate(getNewDateFromNowBy(2)), Validators.required],
       guests: [1, Validators.required],
     });
-
-    this.getLodgings();
-  }
-
-  getLodgings(): void {
-    this.lodgings$ = this.lodgingService.get();
   }
 }

@@ -8,7 +8,7 @@ import { Lodging } from '../../../data/lodging.model';
 
 @Component({
   selector: 'uic-booking-search-form',
-  templateUrl: './booking-search-form.component.html',
+  templateUrl: './booking-search-form.component.html'
 })
 export class BookingSearchFormComponent implements OnInit {
 
@@ -57,5 +57,4 @@ export class BookingSearchFormComponent implements OnInit {
     );
     this.lodgingsChange.emit(this.lodgings$);
   }
-
 }
