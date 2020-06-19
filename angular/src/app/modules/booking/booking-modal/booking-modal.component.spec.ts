@@ -68,14 +68,14 @@ describe('BookingModalComponent', () => {
 
   it('should submit booking form', () => {
     component.bookingForm.setValue({
-      checkIn: '2020-01-01',
-      checkOut: '2020-02-01',
-      guests: [{
-        given: 'firstName',
-        family: 'familyName',
-        email: 'me@email.com',
-        phone: '123456788',
-      }],
+      stay: {
+        checkIn: '2020-01-01',
+        checkOut: '2020-02-01',
+      },
+      guests: {
+        adults: 1,
+        children: 1,
+      },
       rentals: [{
         id: 11,
         name: 'Room',
@@ -98,8 +98,8 @@ describe('BookingModalComponent', () => {
     });
     fixture.detectChanges();
     expect(component.bookingForm.invalid).toBe(false);
-    // component.onBookingFormSubmit();
-    // expect(component.f.checkIn.value).toBe('2020-01-01');
+    component.onBookingFormSubmit();
+    expect((component.bookingForm.controls.stay as FormGroup).controls.checkIn.value).toBe('2020-01-01');
   });
 
   it('should open and close modal', () => {
