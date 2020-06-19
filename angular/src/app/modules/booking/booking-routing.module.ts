@@ -7,11 +7,12 @@ import { LayoutModule } from '../../layout/layout.module';
 import { BookingComponent } from './booking/booking.component';
 import { BookingModalComponent } from './booking-modal/booking-modal.component';
 import { BookingSearchFormComponent } from './booking-search-form/booking-search-form.component';
+import { LodgingsListComponent } from './lodgings-list/lodgings-list.component';
 
 const routes: Routes = [{ component: BookingComponent, path: '' }];
 
 @NgModule({
-  declarations: [BookingComponent, BookingModalComponent, BookingSearchFormComponent],
+  declarations: [BookingComponent, BookingModalComponent, BookingSearchFormComponent, LodgingsListComponent],
   exports: [RouterModule],
   imports: [
     RouterModule.forChild(routes),
