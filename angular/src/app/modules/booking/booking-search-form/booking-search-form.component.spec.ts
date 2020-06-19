@@ -12,11 +12,11 @@ describe('BookingSearchFormComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ BookingSearchFormComponent ],
-      providers: [ FormBuilder, LodgingService],
+      declarations: [BookingSearchFormComponent],
+      providers: [FormBuilder, LodgingService],
       imports: [HttpClientTestingModule],
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -42,10 +42,10 @@ describe('BookingSearchFormComponent', () => {
 
   it('should submit', () => {
     component.searchForm = new FormGroup({
-     location: new FormControl(''),
-     checkIn: new FormControl(''),
-     checkOut: new FormControl(''),
-     guests: new FormControl(1)
+      location: new FormControl(''),
+      checkIn: new FormControl(''),
+      checkOut: new FormControl(''),
+      guests: new FormControl(1)
     });
     const retrieveLodgingSpy: any = spyOn(component, 'retreiveLodgingsByPhrase');
     component.onSubmit();
@@ -59,7 +59,7 @@ describe('BookingSearchFormComponent', () => {
       checkIn: new FormControl(''),
       checkOut: new FormControl(''),
       guests: new FormControl(null, Validators.required)
-      });
+    });
     fixture.detectChanges();
     component.onSubmit();
     expect(retrieveLodgingSpy).not.toHaveBeenCalled();
