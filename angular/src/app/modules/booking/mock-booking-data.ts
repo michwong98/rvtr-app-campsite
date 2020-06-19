@@ -6,6 +6,7 @@ import { Booking } from 'src/app/data/booking.model';
 import { BookingSearchData } from './@types/booking-search-data';
 import { FormControl, FormGroup } from '@angular/forms';
 import { formatDate, getNewDateFromNowBy } from './utils/date-helpers';
+import { RentalUnit } from 'src/app/data/rental-unit.model';
 
 const mockLocations: Location[] = [
   {
@@ -38,16 +39,25 @@ const mockLocations: Location[] = [
   }
 ];
 
+const rentalUnitMock: RentalUnit = {
+  id: 'id',
+  name: 'rental unit',
+  bathrooms: [],
+  bedrooms: [],
+  occupancy: 1,
+  type: 'bungalow'
+};
+
 const mockRentals: Rental[] = [
   {
     id: '0',
     name: 'Nice Place',
-    rentalUnit: null,
+    rentalUnit: rentalUnitMock,
   },
   {
     id: '1',
     name: 'Nicer Place',
-    rentalUnit: null,
+    rentalUnit: rentalUnitMock,
   },
 ];
 
@@ -80,7 +90,7 @@ const mockBookings: Booking[] = [
     guests: [],
     rentals: [],
     stay: null,
-    status: 'Active',
+    status: 'Valid',
   },
 ];
 
