@@ -31,11 +31,11 @@ describe('BookingModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ BookingModalComponent],
+      declarations: [BookingModalComponent],
       providers: [FormBuilder],
       imports: [HttpClientTestingModule],
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -80,21 +80,21 @@ describe('BookingModalComponent', () => {
         id: 11,
         name: 'Room',
         rentalUnit: {
-                      id: 10,
-                      bathrooms: [{
-                                    id: 2,
-                                    fixtue: 2
-                                  }],
-                      bedrooms: [{
-                                    id: 2,
-                                    count: 1,
-                                    type: 'master'
-                                  }],
-                      name: '226',
-                      occupancy: 4,
-                      type: 'Hotel Room'
-                    }
-        }],
+          id: 10,
+          bathrooms: [{
+            id: 2,
+            fixtue: 2
+          }],
+          bedrooms: [{
+            id: 2,
+            count: 1,
+            type: 'master'
+          }],
+          name: '226',
+          occupancy: 4,
+          type: 'Hotel Room'
+        }
+      }],
     });
     fixture.detectChanges();
     expect(component.bookingForm.invalid).toBe(false);
