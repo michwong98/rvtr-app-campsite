@@ -3,8 +3,7 @@ import { Lodging } from 'src/app/data/lodging.model';
 
 @Component({
   selector: 'uic-lodgings-list',
-  templateUrl: './lodgings-list.component.html',
-  styleUrls: ['./lodgings-list.component.scss'],
+  templateUrl: './lodgings-list.component.html'
 })
 export class LodgingsListComponent implements OnInit {
   /**

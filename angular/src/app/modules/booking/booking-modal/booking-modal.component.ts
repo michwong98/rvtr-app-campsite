@@ -82,7 +82,6 @@ export class BookingModalComponent implements OnInit {
 
       // Rentals.
       rentals: new FormControl(null, [Validators.required]),
-      
     }, [ValidationService.rentalsValidator, ValidationService.occupancyValidator]);
 
     // Display error messages for guests and rentals.
@@ -121,7 +120,7 @@ export class BookingModalComponent implements OnInit {
     this.bookingForm.controls['rentals'].value.forEach((rental: Rental) => {
       this.booking.rentals.push({
         id: rental.id
-      } as Rental)
+      } as Rental);
     });
 
     // TODO: send data as request

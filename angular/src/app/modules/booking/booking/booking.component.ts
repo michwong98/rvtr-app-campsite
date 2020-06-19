@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { map } from 'rxjs/operators';
 import { getNewDateFromNowBy, formatDate } from '../utils/date-helpers';
 
 import { LodgingService } from '../../../services/lodging/lodging.service';
@@ -12,7 +11,7 @@ import { BookingModalComponent } from '../booking-modal/booking-modal.component'
 
 @Component({
   selector: 'uic-booking',
-  templateUrl: './booking.component.html',
+  templateUrl: './booking.component.html'
 })
 export class BookingComponent implements OnInit {
   lodgings$: Observable<Lodging[]> = this.lodgingService.get();
