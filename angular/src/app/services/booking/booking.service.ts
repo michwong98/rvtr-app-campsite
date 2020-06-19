@@ -38,7 +38,8 @@ export class BookingService {
   }
 
   /**
-   * Represents the _Booking Service_ `get` method
+   * Fetches the a list of `Booking` records from the `BookingApi` or a single
+   * record if the `id` parameter is provided.
    * @param id string
    */
   get(id?: string): Observable<Booking[]> {
