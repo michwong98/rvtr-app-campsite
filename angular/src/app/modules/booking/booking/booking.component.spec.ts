@@ -63,37 +63,4 @@ describe('BookingComponent', () => {
     // Spy is synchronous, so result from service is immediate
     expect(getLodgingSpy.calls.any()).toBe(true, 'LodgingService: "get" called');
   });
-
-  it('should create 2D array of lodgings', () => {
-    const resultLodgingRow = component.lodgingsRow(mockLodgings, 1);
-    const expectedLodginRow: Lodging[][] = [[mockLodgings[0]], [mockLodgings[1]]];
-
-    expect(resultLodgingRow).toEqual(expectedLodginRow);
-  });
-
-  it('should retrive lodging by phrase', () => {
-    component.retreiveLodgingsByPhrase('');
-    component.lodgings$.subscribe((lodgings: Lodging[]) => {
-      expect(lodgings.length).toBe(2);
-    });
-    component.retreiveLodgingsByPhrase('Los Angeles');
-    component.lodgings$.subscribe((lodgings: Lodging[]) => {
-      expect(lodgings.length).toBe(1);
-    });
-  });
-
-  it('should submit', () => {
-    const retrieveLodgingSpy: any = spyOn(component, 'retreiveLodgingsByPhrase');
-    component.onSubmit();
-    expect(retrieveLodgingSpy).toHaveBeenCalled();
-  });
-
-  it('should not call retrieveLodgingByPhrase on invalid search form', () => {
-    const retrieveLodgingSpy: any = spyOn(component, 'retreiveLodgingsByPhrase');
-    component.searchForm.controls.guests.setValue(undefined);
-    fixture.detectChanges();
-    component.onSubmit();
-    expect(retrieveLodgingSpy).not.toHaveBeenCalled();
-  });
-
 });
