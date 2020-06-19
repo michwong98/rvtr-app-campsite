@@ -6,53 +6,8 @@
       <div class="tile is-ancestor">
         <div class="tile is-vertical">
 
-          <!-- Search form -->
-          <div id="search-form">
-            <form [formGroup]="searchForm" (ngSubmit)="onSubmit()">
-              <div class="tile is-parent">
-
-                <!-- Location fo search form -->
-                <div class="tile is-child is-5">
-                  <div class="field">
-                    <label for="location" class="label">Location</label>
-                    <div class="control">
-                      <input formControlName="location" class="input" id="location" name="location"
-                        placeholder="Search by Location" type="text">
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Check in/check out for search form-->
-                <div class="tile is-child is-5">
-                  <label for="check-in" class="label">Check-In / Check-Out</label>
-                  <div class="field has-addons">
-                    <div class="control is-expanded">
-                      <input formControlName="checkIn" class="input" id="check-in" name="check-in"
-                        placeholder="Add the traveling date" type="date">
-                    </div>
-                    <div class="control is-expanded">
-                      <input formControlName="checkOut" class="input" id="check-out" name="check-out"
-                        placeholder="Add the returning date" type="date">
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Guests for search form -->
-                <div class="tile is-child is-2">
-                  <label for="guests" class="label">Guests</label>
-                  <div class="field has-addons">
-                    <div class="control is-expanded">
-                      <input formControlName="guests" class="input" id="guests" name="guests"
-                        placeholder="Number of Guests" type="number" min="0">
-                    </div>
-                    <div class="control">
-                      <button class="button is-primary" type="submit">search</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </form>
-          </div>
+          <uic-booking-search-form [searchForm]="searchForm" [lodgings$]="lodgings$"
+            (lodgingsChange)="this.lodgings$ = $event"></uic-booking-search-form>
 
           <!-- Loading for lodgings$ -->
           <ng-template #loading>
@@ -128,26 +83,10 @@
               </div>
             </div>
 
-            <!-- Lodging Tile -->
-            <ng-container *ngFor="let lodgingsRow of lodgingsRow(lodgings, 3)">
-              <div class="tile">
-                <div class="tile is-parent" *ngFor="let lodging of lodgingsRow">
-                  <div class="tile is-child box" *ngIf="lodging" (click)="bookingModal.openModal($event, lodging)">
-                    <p class="title">{{lodging.name}}</p>
-                    <p class="content">{{lodging.location?.address?.street}},
-                      {{lodging.location?.address?.city}},
-                      {{lodging.location?.address?.stateProvince}}</p>
-                    <figure class="image is-16by9">
-                      <img alt="placeholder image" src="https://bulma.io/images/placeholders/1280x960.png">
-                    </figure>
-                    <div onclick="event.stopPropagation()">
-                      <a routerLink="/lodging/{{lodging.id}}" class="button is-white is-small">Details</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </ng-container>
-          <!-- Observable Pipe -->
+            <!-- Lodgings List -->
+            <uic-lodgings-list [lodgings]="lodgings$ | async"
+              (lodgingClickHandler)="bookingModal.openModal($event.event, $event.lodging)"></uic-lodgings-list>
+            <!-- Observable Pipe -->
           </ng-container>
         </div>
       </div>
@@ -155,4 +94,4 @@
   </div>
 </section>
 
-<uic-booking-modal [booking]="booking" [lodging]="lodging" [searchData]="this.f"></uic-booking-modal>
+<uic-booking-modal [booking]="booking" [lodging]="lodging" [searchData]="searchForm.controls"></uic-booking-modal>

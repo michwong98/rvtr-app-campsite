@@ -1,15 +1,18 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { BookingComponent } from './booking/booking.component';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import { BookingModalComponent } from './booking-modal/booking-modal.component';
 import { LayoutModule } from '../../layout/layout.module';
+
+import { BookingComponent } from './booking/booking.component';
+import { BookingModalComponent } from './booking-modal/booking-modal.component';
+import { BookingSearchFormComponent } from './booking-search-form/booking-search-form.component';
+import { LodgingsListComponent } from './lodgings-list/lodgings-list.component';
 
 const routes: Routes = [{ component: BookingComponent, path: '' }];
 
 @NgModule({
-  declarations: [BookingComponent, BookingModalComponent],
+  declarations: [BookingComponent, BookingModalComponent, BookingSearchFormComponent, LodgingsListComponent],
   exports: [RouterModule],
   imports: [
     RouterModule.forChild(routes),

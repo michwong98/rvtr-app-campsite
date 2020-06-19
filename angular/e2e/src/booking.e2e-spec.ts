@@ -103,39 +103,4 @@ describe('project rvtr-app-campsite', () => {
     expect(modal.isDisplayed()).toBe(false);
   });
 
-  it('modal should contain one card by default', () => {
-    booking.navigateToBooking();
-    const locationElement = element(by.cssContainingText('.title', 'Great Lodge'));
-    expect(locationElement.getText()).toContain('Great Lodge');
-    locationElement.click();
-    const modalCard = element.all(by.className('card ng-untouched ng-pristine ng-invalid'));
-    expect(modalCard.count()).toBe(1);
-  });
-
-  it('modal should add one card when + button is clicked', () => {
-    booking.navigateToBooking();
-    const locationElement = element(by.cssContainingText('.title', 'Great Lodge'));
-    expect(locationElement.getText()).toContain('Great Lodge');
-    locationElement.click();
-    let modalCard = element.all(by.className('card ng-untouched ng-pristine ng-invalid'));
-    expect(modalCard.count()).toBe(1);
-    const plusBtn = element(by.className('fas fa-plus'));
-    plusBtn.click();
-    modalCard = element.all(by.className('card ng-untouched ng-pristine ng-invalid'));
-    expect(modalCard.count()).toBe(2);
-  });
-
-  it('modal should remove card when Remove button is clicked', () => {
-    booking.navigateToBooking();
-    const locationElement = element(by.cssContainingText('.title', 'Great Lodge'));
-    expect(locationElement.getText()).toContain('Great Lodge');
-    locationElement.click();
-    let modalCard = element.all(by.className('card ng-untouched ng-pristine ng-invalid'));
-    expect(modalCard.count()).toBe(1);
-    const removeBtn = element(by.buttonText('Remove'));
-    removeBtn.click();
-    modalCard = element.all(by.className('card ng-untouched ng-pristine ng-invalid'));
-    expect(modalCard.count()).toBe(0);
-  });
-
 });
