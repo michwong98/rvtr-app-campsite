@@ -1,12 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
-import {
-  FormGroup,
-  Validators,
-  FormArray,
-  FormBuilder,
-  FormControl,
-} from '@angular/forms';
+import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { getNewDateFromNowBy, formatDate } from '../utils/date-helpers';
+
 import { ValidationService } from '../../../services/validation/validation.service';
 
 import { Profile } from 'src/app/data/profile.model';
@@ -14,12 +9,11 @@ import { BookingService } from 'src/app/services/booking/booking.service';
 import { Booking } from 'src/app/data/booking.model';
 import { Lodging } from 'src/app/data/lodging.model';
 import { BookingSearchData } from '../@types/booking-search-data';
-import { RentalUnit } from 'src/app/data/rental-unit.model';
 import { Rental } from 'src/app/data/rental.model';
 
 @Component({
   selector: 'uic-booking-modal',
-  templateUrl: './booking-modal.component.html',
+  templateUrl: './booking-modal.component.html'
 })
 export class BookingModalComponent implements OnInit {
   // Element reference for the booking modal html element.
@@ -38,7 +32,6 @@ export class BookingModalComponent implements OnInit {
   @Input() searchData: BookingSearchData;
 
   constructor(
-    private formBuilder: FormBuilder,
     private bookingService: BookingService
   ) { }
 
@@ -48,7 +41,6 @@ export class BookingModalComponent implements OnInit {
 
   /**
    * Used in template to access Math functions.
-   *
    */
   get Math() {
     return Math;
@@ -56,7 +48,6 @@ export class BookingModalComponent implements OnInit {
 
   /**
    * Creates a new booking form. Clears existing booking form information.
-   *
    */
   private newBookingForm(): void {
     // Sets up booking properties.
@@ -66,25 +57,19 @@ export class BookingModalComponent implements OnInit {
       rentals: [],
     } as Booking;
 
-    const guests = this.searchData?.guests?.value ? this.searchData.guests.value : 0;
-
     // Creates a new booking form.
     this.bookingForm = new FormGroup({
-      // Check in.
-      checkIn: new FormControl(
-        this.searchData.checkIn.value
-          ? this.searchData.checkIn.value
-          : formatDate(getNewDateFromNowBy(1)),
-        Validators.required,
-      ),
 
-      // Check out.
-      checkOut: new FormControl(
-        this.searchData.checkOut.value
-          ? this.searchData.checkOut.value
-          : formatDate(getNewDateFromNowBy(1)),
-        Validators.required,
-      ),
+      stay: new FormGroup({
+        checkIn: new FormControl(
+          this.searchData.checkIn.value
+            ? this.searchData.checkIn.value
+            : formatDate(getNewDateFromNowBy(1))),
+        checkOut: new FormControl(
+          this.searchData.checkOut.value
+            ? this.searchData.checkOut.value
+            : formatDate(getNewDateFromNowBy(1)))
+      }, []),
 
       // Guests count.
       guests: new FormGroup({
@@ -93,7 +78,8 @@ export class BookingModalComponent implements OnInit {
       }, [ValidationService.guestsValidator]),
 
       // Rentals.
-      rentals: new FormControl(null, [Validators.required]),
+      rentals: new FormControl(null, [Validators.required])
+
     }, [ValidationService.rentalsValidator, ValidationService.occupancyValidator]);
 
     // Display error messages for guests and rentals.
@@ -117,21 +103,21 @@ export class BookingModalComponent implements OnInit {
     this.booking.status = 'Valid';
 
     // Sets the stay property for booking.
-    this.booking.stay.checkIn = this.searchData.checkIn.value;
-    this.booking.stay.checkOut = this.searchData.checkOut.value;
+    const stayControls = this.bookingForm.controls['stay'] as FormGroup;
+    this.booking.stay.checkIn = stayControls.controls['checkIn'].value;
+    this.booking.stay.checkOut = stayControls.controls['checkOut'].value;
 
     // Sets the guests property for booking.
     const guestsControl = this.bookingForm.controls['guests'] as FormGroup;
     Array.from(new Array(guestsControl.controls['adults'].value + guestsControl.controls['children'].value)).forEach(() => {
       this.booking.guests.push({} as Profile);
+      // TODO: Set age of each profile.
     });
 
     // Sets the rentals property for booking.
     this.bookingForm.controls['rentals'].value.forEach((rental: Rental) => {
       this.booking.rentals.push({
-        rentalUnit: {
-          id: rental.rentalUnit.id,
-        } as RentalUnit
+        id: rental.id
       } as Rental);
     });
 

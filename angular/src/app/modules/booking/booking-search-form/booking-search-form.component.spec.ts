@@ -4,6 +4,7 @@ import { BookingSearchFormComponent } from './booking-search-form.component';
 import { FormBuilder } from '@angular/forms';
 import { LodgingService } from 'src/app/services/lodging/lodging.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { Lodging } from 'src/app/data/lodging.model';
 
 describe('BookingSearchFormComponent', () => {
   let component: BookingSearchFormComponent;
@@ -26,5 +27,30 @@ describe('BookingSearchFormComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should retrive lodging by phrase', () => {
+    component.retreiveLodgingsByPhrase('');
+    component.lodgings$.subscribe((lodgings: Lodging[]) => {
+      expect(lodgings.length).toBe(2);
+    });
+    component.retreiveLodgingsByPhrase('Los Angeles');
+    component.lodgings$.subscribe((lodgings: Lodging[]) => {
+      expect(lodgings.length).toBe(1);
+    });
+  });
+
+  it('should submit', () => {
+    const retrieveLodgingSpy: any = spyOn(component, 'retreiveLodgingsByPhrase');
+    component.onSubmit();
+    expect(retrieveLodgingSpy).toHaveBeenCalled();
+  });
+
+  it('should not call retrieveLodgingByPhrase on invalid search form', () => {
+    const retrieveLodgingSpy: any = spyOn(component, 'retreiveLodgingsByPhrase');
+    component.searchForm.controls.guests.setValue(undefined);
+    fixture.detectChanges();
+    component.onSubmit();
+    expect(retrieveLodgingSpy).not.toHaveBeenCalled();
   });
 });

@@ -1,18 +1,21 @@
 <div id="booking-modal-form" class="modal" #bookingModal>
   <div class="modal-background" (click)="closeModal($event)"></div>
-  <div class="modal-card">f
+  <div class="modal-card">
+    
     <header class="modal-card-head">
       <p class="modal-card-title">{{lodging?.name ? lodging.name : 'Create Booking'}}</p>
       <button class="delete" aria-label="close" (click)="closeModal($event)"></button>
     </header>
+
     <section class="modal-card-body">
+
       <!-- Booking form -->
       <form [formGroup]='bookingForm'>
 
         <!-- Check in and check out -->
         <div style="margin-bottom: 1.5rem;">
           <label for="check-in" class="label">Check-In / Check-Out</label>
-          <div class="field has-addons">
+          <div class="field has-addons" formGroupName="stay">
             <div class="control is-expanded">
               <input formControlName="checkIn" class="input" id="check-in" name="check-in"
                 placeholder="Add the traveling date" type="date">
@@ -27,7 +30,8 @@
 
         <!-- Guests input -->
         <div class="column">
-          <span class="label" style="display: inline; margin-right: 1rem;">Guest Infomation</span> <uic-control-messages [control]="bookingForm.get('guests')"></uic-control-messages>
+          <span class="label" style="display: inline; margin-right: 1rem;">Guest Infomation</span>
+          <uic-control-messages [control]="bookingForm.get('guests')"></uic-control-messages>
         </div>
         <div class="guests-fields field column" formGroupName="guests">
           <div class="columns is-vcentered">
@@ -69,23 +73,23 @@
                 <ng-container *ngIf="lodging.rentals.length === 0">
                   <option disabled>No rental units available.</option>
                 </ng-container>
-                <option *ngFor="let rental of lodging.rentals" [ngValue]="rental">{{rental.name}}</option>
+                <option *ngFor="let rental of lodging.rentals" [ngValue]="rental">{{rental.rentalUnit.name}}</option>
               </select>
               <uic-control-messages [control]="bookingForm"></uic-control-messages>
             </div>
             <div class="column is-half">
               <div *ngFor="let rental of bookingForm.controls['rentals'].value">
-                <p><span>{{rental.name}}</span>, <span>Occupancy: {{rental.rentalUnit.occupancy}}</span></p>
+                <p><span>{{rental.rentalUnit.name}}</span>, <span>Occupancy: {{rental.rentalUnit.occupancy}}</span></p>
                 <p><span>Bedrooms: {{rental.rentalUnit.bedrooms.length}}, Bathrooms:
-                  {{rental.rentalUnit.bathrooms.length}}</span></p>
-                </div>
+                    {{rental.rentalUnit.bathrooms.length}}</span></p>
               </div>
             </div>
           </div>
+        </div>
 
-        <!-- Booking form -->
       </form>
     </section>
+
     <footer class="modal-card-foot">
       <button class="button is-success" (click)="onBookingFormSubmit()"
         [disabled]="! bookingForm?.valid">Submit</button>

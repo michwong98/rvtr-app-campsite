@@ -63,11 +63,4 @@ describe('BookingComponent', () => {
     // Spy is synchronous, so result from service is immediate
     expect(getLodgingSpy.calls.any()).toBe(true, 'LodgingService: "get" called');
   });
-
-  it('should create 2D array of lodgings', () => {
-    const resultLodgingRow = component.lodgingsRow(mockLodgings, 1);
-    const expectedLodginRow: Lodging[][] = [[mockLodgings[0]], [mockLodgings[1]]];
-
-    expect(resultLodgingRow).toEqual(expectedLodginRow);
-  });
 });
