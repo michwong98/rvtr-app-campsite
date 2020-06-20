@@ -13,6 +13,7 @@ describe('ConfigService', () => {
     api: {
       account: null,
       booking: null,
+      stay: null,
       lodging: null,
       monitoring: null,
     },

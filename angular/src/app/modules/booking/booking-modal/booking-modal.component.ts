@@ -128,10 +128,7 @@ export class BookingModalComponent implements OnInit {
     // Sets the rentals property for booking.
     this.bookingForm.controls['rentals'].value.forEach((rental: Rental) => {
       this.booking.rentals.push({
-        rentalUnit:
-        {
-          id: rental.rentalUnit.id
-        }
+        id: rental.id
       } as Rental);
     });
 
@@ -167,7 +164,7 @@ export class BookingModalComponent implements OnInit {
       )).subscribe(occupiedRentals => {
         this.bookingForm.controls['rentals'].setValue(null);
         this.rentals = [];
-        
+
         // Filter all rentals that do not have an id in occupied rentals.
         this.rentals = this.lodging.rentals.filter(rental => !occupiedRentals.includes(rental.rentalUnit.id));
       });

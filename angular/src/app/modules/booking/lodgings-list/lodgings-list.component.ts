@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+
 import { Lodging } from 'src/app/data/lodging.model';
 
 @Component({
@@ -15,9 +16,9 @@ export class LodgingsListComponent implements OnInit {
    */
   @Output() lodgingClickHandler = new EventEmitter<{ event: MouseEvent; lodging: Lodging }>();
 
-  constructor() {}
+  constructor() { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   /**
    * Creates a 2-dimensional array of lodgings from the original 1D lodging array. Used to format lodging items to display in the template.

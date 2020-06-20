@@ -7,7 +7,7 @@ import { ConfigService } from '../../services/config/config.service';
 
 @Component({
   selector: 'uic-footer',
-  templateUrl: './footer.component.html',
+  templateUrl: './footer.component.html'
 })
 export class FooterComponent implements OnInit {
   navbarLinks$: Observable<Link[]>;

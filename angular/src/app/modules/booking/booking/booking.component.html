@@ -40,9 +40,7 @@
                         <!-- Spotlight description-->
                         <div class="column">
                           <p>
-                            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Culpa sit praesentium, at tempore
-                            porro voluptates delectus vel exercitationem consectetur harum, odio eum vitae. Nostrum cum
-                            non, possimus laboriosam quas nesciunt!
+                            {{lodgings[0].description}}
                           </p>
                         </div>
 
@@ -55,19 +53,19 @@
                             <ng-container *ngFor="let review of lodgings[0].reviews.slice(0,2)">
                               <p *ngIf="review">
                                 <span class="icon"
-                                  [ngClass]="review.rating >= 1 ? 'has-text-white-bis' : 'has-text-grey'"><em
+                                  [ngClass]="review.rating >= 0 ? 'has-text-white-bis' : 'has-text-grey'"><em
                                     class="fa-star fas"></em></span>
                                 <span class="icon"
                                   [ngClass]="review.rating >= 2 ? 'has-text-white-bis' : 'has-text-grey'"><em
                                     class="fa-star fas"></em></span>
                                 <span class="icon"
-                                  [ngClass]="review.rating >= 3 ? 'has-text-white-bis' : 'has-text-grey'"><em
-                                    class="fa-star fas"></em></span>
-                                <span class="icon"
                                   [ngClass]="review.rating >= 4 ? 'has-text-white-bis' : 'has-text-grey'"><em
                                     class="fa-star fas"></em></span>
                                 <span class="icon"
-                                  [ngClass]="review.rating >= 5 ? 'has-text-white-bis' : 'has-text-grey'"><em
+                                  [ngClass]="review.rating >= 6 ? 'has-text-white-bis' : 'has-text-grey'"><em
+                                    class="fa-star fas"></em></span>
+                                <span class="icon"
+                                  [ngClass]="review.rating >= 8 ? 'has-text-white-bis' : 'has-text-grey'"><em
                                     class="fa-star fas"></em></span>
                                 <span style="text-overflow: ellipsis;"
                                   style="padding-left: 1rem;">{{review.comment}}</span>
@@ -84,9 +82,9 @@
             </div>
 
             <!-- Lodgings List -->
-            <uic-lodgings-list [lodgings]="lodgings$ | async"
+            <uic-lodgings-list [lodgings]="this.lodgings"
               (lodgingClickHandler)="bookingModal.openModal($event.event, $event.lodging)"></uic-lodgings-list>
-            <!-- Observable Pipe -->
+
           </ng-container>
         </div>
       </div>
@@ -94,8 +92,6 @@
   </div>
 </section>
 
-<div style="margin: 10px;">
-  <uic-bookings-list [pageLimit]="5"></uic-bookings-list>
-</div>
+<!-- <uic-bookings-list [pageLimit]="5"></uic-bookings-list> -->
 
-<uic-booking-modal [booking]="booking" [lodging]="lodging" [searchData]="searchForm.controls"></uic-booking-modal>
+<uic-booking-modal [booking]="booking" [lodging]="lodging" [searchData]="searchForm?.controls"></uic-booking-modal>

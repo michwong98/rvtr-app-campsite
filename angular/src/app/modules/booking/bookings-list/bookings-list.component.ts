@@ -8,14 +8,10 @@ import { BookingApiFetchedRecords } from '../@types/BookingApiFetchedRecords';
 /**
  * Component that fetches a list of bookings from `BookingService` and
  * displays the results in the template
- *
- * @class BookingsListComponent
- * @implements {OnInit}
  */
 @Component({
   selector: 'uic-bookings-list',
-  templateUrl: './bookings-list.component.html',
-  styleUrls: ['./bookings-list.component.scss'],
+  templateUrl: './bookings-list.component.html'
 })
 export class BookingsListComponent implements OnInit {
   /**
@@ -48,8 +44,6 @@ export class BookingsListComponent implements OnInit {
 
   /**
    * Convencience getter for using Array object
-   *
-   * @readonly
    */
   get numPages(): any[] {
     return new Array(this.pages);
@@ -57,8 +51,7 @@ export class BookingsListComponent implements OnInit {
 
   /**
    * Fires a call to the `BookingApi` to fetch
-   *
-   * @param {number} page The page number relative to the limit of records being fetched
+   * @param page The page number relative to the limit of records being fetched
    */
   getPage(page: number): void {
     // page is 0 indexed, so add one
@@ -74,9 +67,9 @@ export class BookingsListComponent implements OnInit {
     this.bookings$ = this.bookingsService.getPage(`${limit}`, `${offset}`);
 
     this.bookings$.subscribe((bookingResp) => {
-      this.total = bookingResp.total;
       // Get total number of pages and account for additional page
       // by using the remainder
+      this.total = bookingResp.total;
       const numCompletePages = Math.floor(this.total / this.pageLimit);
       this.pages = numCompletePages === 0 ? numCompletePages : numCompletePages + 1;
     });

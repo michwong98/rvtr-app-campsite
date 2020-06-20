@@ -67,6 +67,7 @@ describe('BookingModalComponent', () => {
   });
 
   it('should submit booking form', () => {
+    component.openModal(null, mockLodgings[0]);
     component.bookingForm.setValue({
       stay: {
         checkIn: '2020-01-01',

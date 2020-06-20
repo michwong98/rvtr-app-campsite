@@ -51,10 +51,10 @@ describe('BookingComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should contain "Guests"', () => {
+  it('should contain "Submit"', () => {
     const bookingEl: HTMLElement = fixture.nativeElement;
 
-    expect(bookingEl.textContent).toContain('Guest');
+    expect(bookingEl.textContent).toContain('Submit');
   });
 
   it('should show lodging', () => {
