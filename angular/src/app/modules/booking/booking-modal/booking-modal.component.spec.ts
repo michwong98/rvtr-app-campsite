@@ -67,7 +67,7 @@ describe('BookingModalComponent', () => {
   });
 
   it('should submit booking form', () => {
-    component.openModal(null, mockLodgings[0]);
+    component.openModal(mockLodgings[0]);
     component.bookingForm.setValue({
       stay: {
         checkIn: '2020-01-01',
@@ -104,9 +104,9 @@ describe('BookingModalComponent', () => {
   });
 
   it('should open and close modal', () => {
-    component.openModal(null, mockLodgings[0]);
+    component.openModal(mockLodgings[0]);
     expect(component.bookingModal.nativeElement.classList).toContain('is-active');
-    component.closeModal(null);
+    component.closeModal();
     expect(component.bookingModal.nativeElement.classList).not.toContain('is-active');
   });
 

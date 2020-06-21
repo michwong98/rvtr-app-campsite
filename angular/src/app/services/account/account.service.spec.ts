@@ -28,7 +28,6 @@ describe('AccountService', () => {
         api: {
           account: 'test',
           booking: null,
-          stay: null,
           lodging: null,
           monitoring: null,
         },

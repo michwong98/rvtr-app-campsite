@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
-import { map, debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { map, debounceTime, distinctUntilChanged, finalize } from 'rxjs/operators';
 import { getNewDateFromNowBy, formatDate } from '../utils/date-helpers';
 
 import { ValidationService } from '../../../services/validation/validation.service';
@@ -62,7 +62,7 @@ export class BookingModalComponent implements OnInit {
 
     // Creates a new booking form.
     this.bookingForm = new FormGroup({
-
+      // Stay check in and check out.
       stay: new FormGroup({
         checkIn: new FormControl(
           this.searchData?.checkIn.value
@@ -89,8 +89,9 @@ export class BookingModalComponent implements OnInit {
     this.getValidRentals();
     this.bookingForm.controls['stay'].valueChanges.pipe(
       debounceTime(1500),
-      distinctUntilChanged()
-    ).subscribe(() => this.getValidRentals());
+      distinctUntilChanged(),
+      finalize(() => this.getValidRentals())
+    );
 
     // Display error messages for guests and rentals.
     this.bookingForm.controls['guests'].markAsTouched();
@@ -153,32 +154,31 @@ export class BookingModalComponent implements OnInit {
     const checkIn = stayControls.controls['checkIn'].value;
     const checkOut = stayControls.controls['checkOut'].value;
     this.bookingService.getStays(checkIn, checkOut, this.lodging.id).pipe(
-
       // Reduce stays to an array of rental unit ids.
-      map(stays => stays.reduce((occupiedRentals: string[], stay): string[] => {
-        stay.booking.rentals.forEach(rental => {
-          occupiedRentals.push(rental.rentalUnit.id);
-        });
-        return occupiedRentals;
-      }, [] as string[])
-      )).subscribe(occupiedRentals => {
-        this.bookingForm.controls['rentals'].setValue(null);
-        this.rentals = [];
+      map(stays =>
+        stays.reduce((occupiedRentals: string[], stay): string[] => {
+          stay.booking.rentals.forEach(rental => {
+            occupiedRentals.push(rental.rentalUnit.id);
+          });
+          return occupiedRentals;
+        }, [] as string[])
+      ),
 
-        // Filter all rentals that do not have an id in occupied rentals.
-        this.rentals = this.lodging.rentals.filter(rental => !occupiedRentals.includes(rental.rentalUnit.id));
-      });
-    }
+    ).subscribe((occupiedRentals) => {
+      // Clear existing rentals selection.
+      this.bookingForm.controls['rentals'].setValue(null);
+      this.rentals = [];
+
+      // Filter all rentals that do not have an id in occupied rentals.
+      this.rentals = this.lodging.rentals.filter(rental => !occupiedRentals.includes(rental.rentalUnit.id));
+    });
+  }
 
   /**
    * Displays the booking form modal.
    * @param lodging Lodging selected for booking
    */
-  public openModal(event: MouseEvent, lodging: Lodging): void {
-    if (event) {
-      event.stopPropagation();
-    }
-
+  public openModal(lodging?: Lodging): void {
     // Disable body scrolling.
     document.querySelector('html').classList.add('is-clipped');
 
@@ -192,13 +192,8 @@ export class BookingModalComponent implements OnInit {
 
   /**
    * Hides the booking form modal.
-   * @param event Mouse event information. Used to stop propagation.
    */
-  public closeModal(event?: MouseEvent): void {
-    if (event) {
-      event.stopPropagation();
-    }
-
+  public closeModal(): void {
     // Enable body scrolling.
     document.querySelector('html').classList.remove('is-clipped');
 

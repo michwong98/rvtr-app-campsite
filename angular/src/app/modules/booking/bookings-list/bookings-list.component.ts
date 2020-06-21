@@ -18,7 +18,7 @@ export class BookingsListComponent implements OnInit {
    * Observable that retreives a list of bookings
    * from the `BookingService`
    */
-  bookings$: Observable<BookingApiFetchedRecords<Booking>>;
+  bookings$: Observable<Booking[]>;
   /**
    * Limits the amount of records to be returned for a single page
    */
@@ -36,42 +36,17 @@ export class BookingsListComponent implements OnInit {
    */
   currentPage = 1;
 
-  constructor(private bookingsService: BookingService) {}
+  constructor(private bookingsService: BookingService) { }
 
   ngOnInit(): void {
-    this.getBookings(this.pageLimit, 0);
-  }
-
-  /**
-   * Convencience getter for using Array object
-   */
-  get numPages(): any[] {
-    return new Array(this.pages);
-  }
-
-  /**
-   * Fires a call to the `BookingApi` to fetch
-   * @param page The page number relative to the limit of records being fetched
-   */
-  getPage(page: number): void {
-    // page is 0 indexed, so add one
-    this.currentPage = page + 1;
-    this.getBookings(this.pageLimit, page * this.pageLimit);
+    this.getBookings();
   }
 
   /**
    * Subscribes to the `BookingService.getPartial` observable,
    * fetching a list of `Booking`s from teh `BookingApi`.
    */
-  getBookings(limit: number, offset: number): void {
-    this.bookings$ = this.bookingsService.getPage(`${limit}`, `${offset}`);
-
-    this.bookings$.subscribe((bookingResp) => {
-      // Get total number of pages and account for additional page
-      // by using the remainder
-      this.total = bookingResp.total;
-      const numCompletePages = Math.floor(this.total / this.pageLimit);
-      this.pages = numCompletePages === 0 ? numCompletePages : numCompletePages + 1;
-    });
+  getBookings(): void {
+    this.bookings$ = this.bookingsService.get();
   }
 }

@@ -1,11 +1,7 @@
 <div id="bookings-list-container">
 
-  <div *ngIf="!(bookings$ | async)?.records.length">
-    <progress class="progress is-small is-primary" max="100">15%</progress>
-  </div>
-
   <ul class="bookings-list">
-    <li *ngFor="let booking of (bookings$ | async)?.records" class="card" style="margin: 10px 0; padding: 5px;">
+    <li *ngFor="let booking of (bookings$ | async)" class="card" style="margin: 10px 0; padding: 5px;">
       <div>
         Booking Id: {{ booking.id }}
         <br>
@@ -13,16 +9,5 @@
       </div>
     </li>
   </ul>
-
-  <nav class="pagination" role="navigation" aria-label="pagination" style="margin: 0 10px;">
-    <ul class="pagination-list">
-      <li *ngFor="let item of numPages; let i = index">
-        <a class="pagination-link" [ngClass]="{'is-current': i+1 === currentPage}"
-          attr.aria-label="Go to bookings page {{i+1}}" (click)="getPage(i)">
-          {{i+1}}
-        </a>
-      </li>
-    </ul>
-  </nav>
 
 </div>

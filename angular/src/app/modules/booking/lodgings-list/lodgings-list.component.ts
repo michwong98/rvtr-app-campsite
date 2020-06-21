@@ -14,7 +14,7 @@ export class LodgingsListComponent implements OnInit {
   /**
    * Click handler for a lodging item.  Will send the lodging's data and the mouse event when clicked.
    */
-  @Output() lodgingClickHandler = new EventEmitter<{ event: MouseEvent; lodging: Lodging }>();
+  @Output() lodgingClickHandler = new EventEmitter<{ lodging: Lodging }>();
 
   constructor() { }
 
@@ -44,7 +44,7 @@ export class LodgingsListComponent implements OnInit {
    * @param event the event fired when clicked
    * @param lodging The lodging's data in regards to the item that was clicked
    */
-  public triggerLodgingClick(event: MouseEvent, lodging: Lodging): void {
-    this.lodgingClickHandler.emit({ event, lodging });
+  public triggerLodgingClick(lodging: Lodging): void {
+    this.lodgingClickHandler.emit({ lodging });
   }
 }

@@ -29,8 +29,7 @@ describe('BookingService', () => {
       const config: Config = {
         api: {
           account: null,
-          booking: 'test',
-          stay: 'test',
+          booking: { booking: 'test', stay: 'test' },
           lodging: null,
           monitoring: null
         },

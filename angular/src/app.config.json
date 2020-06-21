@@ -1,8 +1,10 @@
 {
   "api": {
     "account": null,
-    "booking": "https://localhost:5001/api/v0/Booking",
-    "stay": "https://localhost:5001/api/v0/Stay",
+    "booking": {
+      "booking": "https://localhost:5001/api/v0/Booking",
+      "stay": "https://localhost:5001/api/v0/Stay"
+    },
     "lodging": "https://my-json-server.typicode.com/roxfordlc/demo/Lodging",
     "monitoring": "https://ec61288c429544a6ad850b94de25004a@o388320.ingest.sentry.io/5229046"
   },
@@ -20,9 +22,18 @@
       }
     ],
     "header": [
-      { "text": "account", "url": "account" },
-      { "text": "booking", "url": "booking" },
-      { "text": "lodging", "url": null }
+      {
+        "text": "account",
+        "url": "account"
+      },
+      {
+        "text": "booking",
+        "url": "booking"
+      },
+      {
+        "text": "lodging",
+        "url": null
+      }
     ]
   }
 }

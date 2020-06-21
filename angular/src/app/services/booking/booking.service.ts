@@ -25,7 +25,7 @@ export class BookingService {
    * @param http Utility used to make AJAX requests
    */
   constructor(private readonly config: ConfigService, private readonly http: HttpClient) {
-    this.apiUrl$ = config.get().pipe(map((cfg) => [cfg.api.booking, cfg.api.stay]));
+    this.apiUrl$ = config.get().pipe(map((cfg) => [cfg.api.booking.booking, cfg.api.booking.stay]));
   }
 
   /**
@@ -53,21 +53,11 @@ export class BookingService {
    */
   getStays(checkIn: string, checkOut: string, lodgingId: string): Observable<Stay[]> {
     const params = new HttpParams()
+      .set('filter', 'booking.status=="valid"')
       .set('lodgingId', lodgingId)
       .set('dates', `${checkIn} to ${checkOut}`);
 
     return this.apiUrl$.pipe(concatMap((url) => this.http.get<Stay[]>(url[1], { params })));
-  }
-
-  /**
-   * Returns a list of Booking records from the api server based on a
-   * provided offset and limit
-   * @param limit The amount of records to retreive from the request
-   * @param offset The amount of booking records to skip
-   */
-  getPage(limit: string = '5', offset: string = '5'): Observable<BookingApiFetchedRecords<Booking>> {
-    const options = { params: new HttpParams().append('limit', limit).append('offset', offset) };
-    return this.apiUrl$.pipe(concatMap((url) => this.http.get<BookingApiFetchedRecords<Booking>>(url[0], options)));
   }
 
   /**
