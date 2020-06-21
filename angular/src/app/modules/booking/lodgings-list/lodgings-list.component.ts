@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+
 import { Lodging } from 'src/app/data/lodging.model';
 
 @Component({
@@ -13,11 +14,11 @@ export class LodgingsListComponent implements OnInit {
   /**
    * Click handler for a lodging item.  Will send the lodging's data and the mouse event when clicked.
    */
-  @Output() lodgingClickHandler = new EventEmitter<{ event: MouseEvent; lodging: Lodging }>();
+  @Output() lodgingClickHandler = new EventEmitter<{ lodging: Lodging }>();
 
-  constructor() {}
+  constructor() { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   /**
    * Creates a 2-dimensional array of lodgings from the original 1D lodging array. Used to format lodging items to display in the template.
@@ -25,6 +26,9 @@ export class LodgingsListComponent implements OnInit {
    * @param n Number of lodgings items to display per row.
    */
   public lodgingsRow(lodgings: Lodging[], n: number): Lodging[][] {
+    if (lodgings === null) {
+      return [];
+    }
     return lodgings.reduce((accumulator, currentLodge, index, array) => {
       if (index % n === 0) {
         const lodgingsSubarry = [];
@@ -40,7 +44,7 @@ export class LodgingsListComponent implements OnInit {
    * @param event the event fired when clicked
    * @param lodging The lodging's data in regards to the item that was clicked
    */
-  public triggerLodgingClick(event: MouseEvent, lodging: Lodging): void {
-    this.lodgingClickHandler.emit({ event, lodging });
+  public triggerLodgingClick(lodging: Lodging): void {
+    this.lodgingClickHandler.emit({ lodging });
   }
 }

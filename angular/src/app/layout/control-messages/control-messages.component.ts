@@ -1,14 +1,17 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ValidationService } from '../../services/validation/validation.service';
 
 @Component({
   selector: 'uic-control-messages',
-  template: `<span [style.visibility]="errorMessage ? 'visible' : 'hidden'" class="has-text-danger is-size-7">{{errorMessage ? errorMessage : 'Error message placeholder'}}</span>`
+  templateUrl: './control-messages.component.html'
 })
-export class ControlMessagesComponent {
+
+export class ControlMessagesComponent implements OnInit{
   @Input() control: FormControl;
   constructor() { }
+
+  ngOnInit(): void {}
 
   get errorMessage() {
     for (const propertyName in this.control?.errors) {

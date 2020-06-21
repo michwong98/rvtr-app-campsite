@@ -14,7 +14,7 @@ describe('BookingSearchFormComponent', () => {
     TestBed.configureTestingModule({
       declarations: [BookingSearchFormComponent],
       providers: [FormBuilder, LodgingService],
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule]
     })
       .compileComponents();
   }));

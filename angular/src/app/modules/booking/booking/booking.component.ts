@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { getNewDateFromNowBy, formatDate } from '../utils/date-helpers';
+import { FormGroup } from '@angular/forms';
 
 import { LodgingService } from '../../../services/lodging/lodging.service';
 import { Lodging } from '../../../data/lodging.model';
@@ -24,15 +23,9 @@ export class BookingComponent implements OnInit {
 
   searchForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private lodgingService: LodgingService) {}
+  constructor(private lodgingService: LodgingService) {}
 
   ngOnInit(): void {
-    // Set fields for form group
-    this.searchForm = this.formBuilder.group({
-      location: [''],
-      checkIn: [formatDate(getNewDateFromNowBy(1)), Validators.required],
-      checkOut: [formatDate(getNewDateFromNowBy(2)), Validators.required],
-      guests: [1, Validators.required],
-    });
+    this.lodgings$ = this.lodgingService.get();
   }
 }

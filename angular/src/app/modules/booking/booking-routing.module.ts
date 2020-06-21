@@ -14,7 +14,7 @@ const routes: Routes = [{ component: BookingComponent, path: '' }];
 
 @NgModule({
   declarations: [BookingComponent, BookingModalComponent, BookingSearchFormComponent, LodgingsListComponent, BookingsListComponent],
-  exports: [RouterModule],
+  exports: [RouterModule, BookingComponent, BookingModalComponent, BookingSearchFormComponent, LodgingsListComponent, BookingsListComponent],
   imports: [
     RouterModule.forChild(routes),
     CommonModule,
