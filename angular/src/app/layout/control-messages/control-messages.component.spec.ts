@@ -27,14 +27,14 @@ describe('ControlMessagesComponent', () => {
 
   it('should have error message when touched', () => {
     component.control = new FormControl();
-    component.control.setErrors({'invalidRentals': true});
+    component.control.setErrors({invalidRentals: true});
     component.control.markAsTouched();
     expect(component.errorMessage).not.toBeNull();
   });
-  
+
   it('should not have error message if not touched', () => {
     component.control = new FormControl();
-    component.control.setErrors({'invalidRentals': true});
+    component.control.setErrors({invalidRentals: true});
     expect(component.errorMessage).toBeNull();
   });
 });
