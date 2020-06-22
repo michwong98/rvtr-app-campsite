@@ -5,7 +5,7 @@
  * @returns New date set from numMonths months from now and numDays days
  * @see https://stackoverflow.com/questions/499838/javascript-date-next-month
  */
-const getNewDateFromNowBy = (numMonths: number, numDays: number = 7): Date => {
+const getNewDateFromNowBy = (numMonths: number, numDays = 7): Date => {
   const now = new Date();
   return new Date(now.getFullYear(), now.getMonth() + numMonths, now.getDate() + numDays);
 };
@@ -17,8 +17,8 @@ const getNewDateFromNowBy = (numMonths: number, numDays: number = 7): Date => {
  */
 const formatDate = (date) => {
   const d = new Date(date);
-  let month = '' + (d.getMonth() + 1);
-  let day = '' + d.getDate();
+  let month = (d.getMonth() + 1).toString();
+  let day = d.getDate().toString();
   const year = d.getFullYear();
   if (month.length < 2) {
     month = '0' + month;

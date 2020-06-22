@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
-import { Lodging } from 'src/app/data/lodging.model';
+import { Lodging } from './../../../data/lodging.model';
 
 @Component({
   selector: 'uic-lodgings-list',
@@ -32,7 +32,9 @@ export class LodgingsListComponent implements OnInit {
     return lodgings.reduce((accumulator, currentLodge, index, array) => {
       if (index % n === 0) {
         const lodgingsSubarry = [];
-        for (let i = index; i < index + n; i++) lodgingsSubarry.push(array[i]);
+        for (let i = index; i < index + n; i++) {
+          lodgingsSubarry.push(array[i]);
+        }
         accumulator.push(lodgingsSubarry);
       }
       return accumulator;

@@ -1,5 +1,5 @@
 import { AbstractControl, FormGroup } from '@angular/forms';
-import { Rental } from 'src/app/data/rental.model';
+import { Rental } from './../../data/rental.model';
 
 export class ValidationService {
   /**

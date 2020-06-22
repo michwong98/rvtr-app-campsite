@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -23,9 +23,7 @@ export class BookingSearchFormComponent implements OnInit {
    * to input in the `Booking` sub-component `BookingModal`.
    */
   @Input() searchForm: FormGroup;
-  /**
-   * Observable that expects a list of lodgings to display to the template
-   */
+  /** Observable that expects a list of lodgings to display to the template. */
   @Input() lodgings$: Observable<Lodging[]>;
   /**
    * An event that is triggered once the User submits the Search Form to
@@ -35,9 +33,7 @@ export class BookingSearchFormComponent implements OnInit {
 
   ngOnInit(): void { }
 
-  /**
-   * Filters lodgings by search form's location value.
-   */
+  /** Filters lodgings by search form's location value. */
   onSubmit(): void {
     if (!this.searchForm.invalid) {
       this.retreiveLodgingsByPhrase(this.searchForm.controls.location.value);

@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild, ElementRef, Input, Output, EventEmitter }
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { getNewDateFromNowBy, formatDate } from '../utils/date-helpers';
 
 import { ValidationService } from '../../../services/validation/validation.service';
 
@@ -166,14 +165,20 @@ export class BookingModalComponent implements OnInit {
     if (this.method === 'POST') {
       this.bookingService.post(this.booking)
         .subscribe(
-          res => { console.log(res); this.closeModal(); },
+          res => {
+            console.log(res);
+            this.closeModal();
+          },
           err => alert('Failed to create booking.'),
           () => this.bookingsChange.emit(this.bookingService.get())
         );
     } else if (this.method === 'PUT') {
       this.bookingService.put(this.booking)
         .subscribe(
-          res => { console.log(res); this.closeModal(); },
+          res => {
+            console.log(res);
+            this.closeModal();
+          },
           err => alert('Failed to update booking.'),
           () => this.bookingsChange.emit(this.bookingService.get())
         );
