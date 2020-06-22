@@ -8,7 +8,7 @@ import { LodgingService } from '../../../services/lodging/lodging.service';
 import { Lodging } from '../../../data/lodging.model';
 
 /**
- * Compoent that contains a form to take in user input to determine the
+ * Compoent that contains a form expecting user input to determine the
  * lodgings to display in the parent `Booking` component.
  */
 @Component({
