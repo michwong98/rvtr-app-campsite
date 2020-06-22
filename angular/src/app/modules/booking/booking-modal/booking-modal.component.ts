@@ -13,15 +13,21 @@ import { BookingSearchData } from '../@types/booking-search-data';
 import { Rental } from 'src/app/data/rental.model';
 import { LodgingService } from 'src/app/services/lodging/lodging.service';
 
+/**
+ * A popup that will display a form to the user, once they've selected
+ * a lodging, which will present the user with fields to fill out to
+ * specify checkin-checkout dates and the number of guests to book.  The
+ * form also provides a list of rentals available to book for User to choose.
+ */
 @Component({
   selector: 'uic-booking-modal',
   templateUrl: './booking-modal.component.html'
 })
 export class BookingModalComponent implements OnInit {
-  // Element reference for the booking modal html element.
+  /** Element reference for the booking modal html element. */
   @ViewChild('bookingModal') bookingModal: ElementRef;
 
-  // Form group for the booking form.
+  /** Form group for the booking form. */
   bookingForm: FormGroup;
 
   method: string;
@@ -29,13 +35,13 @@ export class BookingModalComponent implements OnInit {
   // Booking object containing information on the current booking.
   @Input() booking: Booking;
 
-  // Lodging object containing information on the current lodging.
+  /** Lodging object containing information on the current lodging. */
   @Input() lodging: Lodging;
 
-  // Search data information.
+  /** Search data information. */
   @Input() searchData: BookingSearchData;
 
-  // Available rentals.
+  /** Available rentals. */
   rentals: Rental[] = [];
 
   constructor(

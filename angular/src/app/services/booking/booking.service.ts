@@ -49,7 +49,10 @@ export class BookingService {
   }
 
   /**
-   * Represents the _Booking Serve_ `get` method for Stays
+   * Fetches a list of `Stay`s for a specified `Lodging` record
+   * @param checkIn The checkin constraint that finds all `Stay`s after this date
+   * @param checkOut Date constraint that finds all `Stay`s before this date
+   * @param lodgingId Unique id of the `Lodging` to search for `Stay`s
    */
   getStays(checkIn: string, checkOut: string, lodgingId: string): Observable<Stay[]> {
     const params = new HttpParams()

@@ -1,13 +1,31 @@
-<div id="bookings-list-container">
+<div id="bookings-list-container container">
+  <h2 class="title is-5">Bookings</h2>
 
-  <ul class="bookings-list">
-    <li *ngFor="let booking of (bookings$ | async)" class="card" style="margin: 10px 0; padding: 5px;">
-      <div>
-        Booking Id: {{ booking.id }}
-        <br>
-        Booking Status: {{booking.status}}
-      </div>
-    </li>
-  </ul>
+  <table class="table is-striped" style="width: 100%;">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Status</th>
+        <th>Check-In </th>
+        <th>Check-out</th>
+      </tr>
+    </thead>
+    <tfoot>
+      <tr>
+        <th>Id</th>
+        <th>Status</th>
+        <th>Check-In </th>
+        <th>Check-out</th>
+      </tr>
+    </tfoot>
+    <tbody>
+      <tr *ngFor="let booking of (bookings$ | async)">
+        <td>{{booking.id}}</td>
+        <td>{{booking.status}}</td>
+        <td>{{booking.stay.checkIn}}</td>
+        <td>{{booking.stay.checkOut}}</td>
+      </tr>
+    </tbody>
+  </table>
 
 </div>
