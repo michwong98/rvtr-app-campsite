@@ -6,7 +6,7 @@
       <div class="tile is-ancestor">
         <div class="tile is-vertical">
 
-          <uic-bookings-list class="column" style="margin: 10px;"></uic-bookings-list>
+          <uic-bookings-list [bookings$]="bookings$" (bookingClickHandler)="bookingModal.openModal(null, $event)" class="column" style="margin: 10px;"></uic-bookings-list>
 
           <uic-booking-search-form [searchForm]="searchForm" [lodgings$]="lodgings$"
             (lodgingsChange)="this.lodgings$ = $event"></uic-booking-search-form>
@@ -85,7 +85,7 @@
 
             <!-- Lodgings List -->
             <uic-lodgings-list [lodgings]="this.lodgings"
-              (lodgingClickHandler)="bookingModal.openModal($event.lodging)"></uic-lodgings-list>
+              (lodgingClickHandler)="bookingModal.openModal($event)"></uic-lodgings-list>
 
           </ng-container>
         </div>
@@ -94,4 +94,4 @@
   </div>
 </section>
 
-<uic-booking-modal [booking]="booking" [lodging]="lodging" [searchData]="searchForm?.controls"></uic-booking-modal>
+<uic-booking-modal [booking]="booking" [lodging]="lodging" [searchData]="searchForm?.controls" (bookingsChange)="this.bookings$ = $event"></uic-booking-modal>

@@ -1,5 +1,6 @@
-import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
+import { Observable } from 'rxjs';
 import { map, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { getNewDateFromNowBy, formatDate } from '../utils/date-helpers';
 
@@ -40,6 +41,8 @@ export class BookingModalComponent implements OnInit {
 
   /** Search data information. */
   @Input() searchData: BookingSearchData;
+
+  @Output() bookingsChange = new EventEmitter<Observable<Booking[]>>();
 
   /** Available rentals. */
   rentals: Rental[] = [];
@@ -100,6 +103,10 @@ export class BookingModalComponent implements OnInit {
         bookingRentals: [],
         status: 'Valid'
       } as Booking;
+
+      // Get available rentals.
+      this.getValidRentals();
+
     } else if (this.method === 'PUT') {
       this.bookingForm.setValue({
         stay: {
@@ -107,17 +114,16 @@ export class BookingModalComponent implements OnInit {
           checkOut: this.booking.stay.checkOut
         },
         guests: {
-          adults: this.booking.guests.reduce((acc, guest) => guest.age === 'Adult' ? acc + 1: acc, 0),
-          children: this.booking.guests.reduce((acc, guest) => guest.age === 'Child' ? acc + 1: acc, 0)
+          adults: this.booking.guests.reduce((acc, guest) => guest.age === 'Adult' ? acc + 1 : acc, 0),
+          children: this.booking.guests.reduce((acc, guest) => guest.age === 'Child' ? acc + 1 : acc, 0)
         },
-        rentals: this.booking.bookingRentals.reduce((acc, bookingRental): Rental[] => {
-          acc.push({id: bookingRental.rentalId});
-          return acc;
-        }, [])
+        rentals: null
       });
+      this.getValidRentals();
+
     }
 
-    this.getValidRentals();
+    // Listener for when stay form value changes.
     this.bookingForm.controls['stay'].valueChanges.pipe(
       debounceTime(1500),
       distinctUntilChanged()
@@ -144,6 +150,8 @@ export class BookingModalComponent implements OnInit {
     this.booking.stay.checkIn = stayControls.controls['checkIn'].value;
     this.booking.stay.checkOut = stayControls.controls['checkOut'].value;
 
+    this.booking.guests = [];
+
     // Sets the guests property for booking.
     const guestsControl = this.bookingForm.controls['guests'] as FormGroup;
     Array.from(new Array(guestsControl.controls['adults'].value)).forEach(() => {
@@ -162,8 +170,18 @@ export class BookingModalComponent implements OnInit {
 
     if (this.method === 'POST') {
       this.bookingService.post(this.booking)
-        .subscribe(res => console.log(res), err => alert('Failed to create booking.'));
-      this.closeModal();
+        .subscribe(
+          res => { console.log(res); this.closeModal(); },
+          err => alert('Failed to create booking.'),
+          () => this.bookingsChange.emit(this.bookingService.get())
+        );
+    } else if (this.method === 'PUT') {
+      this.bookingService.put(this.booking)
+        .subscribe(
+          res => { console.log(res); this.closeModal(); },
+          err => alert('Failed to update booking.'),
+          () => this.bookingsChange.emit(this.bookingService.get())
+        );
     }
   }
 
@@ -199,6 +217,15 @@ export class BookingModalComponent implements OnInit {
 
       // Filter all rentals that do not have an id in occupied rentals.
       this.rentals = this.lodging.rentals.filter(rental => !occupiedRentals.includes(rental.id));
+
+      if (this.method === 'PUT') {
+        const bookedRentals = this.booking.bookingRentals.reduce((acc: string[], bookingRental: BookingRental) => {
+          acc.push(bookingRental.rentalId);
+          return acc;
+        }, []);
+
+        this.bookingForm.controls['rentals'].setValue(this.rentals.filter(rental => bookedRentals.includes(rental.id)));
+      }
     });
   }
 

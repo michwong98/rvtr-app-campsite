@@ -24,6 +24,7 @@ export class BookingComponent implements OnInit {
    * of lodgings and their details.
    */
   lodgings$: Observable<Lodging[]>;
+  bookings$: Observable<Booking[]>;
 
   /**
    * The modal component that will popup once a user clicks a `Lodging` item

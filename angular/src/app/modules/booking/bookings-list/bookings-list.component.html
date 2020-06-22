@@ -8,22 +8,16 @@
         <th>Status</th>
         <th>Check-In </th>
         <th>Check-out</th>
+        <th></th>
       </tr>
     </thead>
-    <tfoot>
-      <tr>
-        <th>Id</th>
-        <th>Status</th>
-        <th>Check-In </th>
-        <th>Check-out</th>
-      </tr>
-    </tfoot>
     <tbody>
       <tr *ngFor="let booking of (bookings$ | async)">
         <td>{{booking.id}}</td>
         <td>{{booking.status}}</td>
         <td>{{booking.stay.checkIn}}</td>
         <td>{{booking.stay.checkOut}}</td>
+        <td><button class="button" (click)="triggerBookingEditClick(booking)">Edit</button><button class="button is-danger" (click)="deleteBooking(booking)">Delete</button></td>
       </tr>
     </tbody>
   </table>

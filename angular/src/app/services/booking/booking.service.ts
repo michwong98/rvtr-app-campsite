@@ -34,7 +34,7 @@ export class BookingService {
    */
   delete(id: string): Observable<boolean> {
     return this.apiUrl$.pipe(
-      concatMap((url) => this.http.delete<boolean>(url[0], { params: { id } }))
+      concatMap((url) => this.http.delete<boolean>(url[0] + `/${id}`))
     );
   }
 
