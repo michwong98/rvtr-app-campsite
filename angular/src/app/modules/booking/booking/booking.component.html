@@ -5,8 +5,8 @@
       <h1 class="title is-2">Booking</h1>
       <div class="tile is-ancestor">
         <div class="tile is-vertical">
-          
-          <uic-bookings-list></uic-bookings-list>
+
+          <uic-bookings-list class="column" style="margin: 10px;"></uic-bookings-list>
 
           <uic-booking-search-form [searchForm]="searchForm" [lodgings$]="lodgings$"
             (lodgingsChange)="this.lodgings$ = $event"></uic-booking-search-form>
