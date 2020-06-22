@@ -96,7 +96,7 @@
 
     <footer class="modal-card-foot">
       <button class="button is-success" (click)="onBookingFormSubmit()"
-        [disabled]="! bookingForm?.valid">Submit</button>
+        [disabled]="! bookingForm?.valid">{{method === 'PUT' ? 'Update' : 'Submit'}}</button>
       <button class="button is-danger" (click)="closeModal(); $event.stopPropagation();">Cancel</button>
     </footer>
   </div>

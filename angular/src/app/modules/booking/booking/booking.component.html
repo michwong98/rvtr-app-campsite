@@ -55,19 +55,19 @@
                             <ng-container *ngFor="let review of lodgings[0].reviews.slice(0,2)">
                               <p *ngIf="review">
                                 <span class="icon"
-                                  [ngClass]="review.rating >= 0 ? 'has-text-white-bis' : 'has-text-grey'"><em
+                                  [ngClass]="review.rating >= 1 ? 'has-text-white-bis' : 'has-text-grey'"><em
                                     class="fa-star fas"></em></span>
                                 <span class="icon"
-                                  [ngClass]="review.rating >= 2 ? 'has-text-white-bis' : 'has-text-grey'"><em
+                                  [ngClass]="review.rating >= 3 ? 'has-text-white-bis' : 'has-text-grey'"><em
                                     class="fa-star fas"></em></span>
                                 <span class="icon"
-                                  [ngClass]="review.rating >= 4 ? 'has-text-white-bis' : 'has-text-grey'"><em
+                                  [ngClass]="review.rating >= 5 ? 'has-text-white-bis' : 'has-text-grey'"><em
                                     class="fa-star fas"></em></span>
                                 <span class="icon"
-                                  [ngClass]="review.rating >= 6 ? 'has-text-white-bis' : 'has-text-grey'"><em
+                                  [ngClass]="review.rating >= 7 ? 'has-text-white-bis' : 'has-text-grey'"><em
                                     class="fa-star fas"></em></span>
                                 <span class="icon"
-                                  [ngClass]="review.rating >= 8 ? 'has-text-white-bis' : 'has-text-grey'"><em
+                                  [ngClass]="review.rating >= 9 ? 'has-text-white-bis' : 'has-text-grey'"><em
                                     class="fa-star fas"></em></span>
                                 <span style="text-overflow: ellipsis;"
                                   style="padding-left: 1rem;">{{review.comment}}</span>

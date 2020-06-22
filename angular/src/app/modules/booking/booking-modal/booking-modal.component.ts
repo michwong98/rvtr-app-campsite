@@ -1,16 +1,17 @@
 import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
-import { map, debounceTime, distinctUntilChanged, finalize } from 'rxjs/operators';
+import { map, debounceTime, distinctUntilChanged, finalize, catchError } from 'rxjs/operators';
 import { getNewDateFromNowBy, formatDate } from '../utils/date-helpers';
 
 import { ValidationService } from '../../../services/validation/validation.service';
 
 import { Profile } from 'src/app/data/profile.model';
 import { BookingService } from 'src/app/services/booking/booking.service';
-import { Booking } from 'src/app/data/booking.model';
+import { Booking, BookingRental } from 'src/app/data/booking.model';
 import { Lodging } from 'src/app/data/lodging.model';
 import { BookingSearchData } from '../@types/booking-search-data';
 import { Rental } from 'src/app/data/rental.model';
+import { LodgingService } from 'src/app/services/lodging/lodging.service';
 
 @Component({
   selector: 'uic-booking-modal',
@@ -22,6 +23,8 @@ export class BookingModalComponent implements OnInit {
 
   // Form group for the booking form.
   bookingForm: FormGroup;
+
+  method: string;
 
   // Booking object containing information on the current booking.
   @Input() booking: Booking;
@@ -36,7 +39,8 @@ export class BookingModalComponent implements OnInit {
   rentals: Rental[] = [];
 
   constructor(
-    private bookingService: BookingService
+    private readonly bookingService: BookingService,
+    private readonly lodgingService: LodgingService
   ) { }
 
   ngOnInit(): void {
@@ -53,12 +57,6 @@ export class BookingModalComponent implements OnInit {
    * Creates a new booking form. Clears existing booking form information.
    */
   private newBookingForm(): void {
-    // Sets up booking properties.
-    this.booking = {
-      stay: {},
-      guests: [],
-      rentals: [],
-    } as Booking;
 
     // Creates a new booking form.
     this.bookingForm = new FormGroup({
@@ -86,16 +84,30 @@ export class BookingModalComponent implements OnInit {
       // Booking form validators.
     }, [ValidationService.rentalsValidator, ValidationService.occupancyValidator]);
 
+    if (this.lodging) {
+      // Sets up booking properties.
+      this.booking = {
+        accountId: '1',
+        lodgingId: this.lodging.id,
+        stay: {},
+        guests: [],
+        bookingRentals: [],
+        status: 'Valid'
+      } as Booking;
+    } else if (this.booking) {
+
+    }
+
     this.getValidRentals();
     this.bookingForm.controls['stay'].valueChanges.pipe(
       debounceTime(1500),
-      distinctUntilChanged(),
-      finalize(() => this.getValidRentals())
-    );
+      distinctUntilChanged()
+    ).subscribe(() => this.getValidRentals());
 
     // Display error messages for guests and rentals.
     this.bookingForm.controls['guests'].markAsTouched();
     this.bookingForm.controls['rentals'].markAsTouched();
+
 
   }
 
@@ -109,10 +121,6 @@ export class BookingModalComponent implements OnInit {
     if (this.bookingForm.invalid) {
       return;
     }
-
-    this.booking.lodgingId = this.lodging.id;
-    this.booking.accountId = this.lodging.id;
-    this.booking.status = 'Valid';
 
     // Sets the stay property for booking.
     const stayControls = this.bookingForm.controls['stay'] as FormGroup;
@@ -128,16 +136,16 @@ export class BookingModalComponent implements OnInit {
 
     // Sets the rentals property for booking.
     this.bookingForm.controls['rentals'].value.forEach((rental: Rental) => {
-      this.booking.rentals.push({
-        id: rental.id
-      } as Rental);
+      this.booking.bookingRentals.push({
+        rentalId: rental.id
+      } as BookingRental);
     });
 
-    // TODO: send data as request
-    this.closeModal();
-    this.bookingService.post(this.booking).subscribe(
-      () => console.log(this.booking)
-    );
+    if (this.method === 'POST') {
+      this.bookingService.post(this.booking)
+        .subscribe(res => console.log(res), err => alert('Failed to create booking.'));
+      this.closeModal();
+    }
   }
 
   /**
@@ -146,6 +154,7 @@ export class BookingModalComponent implements OnInit {
   private getValidRentals(): void {
     const stayControls = this.bookingForm.controls['stay'] as FormGroup;
     if (stayControls.invalid) {
+      this.bookingForm.controls['rentals'].setValue(null);
       this.rentals = [];
       return;
     }
@@ -157,20 +166,18 @@ export class BookingModalComponent implements OnInit {
       // Reduce stays to an array of rental unit ids.
       map(stays =>
         stays.reduce((occupiedRentals: string[], stay): string[] => {
-          stay.booking.rentals.forEach(rental => {
-            occupiedRentals.push(rental.rentalUnit.id);
+          stay.booking.bookingRentals.forEach(bookingRental => {
+            occupiedRentals.push(bookingRental.rentalId);
           });
           return occupiedRentals;
         }, [] as string[])
       ),
-
     ).subscribe((occupiedRentals) => {
       // Clear existing rentals selection.
       this.bookingForm.controls['rentals'].setValue(null);
-      this.rentals = [];
 
       // Filter all rentals that do not have an id in occupied rentals.
-      this.rentals = this.lodging.rentals.filter(rental => !occupiedRentals.includes(rental.rentalUnit.id));
+      this.rentals = this.lodging.rentals.filter(rental => !occupiedRentals.includes(rental.id));
     });
   }
 
@@ -178,16 +185,25 @@ export class BookingModalComponent implements OnInit {
    * Displays the booking form modal.
    * @param lodging Lodging selected for booking
    */
-  public openModal(lodging?: Lodging): void {
+  public openModal(lodging?: Lodging, booking?: Booking): void {
+    // Sets lodging property.
+    if (lodging) {
+      this.method = 'POST';
+      this.lodging = lodging;
+      this.newBookingForm();
+    } else if (booking) {
+      this.method = 'PUT';
+      this.booking = booking;
+      this.lodgingService.get(this.booking.lodgingId).subscribe(data => {
+        this.lodging = data[0];
+        this.newBookingForm();
+      });
+    }
     // Disable body scrolling.
     document.querySelector('html').classList.add('is-clipped');
 
     // Opens modal.
     this.bookingModal.nativeElement.classList.add('is-active');
-
-    // Sets lodging property.
-    this.lodging = lodging;
-    this.newBookingForm();
   }
 
   /**
@@ -198,5 +214,10 @@ export class BookingModalComponent implements OnInit {
     document.querySelector('html').classList.remove('is-clipped');
 
     this.bookingModal.nativeElement.classList.remove('is-active');
+
+    this.method = null;
+    this.booking = null;
+    this.lodging = null;
+    this.rentals = [];
   }
 }

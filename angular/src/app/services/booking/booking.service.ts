@@ -53,7 +53,7 @@ export class BookingService {
    */
   getStays(checkIn: string, checkOut: string, lodgingId: string): Observable<Stay[]> {
     const params = new HttpParams()
-      .set('filter', 'booking.status=="valid"')
+      .set('filter', 'booking.status=="Valid"')
       .set('lodgingId', lodgingId)
       .set('dates', `${checkIn} to ${checkOut}`);
 
