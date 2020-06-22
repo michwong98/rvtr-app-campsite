@@ -33,7 +33,7 @@ export class BookingModalComponent implements OnInit {
 
   method: string;
 
-  // Booking object containing information on the current booking.
+  /** Booking object containing information on the current booking. */
   @Input() booking: Booking;
 
   /** Lodging object containing information on the current lodging. */
@@ -55,16 +55,12 @@ export class BookingModalComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  /**
-   * Used in template to access Math functions.
-   */
+  /** Used in template to access Math functions. */
   get Math() {
     return Math;
   }
 
-  /**
-   * Creates a new booking form. Clears existing booking form information.
-   */
+  /** Creates a new booking form. Clears existing booking form information. */
   private newBookingForm(): void {
 
     // Creates a new booking form.
@@ -72,13 +68,13 @@ export class BookingModalComponent implements OnInit {
       // Stay check in and check out.
       stay: new FormGroup({
         checkIn: new FormControl(
-          this.searchData?.checkIn.value
-            ? this.searchData.checkIn.value
-            : formatDate(getNewDateFromNowBy(1))),
+          this.booking !== null
+            ? this.booking.stay.checkIn
+            : this.searchData.checkIn.value),
         checkOut: new FormControl(
-          this.searchData?.checkOut.value
-            ? this.searchData?.checkOut.value
-            : formatDate(getNewDateFromNowBy(1)))
+          this.booking !== null
+            ? this.booking.stay.checkOut
+            : this.searchData.checkOut.value)
       }, [Validators.required, ValidationService.stayValidator]),
 
       // Guests count.
@@ -137,7 +133,6 @@ export class BookingModalComponent implements OnInit {
   /**
    * Binding booking form data to booking object.
    * Sends an HTTP Post request to the API with the booking object.
-   *
    * @returns void
    */
   public onBookingFormSubmit(): void {
@@ -185,9 +180,7 @@ export class BookingModalComponent implements OnInit {
     }
   }
 
-  /**
-   * Gets all rental units that are not occupied during the specified dates.
-   */
+  /** Gets all rental units that are not occupied during the specified dates. */
   public getValidRentals(): void {
     const stayControls = this.bookingForm.controls['stay'] as FormGroup;
     if (stayControls.invalid) {
@@ -218,12 +211,15 @@ export class BookingModalComponent implements OnInit {
       // Filter all rentals that do not have an id in occupied rentals.
       this.rentals = this.lodging.rentals.filter(rental => !occupiedRentals.includes(rental.id));
 
+      // Select all available rentals that were selected before.
       if (this.method === 'PUT') {
+        // Reduce to array of rental ids.
         const bookedRentals = this.booking.bookingRentals.reduce((acc: string[], bookingRental: BookingRental) => {
           acc.push(bookingRental.rentalId);
           return acc;
         }, []);
 
+        // Select all previously selected rentals included in the available rentals.
         this.bookingForm.controls['rentals'].setValue(this.rentals.filter(rental => bookedRentals.includes(rental.id)));
       }
     });
@@ -237,11 +233,13 @@ export class BookingModalComponent implements OnInit {
     // Sets lodging property.
     if (lodging) {
       this.method = 'POST';
+      this.booking = null;
       this.lodging = lodging;
       this.newBookingForm();
     } else if (booking) {
       this.method = 'PUT';
       this.booking = booking;
+      this.lodging = null;
       this.lodgingService.get(this.booking.lodgingId).subscribe(data => {
         this.lodging = data[0];
         this.newBookingForm();
@@ -254,9 +252,7 @@ export class BookingModalComponent implements OnInit {
     this.bookingModal.nativeElement.classList.add('is-active');
   }
 
-  /**
-   * Hides the booking form modal.
-   */
+  /** Hides the booking form modal. */
   public closeModal(): void {
     // Enable body scrolling.
     document.querySelector('html').classList.remove('is-clipped');

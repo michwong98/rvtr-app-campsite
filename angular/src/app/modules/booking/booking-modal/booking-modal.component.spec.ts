@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BookingModalComponent } from './booking-modal.component';
-import { FormGroup, Validators, FormArray, FormBuilder, FormControl } from '@angular/forms';
+import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
@@ -10,11 +10,8 @@ import { Lodging } from 'src/app/data/lodging.model';
 import { BookingSearchData } from '../@types/booking-search-data';
 import { mockBookings, mockLodgings, mockBookingSearchDataSet } from '../mock-booking-data';
 import { Profile } from 'src/app/data/profile.model';
-import { profile } from 'console';
 import { Rental } from 'src/app/data/rental.model';
 import { Stay } from 'src/app/data/stay.model';
-import { ControlMessagesComponent } from 'src/app/layout/control-messages/control-messages.component';
-import { checkServerIdentity } from 'tls';
 import { ValidationService } from 'src/app/services/validation/validation.service';
 
 describe('BookingModalComponent', () => {
@@ -94,6 +91,18 @@ describe('BookingModalComponent', () => {
   });
 
   it('should open and close modal', () => {
+    const searchForm = new FormGroup({
+      location: new FormControl(''),
+      checkIn: new FormControl('2020-01-01'),
+      checkOut: new FormControl('2020-01-01'),
+      guests: new FormControl(1)
+    });
+    component.searchData = {
+      checkIn: searchForm.controls['checkIn'],
+      checkOut: searchForm.controls['checkOut'],
+      guests: searchForm.controls['guests']
+    };
+
     component.openModal(mockLodgings[0]);
     expect(component.bookingModal.nativeElement.classList).toContain('is-active');
     component.closeModal();
