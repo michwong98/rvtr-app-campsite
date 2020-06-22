@@ -1,4 +1,5 @@
-<div id="bookings-list-container container">
+<button [ngClass]="display ? 'is-hidden': ''" (click)="display = true">Show Bookings</button>
+<div id="bookings-list-container container" [ngClass]="display ? '' : 'is-hidden'">
   <h2 class="title is-5">Bookings</h2>
 
   <table class="table is-striped" style="width: 100%;">
