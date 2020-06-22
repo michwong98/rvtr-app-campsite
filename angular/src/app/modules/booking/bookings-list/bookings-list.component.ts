@@ -17,7 +17,7 @@ export class BookingsListComponent implements OnInit {
 
   @Output() bookingClickHandler = new EventEmitter<Booking>();
 
-  display: boolean = false;
+  display = false;
 
   constructor(private readonly bookingsService: BookingService) { }
 

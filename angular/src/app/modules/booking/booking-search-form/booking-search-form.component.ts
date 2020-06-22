@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 
 import { LodgingService } from '../../../services/lodging/lodging.service';
 import { Lodging } from '../../../data/lodging.model';
+import { HttpParams } from '@angular/common/http';
 
 /**
  * Compoent that contains a form expecting user input to determine the
@@ -47,7 +48,7 @@ export class BookingSearchFormComponent implements OnInit {
   retreiveLodgingsByPhrase(phrase: string): void {
     // Return all results if string is empty
     if (phrase.length) {
-      this.lodgings$ = this.lodgingService.get().pipe(
+      this.lodgings$ = this.lodgingService.get(null, new HttpParams().set('IncludeImages', true.toString())).pipe(
         // return the list of lodgings filtered by the phrase
         map((lodgings) =>
           lodgings.filter((l) =>
@@ -58,7 +59,7 @@ export class BookingSearchFormComponent implements OnInit {
       );
     } else {
       // Return all lodgings.
-      this.lodgings$ = this.lodgingService.get();
+      this.lodgings$ = this.lodgingService.get(null, new HttpParams().set('IncludeImages', true.toString()));
     }
     this.lodgingsChange.emit({ lodgings$: this.lodgings$, searchForm: this.searchForm });
   }

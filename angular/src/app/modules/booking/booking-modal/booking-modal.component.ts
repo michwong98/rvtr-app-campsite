@@ -3,6 +3,7 @@ import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { getNewDateFromNowBy, formatDate } from './../utils/date-helpers';
+import { HttpParams } from '@angular/common/http';
 
 import { ValidationService } from '../../../services/validation/validation.service';
 
@@ -244,7 +245,7 @@ export class BookingModalComponent implements OnInit {
       this.method = 'PUT';
       this.booking = booking;
       this.lodging = null;
-      this.lodgingService.get(this.booking.lodgingId).subscribe(data => {
+      this.lodgingService.get(this.booking.lodgingId, new HttpParams().set('IncludeImages', true.toString())).subscribe(data => {
         this.lodging = data[0];
         this.newBookingForm();
       });

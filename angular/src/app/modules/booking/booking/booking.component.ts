@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { HttpParams } from '@angular/common/http';
 import { getNewDateFromNowBy, formatDate } from './../utils/date-helpers';
 
 import { LodgingService } from './../../../services/lodging/lodging.service';
@@ -48,7 +49,7 @@ export class BookingComponent implements OnInit {
   constructor(private readonly lodgingService: LodgingService) { }
 
   ngOnInit(): void {
-    this.lodgings$ = this.lodgingService.get();
+    this.lodgings$ = this.lodgingService.get(null, new HttpParams().set('IncludeImages', true.toString()));
 
     // Creates search form.
     this.searchForm = new FormGroup({
