@@ -1,8 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { Booking } from 'src/app/data/booking.model';
-import { BookingService } from 'src/app/services/booking/booking.service';
-import { concatMap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { Booking } from './../../../data/booking.model';
+import { BookingService } from './../../../services/booking/booking.service';
 
 /**
  * Component that fetches a list of bookings from `BookingService` and
@@ -18,7 +17,7 @@ export class BookingsListComponent implements OnInit {
 
   @Output() bookingClickHandler = new EventEmitter<Booking>();
 
-  constructor(private bookingsService: BookingService) { }
+  constructor(private readonly bookingsService: BookingService) { }
 
   ngOnInit(): void {
     this.getBookings();
@@ -38,7 +37,7 @@ export class BookingsListComponent implements OnInit {
     )
   }
 
-  public triggerBookingEditClick(booking: Booking): void {
+  public editBooking(booking: Booking): void {
     this.bookingClickHandler.emit(booking);
   }
 }

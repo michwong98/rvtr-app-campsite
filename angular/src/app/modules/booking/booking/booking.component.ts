@@ -1,13 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { getNewDateFromNowBy, formatDate } from '../utils/date-helpers';
+import { getNewDateFromNowBy, formatDate } from './../utils/date-helpers';
 
-import { LodgingService } from '../../../services/lodging/lodging.service';
-import { Lodging } from '../../../data/lodging.model';
+import { LodgingService } from './../../../services/lodging/lodging.service';
+import { Lodging } from './../../../data/lodging.model';
 
-import { Booking } from '../../../data/booking.model';
-import { BookingModalComponent } from '../booking-modal/booking-modal.component';
+import { Booking } from './../../../data/booking.model';
+import { BookingModalComponent } from './../booking-modal/booking-modal.component';
 
 /**
  * The Base component for the booking portion of this appilcation.
@@ -45,7 +45,7 @@ export class BookingComponent implements OnInit {
    */
   searchForm: FormGroup;
 
-  constructor(private lodgingService: LodgingService) { }
+  constructor(private readonly lodgingService: LodgingService) { }
 
   ngOnInit(): void {
     this.lodgings$ = this.lodgingService.get();

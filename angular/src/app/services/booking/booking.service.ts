@@ -1,11 +1,10 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, from } from 'rxjs';
+import { Observable } from 'rxjs';
 import { concatMap, map } from 'rxjs/operators';
-import { ConfigService } from '../config/config.service';
-import { Booking } from '../../data/booking.model';
-import { Stay } from '../../data/stay.model';
-import { BookingApiFetchedRecords } from 'src/app/modules/booking/@types/BookingApiFetchedRecords';
+import { ConfigService } from './../config/config.service';
+import { Booking } from './../../data/booking.model';
+import { Stay } from './../../data/stay.model';
 
 /**
  * The booking service is the main form of communication from the angular app
@@ -34,7 +33,7 @@ export class BookingService {
    */
   delete(id: string): Observable<boolean> {
     return this.apiUrl$.pipe(
-      concatMap((url) => this.http.delete<boolean>(url[0] + `/${id}`))
+      concatMap((url) => this.http.delete<boolean>(`${url[0]}/${id}`))
     );
   }
 

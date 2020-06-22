@@ -1,12 +1,11 @@
-import { Lodging } from 'src/app/data/lodging.model';
-import { Rental } from 'src/app/data/rental.model';
-import { Review } from 'src/app/data/review.model';
-import { Location } from 'src/app/data/location.model';
-import { Booking } from 'src/app/data/booking.model';
+import { Lodging } from './../../data/lodging.model';
+import { Rental } from './../../data/rental.model';
+import { Review } from './../../data/review.model';
+import { Location } from './../../data/location.model';
+import { RentalUnit } from './../../data/rental-unit.model';
+import { Booking } from './../../data/booking.model';
 import { BookingSearchData } from './@types/booking-search-data';
-import { FormControl, FormGroup } from '@angular/forms';
-import { formatDate, getNewDateFromNowBy } from './utils/date-helpers';
-import { RentalUnit } from 'src/app/data/rental-unit.model';
+import { FormControl } from '@angular/forms';
 
 const mockLocations: Location[] = [
   {
