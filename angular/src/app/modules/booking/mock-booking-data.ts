@@ -84,13 +84,13 @@ const mockLodgings: Lodging[] = [
 ];
 
 const mockStay: Stay = {
-  checkIn: new Date,
-  checkOut: new Date,
+  checkIn: new Date(),
+  checkOut: new Date(),
   dateCreated: null,
   dateModified: null,
   id: '0',
   booking: null
-}
+};
 
 const mockBookings: Booking[] = [
   {
@@ -98,7 +98,7 @@ const mockBookings: Booking[] = [
     accountId: '0',
     lodgingId: '0',
     guests: [
-      {age: 'Adult', name: {family: '', given: '', id: ''}, email: '', id: '', phone: ''}, 
+      {age: 'Adult', name: {family: '', given: '', id: ''}, email: '', id: '', phone: ''},
       {age: 'Child', name: {family: '', given: '', id: ''}, email: '', id: '', phone: ''}
     ],
     bookingRentals: [],

@@ -19,8 +19,7 @@ describe('BookingsListComponent', () => {
 
   const bookingServiceMock = {
     get(id?: string) {
-      var bookings: Observable<Booking[]>;
-      return bookings;
+      return of([] as Booking[]);
     },
     delete(booking: Booking) {
       return of(true);
