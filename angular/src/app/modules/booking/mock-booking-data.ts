@@ -4,10 +4,10 @@ import { Review } from './../../data/review.model';
 import { Location } from './../../data/location.model';
 import { RentalUnit } from './../../data/rental-unit.model';
 import { Booking } from './../../data/booking.model';
+import { Profile } from './../../data/profile.model';
+import { Stay } from './../../data/stay.model';
 import { BookingSearchData } from './@types/booking-search-data';
 import { FormControl } from '@angular/forms';
-import { Stay } from 'src/app/data/stay.model';
-import { Timestamp } from 'rxjs/internal/operators/timestamp';
 
 const mockLocations: Location[] = [
   {
@@ -97,7 +97,10 @@ const mockBookings: Booking[] = [
     id: '0',
     accountId: '0',
     lodgingId: '0',
-    guests: [],
+    guests: [
+      {age: 'Adult', name: {family: '', given: '', id: ''}, email: '', id: '', phone: ''}, 
+      {age: 'Child', name: {family: '', given: '', id: ''}, email: '', id: '', phone: ''}
+    ],
     bookingRentals: [],
     stay: mockStay,
     status: 'Valid',

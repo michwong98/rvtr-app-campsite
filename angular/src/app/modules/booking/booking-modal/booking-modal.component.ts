@@ -7,13 +7,13 @@ import { HttpParams } from '@angular/common/http';
 
 import { ValidationService } from '../../../services/validation/validation.service';
 
-import { Profile } from 'src/app/data/profile.model';
-import { BookingService } from 'src/app/services/booking/booking.service';
-import { Booking, BookingRental } from 'src/app/data/booking.model';
-import { Lodging } from 'src/app/data/lodging.model';
-import { BookingSearchData } from '../@types/booking-search-data';
-import { Rental } from 'src/app/data/rental.model';
-import { LodgingService } from 'src/app/services/lodging/lodging.service';
+import { Profile } from './../../../data/profile.model';
+import { BookingService } from './../../../services/booking/booking.service';
+import { Booking, BookingRental } from './../../../data/booking.model';
+import { Lodging } from './../../../data/lodging.model';
+import { BookingSearchData } from './../@types/booking-search-data';
+import { Rental } from './../../../data/rental.model';
+import { LodgingService } from './../../../services/lodging/lodging.service';
 
 /**
  * A popup that will display a form to the user, once they've selected

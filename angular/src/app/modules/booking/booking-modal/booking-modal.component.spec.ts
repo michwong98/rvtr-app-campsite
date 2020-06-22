@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BookingModalComponent } from './booking-modal.component';
-import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
+import { FormGroup, FormControl } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
@@ -13,10 +13,30 @@ import { Profile } from 'src/app/data/profile.model';
 import { Rental } from 'src/app/data/rental.model';
 import { Stay } from 'src/app/data/stay.model';
 import { ValidationService } from 'src/app/services/validation/validation.service';
+import { BookingService } from 'src/app/services/booking/booking.service';
+import { LodgingService } from 'src/app/services/lodging/lodging.service';
+import { of } from 'rxjs';
 
 describe('BookingModalComponent', () => {
   let component: BookingModalComponent;
   let fixture: ComponentFixture<BookingModalComponent>;
+
+  const bookingServiceMock = {
+    getStays: () => {
+      return of([] as Stay[]);
+    },
+    post: () => {
+      return of(true);
+    },
+    get: () => {
+      return of(mockBookings);
+    }
+  };
+  const lodgingServiceMock = {
+    get: () => {
+      return of(mockLodgings[0]);
+    }
+  };
 
   let bookingModalDe: DebugElement;
   let bookingModalEl: HTMLElement;
@@ -30,7 +50,7 @@ describe('BookingModalComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [BookingModalComponent],
-      providers: [FormBuilder],
+      providers: [{ provide: BookingService, useValue: bookingServiceMock }, { provide: LodgingService, useValue: lodgingServiceMock }],
       imports: [HttpClientTestingModule],
     })
       .compileComponents();
@@ -91,6 +111,9 @@ describe('BookingModalComponent', () => {
   });
 
   it('should open and close modal', () => {
+    component.openModal();
+    component.closeModal();
+
     const searchForm = new FormGroup({
       location: new FormControl(''),
       checkIn: new FormControl('2020-01-01'),
@@ -134,6 +157,8 @@ describe('BookingModalComponent', () => {
   });
 
   it('should get valid rentals', () => {
+    component.lodging = mockLodgings[0];
+    component.booking = mockBookings[0];
     component.bookingForm = new FormGroup({
       stay: new FormGroup({
         checkIn: new FormControl(),
@@ -151,5 +176,9 @@ describe('BookingModalComponent', () => {
     component.getValidRentals();
     expect(component.bookingForm.controls['stay'].valid).toBe(true);
   });
+
+  it('should get post form', () => {
+    component.openModal(null, {} as Booking);
+  })
 
 });
