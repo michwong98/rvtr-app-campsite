@@ -3,7 +3,6 @@ import { Observable, of } from 'rxjs';
 import { Booking } from 'src/app/data/booking.model';
 import { BookingService } from 'src/app/services/booking/booking.service';
 import { concatMap } from 'rxjs/operators';
-import { BookingApiFetchedRecords } from '../@types/BookingApiFetchedRecords';
 
 /**
  * Component that fetches a list of bookings from `BookingService` and
