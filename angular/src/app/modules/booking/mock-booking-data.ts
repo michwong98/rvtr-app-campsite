@@ -6,6 +6,8 @@ import { RentalUnit } from './../../data/rental-unit.model';
 import { Booking } from './../../data/booking.model';
 import { BookingSearchData } from './@types/booking-search-data';
 import { FormControl } from '@angular/forms';
+import { Stay } from 'src/app/data/stay.model';
+import { Timestamp } from 'rxjs/internal/operators/timestamp';
 
 const mockLocations: Location[] = [
   {
@@ -81,6 +83,15 @@ const mockLodgings: Lodging[] = [
   },
 ];
 
+const mockStay: Stay = {
+  checkIn: new Date,
+  checkOut: new Date,
+  dateCreated: null,
+  dateModified: null,
+  id: '0',
+  booking: null
+}
+
 const mockBookings: Booking[] = [
   {
     id: '0',
@@ -88,7 +99,7 @@ const mockBookings: Booking[] = [
     lodgingId: '0',
     guests: [],
     bookingRentals: [],
-    stay: null,
+    stay: mockStay,
     status: 'Valid',
   },
 ];
