@@ -1,0 +1,19 @@
+<!-- Lodging Tile -->
+<ng-container id="lodgings-list" *ngFor="let lodgingsRow of lodgingsRow(lodgings, 3)">
+  <div class="tile">
+    <div class="tile is-parent" *ngFor="let lodging of lodgingsRow">
+      <div class="tile is-child box lodging-item" *ngIf="lodging" (click)="triggerLodgingClick(lodging)">
+        <p class="title">{{lodging.name}}</p>
+        <p class="content">{{lodging.location?.address?.street}},
+          {{lodging.location?.address?.city}},
+          {{lodging.location?.address?.stateProvince}}</p>
+        <figure class="image is-16by9">
+          <img alt="placeholder image" src="https://bulma.io/images/placeholders/1280x960.png">
+        </figure>
+        <div onclick="event.stopPropagation()">
+          <a routerLink="/lodging/{{lodging.id}}" class="button is-white is-small">Details</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>

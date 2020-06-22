@@ -1,95 +1,103 @@
 <div id="booking-modal-form" class="modal" #bookingModal>
-  <div class="modal-background" (click)="closeModal($event)"></div>
-  <div class="modal-card">f
+  <div class="modal-background" (click)="closeModal(); $event.stopPropagation();"></div>
+  <div class="modal-card">
+
     <header class="modal-card-head">
       <p class="modal-card-title">{{lodging?.name ? lodging.name : 'Create Booking'}}</p>
-      <button class="delete" aria-label="close" (click)="closeModal($event)"></button>
+      <button class="delete" aria-label="close" (click)="closeModal(); $event.stopPropagation();"></button>
     </header>
+
     <section class="modal-card-body">
+
       <!-- Booking form -->
-      <form [formGroup]='bookingForm'>
+      <ng-container *ngIf="bookingForm">
+        <form [formGroup]='bookingForm'>
 
-        <!-- Check in and check out -->
-        <div style="margin-bottom: 1.5rem;">
-          <label for="check-in" class="label">Check-In / Check-Out</label>
-          <div class="field has-addons">
-            <div class="control is-expanded">
-              <input formControlName="checkIn" class="input" id="check-in" name="check-in"
-                placeholder="Add the traveling date" type="date">
-            </div>
-            <div class="control is-expanded">
-              <input formControlName="checkOut" class="input" id="check-out" name="check-out"
-                placeholder="Add the returning date" type="date">
+          <!-- Check in and check out -->
+          <div style="margin-bottom: 1.5rem;">
+            <span for="check-in" class="label" style="display: inline; margin-right: 1rem;">Check-In /
+              Check-Out</span>
+            <uic-control-messages [control]="bookingForm.get('stay')"></uic-control-messages>
+            <div class="field has-addons" formGroupName="stay">
+              <div class="control is-expanded">
+                <input formControlName="checkIn" class="input" id="check-in" name="check-in"
+                  placeholder="Add the traveling date" type="date">
+              </div>
+              <div class="control is-expanded">
+                <input formControlName="checkOut" class="input" id="check-out" name="check-out"
+                  placeholder="Add the returning date" type="date">
+              </div>
             </div>
           </div>
-        </div>
 
-
-        <!-- Guests input -->
-        <div class="column">
-          <span class="label" style="display: inline; margin-right: 1rem;">Guest Infomation</span> <uic-control-messages [control]="bookingForm.get('guests')"></uic-control-messages>
-        </div>
-        <div class="guests-fields field column" formGroupName="guests">
-          <div class="columns is-vcentered">
-            <div class="column is-2">
-              <span>Adults</span>
+          <!-- Guests input -->
+          <div class="column">
+            <span class="label" style="display: inline; margin-right: 1rem;">Guest Infomation</span>
+            <uic-control-messages [control]="bookingForm.get('guests')"></uic-control-messages>
+          </div>
+          <div class="guests-fields field column" formGroupName="guests">
+            <div class="columns is-vcentered">
+              <div class="column is-2">
+                <span>Adults</span>
+              </div>
+              <div class="column is-4">
+                <input formControlName="adults" class="input" type="number" min="1">
+              </div>
+              <div class="column is-2">
+                <span>Children</span>
+              </div>
+              <div class="column is-4">
+                <input formControlName="children" class="input" type="number" min="0">
+              </div>
             </div>
-            <div class="column is-4">
-              <input formControlName="adults" class="input" type="number" min="1">
-            </div>
-            <div class="column is-2">
-              <span>Children</span>
-            </div>
-            <div class="column is-4">
-              <input formControlName="children" class="input" type="number" min="0">
+            <div class="columns">
+              <uic-control-messages [control]="bookingForm.get('guests').get('adults')" class="column is-half">
+              </uic-control-messages>
+              <uic-control-messages [control]="bookingForm.get('guests').get('children')" class="column is-half">
+              </uic-control-messages>
             </div>
           </div>
-          <div class="columns">
-            <uic-control-messages [control]="bookingForm.get('guests').get('adults')" class="column is-half">
-            </uic-control-messages>
-            <uic-control-messages [control]="bookingForm.get('guests').get('children')" class="column is-half">
-            </uic-control-messages>
-          </div>
-        </div>
 
-        <!-- Rentals -->
-        <div class="field column" *ngIf="lodging?.rentals">
-          <div class="columns">
-            <div class="column is-half">
-              <label class="label">Select Rentals</label>
+          <!-- Rentals -->
+          <div class="field column" *ngIf="lodging?.rentals">
+            <div class="columns">
+              <div class="column is-half">
+                <label class="label">Select Rentals</label>
+              </div>
+              <div class="column is-half">
+                <label class="label">Selected Rentals</label>
+              </div>
             </div>
-            <div class="column is-half">
-              <label class="label">Selected Rentals</label>
-            </div>
-          </div>
-          <div class="columns is-vcentered">
-            <div class="column is-half select is-multiple">
-              <select [size]="Math.min(3, lodging.rentals.length > 0 ? lodging.rentals.length : 1)" multiple
-                class="form-control rental-select" formControlName="rentals" style="width: 100%;">
-                <ng-container *ngIf="lodging.rentals.length === 0">
-                  <option disabled>No rental units available.</option>
-                </ng-container>
-                <option *ngFor="let rental of lodging.rentals" [ngValue]="rental">{{rental.name}}</option>
-              </select>
-              <uic-control-messages [control]="bookingForm.get('rentals')"></uic-control-messages>
-            </div>
-            <div class="column is-half">
-              <div *ngFor="let rental of bookingForm.controls['rentals'].value">
-                <p><span>{{rental.name}}</span>, <span>Occupancy: {{rental.rentalUnit.occupancy}}</span></p>
-                <p><span>Bedrooms: {{rental.rentalUnit.bedrooms.length}}, Bathrooms:
-                  {{rental.rentalUnit.bathrooms.length}}</span></p>
+            <div class="columns is-vcentered">
+              <div class="column is-half select is-multiple">
+                <select [size]="Math.min(3, rentals.length > 0 ? rentals.length : 1)" multiple
+                  class="form-control rental-select" formControlName="rentals" style="width: 100%;">
+                  <ng-container *ngIf="rentals.length === 0">
+                    <option disabled>No rental units available.</option>
+                  </ng-container>
+                  <option *ngFor="let rental of rentals" [ngValue]="rental">{{rental.rentalUnit?.name}}</option>
+                </select>
+                <uic-control-messages [control]="bookingForm"></uic-control-messages>
+              </div>
+              <div class="column is-half">
+                <div *ngFor="let rental of bookingForm.controls['rentals'].value">
+                  <p><span>{{rental.rentalUnit?.name}}</span>, <span>Occupancy: {{rental.rentalUnit.occupancy}}</span>
+                  </p>
+                  <p><span>Bedrooms: {{rental.rentalUnit.bedrooms.length}}, Bathrooms:
+                      {{rental.rentalUnit.bathrooms.length}}</span></p>
                 </div>
               </div>
             </div>
           </div>
 
-        <!-- Booking form -->
-      </form>
+        </form>
+      </ng-container>
     </section>
+
     <footer class="modal-card-foot">
       <button class="button is-success" (click)="onBookingFormSubmit()"
         [disabled]="! bookingForm?.valid">Submit</button>
-      <button class="button is-danger" (click)="closeModal($event)">Cancel</button>
+      <button class="button is-danger" (click)="closeModal(); $event.stopPropagation();">Cancel</button>
     </footer>
   </div>
 </div>

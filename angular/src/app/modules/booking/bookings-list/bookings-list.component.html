@@ -1,0 +1,13 @@
+<div id="bookings-list-container">
+
+  <ul class="bookings-list">
+    <li *ngFor="let booking of (bookings$ | async)" class="card" style="margin: 10px 0; padding: 5px;">
+      <div>
+        Booking Id: {{ booking.id }}
+        <br>
+        Booking Status: {{booking.status}}
+      </div>
+    </li>
+  </ul>
+
+</div>

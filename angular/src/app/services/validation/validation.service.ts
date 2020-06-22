@@ -11,6 +11,7 @@ export class ValidationService {
     invalidRentals: 'One rental required.',
     invalidGuests: 'One adult required.',
     invalidOccupancy: 'Insufficient occupancy.',
+    invalidStay: 'Invalid dates.',
     email: 'Invalid email format.',
     number: 'Invalid amount.',
     min: 'Invalid amount.',
@@ -26,7 +27,8 @@ export class ValidationService {
    * @returns Object with invalidRentals property.
    */
   static rentalsValidator(control: AbstractControl): object {
-    if (control.value?.length >= 1) {
+    const rentals = control.get('rentals');
+    if (rentals === null || rentals.value?.length >= 1) {
       return null;
     } else {
       return { invalidRentals: true };
@@ -44,10 +46,6 @@ export class ValidationService {
 
   static occupancyValidator(control: AbstractControl): object {
     const guests = control.get('guests') as FormGroup;
-    if (!guests) {
-      return null;
-    }
-
     const children = guests.get('children')?.value;
     if (children == null || children < 0) {
       return null;
@@ -56,14 +54,19 @@ export class ValidationService {
     const adults = guests.get('adults').value;
     const rentals = control.get('rentals').value;
 
-    if (rentals.length < 1) {
+    if (rentals === null || rentals.length < 1) {
       return null;
     }
 
     const occupancy = rentals.reduce((accumulator: number, rental: Rental) => {
-      accumulator += rental.rentalUnit.occupancy;
+      return accumulator + rental.rentalUnit.occupancy;
     }, 0);
-
     return children + adults > occupancy ? { invalidOccupancy: true } : null;
+  }
+
+  static stayValidator(control: AbstractControl): object {
+    const checkIn = control.get('checkIn').value;
+    const checkOut = control.get('checkOut').value;
+    return checkOut < checkIn ? { invalidStay: true } : null;
   }
 }

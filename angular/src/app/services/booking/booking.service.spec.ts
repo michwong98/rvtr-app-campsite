@@ -20,7 +20,7 @@ describe('BookingService', () => {
       guests: [],
       rentals: [],
       stay: null,
-      status: 'Active',
+      status: 'Valid',
     },
   ];
 
@@ -29,7 +29,7 @@ describe('BookingService', () => {
       const config: Config = {
         api: {
           account: null,
-          booking: 'test',
+          booking: { booking: 'test', stay: 'test' },
           lodging: null,
           monitoring: null
         },
