@@ -12,6 +12,12 @@ import { Lodging } from 'src/app/data/lodging.model';
 import { BookingSearchData } from '../@types/booking-search-data';
 import { Rental } from 'src/app/data/rental.model';
 
+/**
+ * A popup that will display a form to the user, once they've selected
+ * a lodging, which will present the user with fields to fill out to
+ * specify checkin-checkout dates and the number of guests to book.  The
+ * form also provides a list of rentals available to book for User to choose.
+ */
 @Component({
   selector: 'uic-booking-modal',
   templateUrl: './booking-modal.component.html'
