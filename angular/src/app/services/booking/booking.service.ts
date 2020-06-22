@@ -34,7 +34,7 @@ export class BookingService {
    */
   delete(id: string): Observable<boolean> {
     return this.apiUrl$.pipe(
-      concatMap((url) => this.http.delete<boolean>(url[0], { params: { id } }))
+      concatMap((url) => this.http.delete<boolean>(url[0] + `/${id}`))
     );
   }
 
@@ -56,7 +56,7 @@ export class BookingService {
    */
   getStays(checkIn: string, checkOut: string, lodgingId: string): Observable<Stay[]> {
     const params = new HttpParams()
-      .set('filter', 'booking.status=="valid"')
+      .set('filter', 'booking.status=="Valid"')
       .set('lodgingId', lodgingId)
       .set('dates', `${checkIn} to ${checkOut}`);
 

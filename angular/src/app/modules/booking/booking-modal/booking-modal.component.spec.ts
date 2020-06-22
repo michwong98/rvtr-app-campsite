@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BookingModalComponent } from './booking-modal.component';
-import { FormGroup, Validators, FormArray, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
@@ -10,11 +10,9 @@ import { Lodging } from 'src/app/data/lodging.model';
 import { BookingSearchData } from '../@types/booking-search-data';
 import { mockBookings, mockLodgings, mockBookingSearchDataSet } from '../mock-booking-data';
 import { Profile } from 'src/app/data/profile.model';
-import { profile } from 'console';
 import { Rental } from 'src/app/data/rental.model';
 import { Stay } from 'src/app/data/stay.model';
-import { ControlMessagesComponent } from 'src/app/layout/control-messages/control-messages.component';
-import { checkServerIdentity } from 'tls';
+import { ValidationService } from 'src/app/services/validation/validation.service';
 
 describe('BookingModalComponent', () => {
   let component: BookingModalComponent;
@@ -71,31 +69,20 @@ describe('BookingModalComponent', () => {
     component.bookingForm.setValue({
       stay: {
         checkIn: '2020-01-01',
-        checkOut: '2020-02-01',
+        checkOut: '2020-02-01'
       },
       guests: {
         adults: 1,
-        children: 1,
+        children: 1
       },
       rentals: [{
         id: 11,
-        name: 'Room',
         rentalUnit: {
-          id: 10,
-          bathrooms: [{
-            id: 2,
-            fixtue: 2
-          }],
-          bedrooms: [{
-            id: 2,
-            count: 1,
-            type: 'master'
-          }],
-          name: '226',
-          occupancy: 4,
-          type: 'Hotel Room'
+          occupancy: 3,
+          bathrooms: [],
+          bedrooms: []
         }
-      }],
+      }]
     });
     fixture.detectChanges();
     expect(component.bookingForm.invalid).toBe(false);
@@ -104,10 +91,65 @@ describe('BookingModalComponent', () => {
   });
 
   it('should open and close modal', () => {
+    const searchForm = new FormGroup({
+      location: new FormControl(''),
+      checkIn: new FormControl('2020-01-01'),
+      checkOut: new FormControl('2020-01-01'),
+      guests: new FormControl(1)
+    });
+    component.searchData = {
+      checkIn: searchForm.controls['checkIn'],
+      checkOut: searchForm.controls['checkOut'],
+      guests: searchForm.controls['guests']
+    };
+
     component.openModal(mockLodgings[0]);
     expect(component.bookingModal.nativeElement.classList).toContain('is-active');
     component.closeModal();
     expect(component.bookingModal.nativeElement.classList).not.toContain('is-active');
+
+    component.openModal(null, mockBookings[0]);
+    expect(component.bookingModal.nativeElement.classList).toContain('is-active');
+    component.closeModal();
+    expect(component.bookingModal.nativeElement.classList).not.toContain('is-active');
+  });
+
+  it('should not get valid rentals', () => {
+    component.bookingForm = new FormGroup({
+      stay: new FormGroup({
+        checkIn: new FormControl(),
+        checkOut: new FormControl()
+      }, ValidationService.stayValidator),
+      rentals: new FormControl()
+    });
+
+    component.bookingForm.controls['stay'].setValue({
+      checkIn: '2020-04-04',
+      checkOut: '2020-02-01'
+    });
+
+    component.getValidRentals();
+    expect(component.rentals.length).toBe(0);
+    expect(component.bookingForm.controls['stay'].valid).toBe(false);
+  });
+
+  it('should get valid rentals', () => {
+    component.bookingForm = new FormGroup({
+      stay: new FormGroup({
+        checkIn: new FormControl(),
+        checkOut: new FormControl()
+      }, ValidationService.stayValidator),
+
+      rentals: new FormControl()
+    });
+
+    component.bookingForm.controls['stay'].setValue({
+      checkIn: '2020-01-01',
+      checkOut: '2020-02-01'
+    });
+
+    component.getValidRentals();
+    expect(component.bookingForm.controls['stay'].valid).toBe(true);
   });
 
 });

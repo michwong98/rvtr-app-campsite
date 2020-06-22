@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { getNewDateFromNowBy, formatDate } from '../utils/date-helpers';
 
 import { LodgingService } from '../../../services/lodging/lodging.service';
 import { Lodging } from '../../../data/lodging.model';
@@ -24,6 +25,7 @@ export class BookingComponent implements OnInit {
    * of lodgings and their details.
    */
   lodgings$: Observable<Lodging[]>;
+  bookings$: Observable<Booking[]>;
 
   /**
    * The modal component that will popup once a user clicks a `Lodging` item
@@ -43,9 +45,17 @@ export class BookingComponent implements OnInit {
    */
   searchForm: FormGroup;
 
-  constructor(private lodgingService: LodgingService) {}
+  constructor(private lodgingService: LodgingService) { }
 
   ngOnInit(): void {
     this.lodgings$ = this.lodgingService.get();
+
+    // Creates search form.
+    this.searchForm = new FormGroup({
+      location: new FormControl(''),
+      checkIn: new FormControl(formatDate(getNewDateFromNowBy(1)), Validators.required),
+      checkOut: new FormControl(formatDate(getNewDateFromNowBy(2)), Validators.required),
+      guests: new FormControl(1, Validators.required)
+    });
   }
 }

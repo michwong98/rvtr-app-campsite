@@ -6,10 +6,10 @@
       <div class="tile is-ancestor">
         <div class="tile is-vertical">
 
-          <uic-bookings-list class="column" style="margin: 10px;"></uic-bookings-list>
+          <uic-bookings-list [bookings$]="bookings$" (bookingClickHandler)="bookingModal.openModal(null, $event)" class="column" style="margin: 10px;"></uic-bookings-list>
 
           <uic-booking-search-form [searchForm]="searchForm" [lodgings$]="lodgings$"
-            (lodgingsChange)="this.lodgings$ = $event"></uic-booking-search-form>
+            (lodgingsChange)="this.lodgings$ = $event.lodgings$; this.searchForm = $event.searchForm"></uic-booking-search-form>
 
           <!-- Loading for lodgings$ -->
           <ng-template #loading>
@@ -55,19 +55,19 @@
                             <ng-container *ngFor="let review of lodgings[0].reviews.slice(0,2)">
                               <p *ngIf="review">
                                 <span class="icon"
-                                  [ngClass]="review.rating >= 0 ? 'has-text-white-bis' : 'has-text-grey'"><em
+                                  [ngClass]="review.rating >= 1 ? 'has-text-white-bis' : 'has-text-grey'"><em
                                     class="fa-star fas"></em></span>
                                 <span class="icon"
-                                  [ngClass]="review.rating >= 2 ? 'has-text-white-bis' : 'has-text-grey'"><em
+                                  [ngClass]="review.rating >= 3 ? 'has-text-white-bis' : 'has-text-grey'"><em
                                     class="fa-star fas"></em></span>
                                 <span class="icon"
-                                  [ngClass]="review.rating >= 4 ? 'has-text-white-bis' : 'has-text-grey'"><em
+                                  [ngClass]="review.rating >= 5 ? 'has-text-white-bis' : 'has-text-grey'"><em
                                     class="fa-star fas"></em></span>
                                 <span class="icon"
-                                  [ngClass]="review.rating >= 6 ? 'has-text-white-bis' : 'has-text-grey'"><em
+                                  [ngClass]="review.rating >= 7 ? 'has-text-white-bis' : 'has-text-grey'"><em
                                     class="fa-star fas"></em></span>
                                 <span class="icon"
-                                  [ngClass]="review.rating >= 8 ? 'has-text-white-bis' : 'has-text-grey'"><em
+                                  [ngClass]="review.rating >= 9 ? 'has-text-white-bis' : 'has-text-grey'"><em
                                     class="fa-star fas"></em></span>
                                 <span style="text-overflow: ellipsis;"
                                   style="padding-left: 1rem;">{{review.comment}}</span>
@@ -85,7 +85,7 @@
 
             <!-- Lodgings List -->
             <uic-lodgings-list [lodgings]="this.lodgings"
-              (lodgingClickHandler)="bookingModal.openModal($event.lodging)"></uic-lodgings-list>
+              (lodgingClickHandler)="bookingModal.openModal($event)"></uic-lodgings-list>
 
           </ng-container>
         </div>
@@ -94,4 +94,4 @@
   </div>
 </section>
 
-<uic-booking-modal [booking]="booking" [lodging]="lodging" [searchData]="searchForm?.controls"></uic-booking-modal>
+<uic-booking-modal [booking]="booking" [lodging]="lodging" [searchData]="searchForm?.controls" (bookingsChange)="this.bookings$ = $event"></uic-booking-modal>

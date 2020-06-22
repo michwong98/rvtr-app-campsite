@@ -80,12 +80,14 @@
                 <uic-control-messages [control]="bookingForm"></uic-control-messages>
               </div>
               <div class="column is-half">
-                <div *ngFor="let rental of bookingForm.controls['rentals'].value">
-                  <p><span>{{rental.rentalUnit?.name}}</span>, <span>Occupancy: {{rental.rentalUnit.occupancy}}</span>
-                  </p>
-                  <p><span>Bedrooms: {{rental.rentalUnit.bedrooms.length}}, Bathrooms:
-                      {{rental.rentalUnit.bathrooms.length}}</span></p>
-                </div>
+                <ng-container *ngFor="let rental of bookingForm.controls['rentals'].value">
+                  <div *ngIf="getRentalUnitModel(rental.id) as rentalUnit">
+                    <p><span>{{rentalUnit.name}}</span>, <span>Occupancy: {{rentalUnit.occupancy}}</span>
+                    </p>
+                    <p><span>Bedrooms: {{rentalUnit.bedrooms.length}}, Bathrooms:
+                        {{rentalUnit.bathrooms.length}}</span></p>
+                  </div>
+                </ng-container>
               </div>
             </div>
           </div>
@@ -96,7 +98,7 @@
 
     <footer class="modal-card-foot">
       <button class="button is-success" (click)="onBookingFormSubmit()"
-        [disabled]="! bookingForm?.valid">Submit</button>
+        [disabled]="! bookingForm?.valid">{{method === 'PUT' ? 'Update' : 'Submit'}}</button>
       <button class="button is-danger" (click)="closeModal(); $event.stopPropagation();">Cancel</button>
     </footer>
   </div>

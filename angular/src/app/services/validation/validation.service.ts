@@ -59,7 +59,7 @@ export class ValidationService {
     }
 
     const occupancy = rentals.reduce((accumulator: number, rental: Rental) => {
-      return accumulator + rental.rentalUnit.occupancy;
+      return accumulator + (rental.rentalUnit ? rental.rentalUnit.occupancy : 0);
     }, 0);
     return children + adults > occupancy ? { invalidOccupancy: true } : null;
   }
