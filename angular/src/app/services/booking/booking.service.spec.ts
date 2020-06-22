@@ -18,7 +18,7 @@ describe('BookingService', () => {
       accountId: '0',
       lodgingId: '0',
       guests: [],
-      rentals: [],
+      bookingRentals: [],
       stay: null,
       status: 'Valid',
     },

@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
-import { map, debounceTime, distinctUntilChanged, finalize, catchError } from 'rxjs/operators';
+import { map, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { getNewDateFromNowBy, formatDate } from '../utils/date-helpers';
 
 import { ValidationService } from '../../../services/validation/validation.service';
@@ -84,7 +84,7 @@ export class BookingModalComponent implements OnInit {
       // Booking form validators.
     }, [ValidationService.rentalsValidator, ValidationService.occupancyValidator]);
 
-    if (this.lodging) {
+    if (this.method === 'POST') {
       // Sets up booking properties.
       this.booking = {
         accountId: '1',
@@ -94,8 +94,21 @@ export class BookingModalComponent implements OnInit {
         bookingRentals: [],
         status: 'Valid'
       } as Booking;
-    } else if (this.booking) {
-
+    } else if (this.method === 'PUT') {
+      this.bookingForm.setValue({
+        stay: {
+          checkIn: this.booking.stay.checkIn,
+          checkOut: this.booking.stay.checkOut
+        },
+        guests: {
+          adults: this.booking.guests.reduce((acc, guest) => guest.age === 'Adult' ? acc + 1: acc, 0),
+          children: this.booking.guests.reduce((acc, guest) => guest.age === 'Child' ? acc + 1: acc, 0)
+        },
+        rentals: this.booking.bookingRentals.reduce((acc, bookingRental): Rental[] => {
+          acc.push({id: bookingRental.rentalId});
+          return acc;
+        }, [])
+      });
     }
 
     this.getValidRentals();
@@ -107,8 +120,6 @@ export class BookingModalComponent implements OnInit {
     // Display error messages for guests and rentals.
     this.bookingForm.controls['guests'].markAsTouched();
     this.bookingForm.controls['rentals'].markAsTouched();
-
-
   }
 
   /**
@@ -129,9 +140,11 @@ export class BookingModalComponent implements OnInit {
 
     // Sets the guests property for booking.
     const guestsControl = this.bookingForm.controls['guests'] as FormGroup;
-    Array.from(new Array(guestsControl.controls['adults'].value + guestsControl.controls['children'].value)).forEach(() => {
-      this.booking.guests.push({} as Profile);
-      // TODO: Set age of each profile.
+    Array.from(new Array(guestsControl.controls['adults'].value)).forEach(() => {
+      this.booking.guests.push({ age: 'Adult' } as Profile);
+    });
+    Array.from(new Array(guestsControl.controls['children'].value)).forEach(() => {
+      this.booking.guests.push({ age: 'Child' } as Profile);
     });
 
     // Sets the rentals property for booking.
@@ -151,7 +164,7 @@ export class BookingModalComponent implements OnInit {
   /**
    * Gets all rental units that are not occupied during the specified dates.
    */
-  private getValidRentals(): void {
+  public getValidRentals(): void {
     const stayControls = this.bookingForm.controls['stay'] as FormGroup;
     if (stayControls.invalid) {
       this.bookingForm.controls['rentals'].setValue(null);
@@ -166,9 +179,11 @@ export class BookingModalComponent implements OnInit {
       // Reduce stays to an array of rental unit ids.
       map(stays =>
         stays.reduce((occupiedRentals: string[], stay): string[] => {
-          stay.booking.bookingRentals.forEach(bookingRental => {
-            occupiedRentals.push(bookingRental.rentalId);
-          });
+          if (stay.booking.id !== this.booking.id) {
+            stay.booking.bookingRentals.forEach(bookingRental => {
+              occupiedRentals.push(bookingRental.rentalId);
+            });
+          }
           return occupiedRentals;
         }, [] as string[])
       ),
@@ -219,5 +234,9 @@ export class BookingModalComponent implements OnInit {
     this.booking = null;
     this.lodging = null;
     this.rentals = [];
+  }
+
+  public getRentalUnitModel(id: string) {
+    return this.rentals.find(x => x.id === id)?.rentalUnit;
   }
 }

@@ -20,13 +20,14 @@ export interface Booking {
   accountId: string;
   lodgingId: string;
   guests: Profile[];
-  rentals: Rental[];
-  bookingRentals?: BookingRental[];
+  bookingRentals: BookingRental[];
   stay: Stay;
   status: 'Valid' | 'Invalid' | 'Cancelled';
 }
 
 export interface BookingRental {
+  booking: Booking;
   bookingId: string;
+  rental: Rental;
   rentalId: string;
 }
