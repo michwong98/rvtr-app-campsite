@@ -80,10 +80,6 @@ describe('BookingModalComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should submit booking form', () => {
     component.openModal(mockLodgings[0]);
     component.bookingForm.setValue({
@@ -176,9 +172,5 @@ describe('BookingModalComponent', () => {
     component.getValidRentals();
     expect(component.bookingForm.controls['stay'].valid).toBe(true);
   });
-
-  it('should get post form', () => {
-    component.openModal(null, {} as Booking);
-  })
 
 });
