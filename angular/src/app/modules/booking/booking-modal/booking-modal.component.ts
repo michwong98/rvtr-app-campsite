@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef, Input, Output, EventEmitter }
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { getNewDateFromNowBy, formatDate } from './../utils/date-helpers';
 
 import { ValidationService } from '../../../services/validation/validation.service';
 
@@ -67,13 +68,11 @@ export class BookingModalComponent implements OnInit {
       // Stay check in and check out.
       stay: new FormGroup({
         checkIn: new FormControl(
-          this.booking !== null
-            ? this.booking.stay.checkIn
-            : this.searchData.checkIn.value),
+          this.booking !== null ? this.booking.stay.checkIn
+            : (this.searchData ? this.searchData.checkIn.value : formatDate(getNewDateFromNowBy(1)))),
         checkOut: new FormControl(
-          this.booking !== null
-            ? this.booking.stay.checkOut
-            : this.searchData.checkOut.value)
+          this.booking !== null ? this.booking.stay.checkOut
+            : (this.searchData ? this.searchData.checkOut.value : formatDate(getNewDateFromNowBy(2))))
       }, [Validators.required, ValidationService.stayValidator]),
 
       // Guests count.
@@ -127,6 +126,51 @@ export class BookingModalComponent implements OnInit {
     // Display error messages for guests and rentals.
     this.bookingForm.controls['guests'].markAsTouched();
     this.bookingForm.controls['rentals'].markAsTouched();
+  }
+
+  /** Gets all rental units that are not occupied during the specified dates. */
+  public getValidRentals(): void {
+    const stayControls = this.bookingForm.controls['stay'] as FormGroup;
+    if (stayControls.invalid) {
+      this.bookingForm.controls['rentals'].setValue(null);
+      this.rentals = [];
+      return;
+    }
+
+    // Calcuates the available rentals with input check in and check out dates.
+    const checkIn = stayControls.controls['checkIn'].value;
+    const checkOut = stayControls.controls['checkOut'].value;
+    this.bookingService.getStays(checkIn, checkOut, this.lodging.id).pipe(
+      // Reduce stays to an array of rental unit ids.
+      map(stays =>
+        stays.reduce((occupiedRentals: string[], stay): string[] => {
+          if (stay.booking.id !== this.booking.id) {
+            stay.booking.bookingRentals.forEach(bookingRental => {
+              occupiedRentals.push(bookingRental.rentalId);
+            });
+          }
+          return occupiedRentals;
+        }, [] as string[])
+      ),
+    ).subscribe((occupiedRentals) => {
+      // Clear existing rentals selection.
+      this.bookingForm.controls['rentals'].setValue(null);
+
+      // Filter all rentals that do not have an id in occupied rentals.
+      this.rentals = this.lodging.rentals.filter(rental => !occupiedRentals.includes(rental.id));
+
+      // Select all available rentals that were selected before.
+      if (this.method === 'PUT') {
+        // Reduce to array of rental ids.
+        const bookedRentals = this.booking.bookingRentals.reduce((acc: string[], bookingRental: BookingRental) => {
+          acc.push(bookingRental.rentalId);
+          return acc;
+        }, []);
+
+        // Select all previously selected rentals included in the available rentals.
+        this.bookingForm.controls['rentals'].setValue(this.rentals.filter(rental => bookedRentals.includes(rental.id)));
+      }
+    });
   }
 
   /**
@@ -183,51 +227,6 @@ export class BookingModalComponent implements OnInit {
           () => this.bookingsChange.emit(this.bookingService.get())
         );
     }
-  }
-
-  /** Gets all rental units that are not occupied during the specified dates. */
-  public getValidRentals(): void {
-    const stayControls = this.bookingForm.controls['stay'] as FormGroup;
-    if (stayControls.invalid) {
-      this.bookingForm.controls['rentals'].setValue(null);
-      this.rentals = [];
-      return;
-    }
-
-    // Calcuates the available rentals with input check in and check out dates.
-    const checkIn = stayControls.controls['checkIn'].value;
-    const checkOut = stayControls.controls['checkOut'].value;
-    this.bookingService.getStays(checkIn, checkOut, this.lodging.id).pipe(
-      // Reduce stays to an array of rental unit ids.
-      map(stays =>
-        stays.reduce((occupiedRentals: string[], stay): string[] => {
-          if (stay.booking.id !== this.booking.id) {
-            stay.booking.bookingRentals.forEach(bookingRental => {
-              occupiedRentals.push(bookingRental.rentalId);
-            });
-          }
-          return occupiedRentals;
-        }, [] as string[])
-      ),
-    ).subscribe((occupiedRentals) => {
-      // Clear existing rentals selection.
-      this.bookingForm.controls['rentals'].setValue(null);
-
-      // Filter all rentals that do not have an id in occupied rentals.
-      this.rentals = this.lodging.rentals.filter(rental => !occupiedRentals.includes(rental.id));
-
-      // Select all available rentals that were selected before.
-      if (this.method === 'PUT') {
-        // Reduce to array of rental ids.
-        const bookedRentals = this.booking.bookingRentals.reduce((acc: string[], bookingRental: BookingRental) => {
-          acc.push(bookingRental.rentalId);
-          return acc;
-        }, []);
-
-        // Select all previously selected rentals included in the available rentals.
-        this.bookingForm.controls['rentals'].setValue(this.rentals.filter(rental => bookedRentals.includes(rental.id)));
-      }
-    });
   }
 
   /**
