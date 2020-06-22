@@ -244,7 +244,7 @@ export class BookingModalComponent implements OnInit {
     } else if (booking) {
       this.method = 'PUT';
       this.booking = booking;
-      this.lodging = null;
+      this.lodging = { id: this.booking.lodgingId } as Lodging;
       this.lodgingService.get(this.booking.lodgingId, new HttpParams().set('IncludeImages', true.toString())).subscribe(data => {
         this.lodging = data[0];
         this.newBookingForm();

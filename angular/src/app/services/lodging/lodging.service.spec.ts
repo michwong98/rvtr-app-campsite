@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import {
   HttpClientTestingModule,
   HttpTestingController,
@@ -68,27 +68,6 @@ describe('LodgingService', () => {
 
     req = httpTestingController.expectOne('test?id=0');
     req.flush(JSON.stringify(true));
-  }));
-
-  it('should make httpGet request', fakeAsync(() => {
-    let req: TestRequest;
-    let reqOne: TestRequest;
-
-    service.get().subscribe((res) => {
-      expect(res.length).toEqual(lodgingMock.length);
-    });
-
-    service.get('0').subscribe((res) => {
-      expect(res[0]).toEqual(lodgingMock[0]);
-    });
-
-    tick();
-
-    req = httpTestingController.expectOne('test');
-    reqOne = httpTestingController.expectOne('test?id=0');
-
-    req.flush(lodgingMock);
-    reqOne.flush(lodgingMock);
   }));
 
   it('should make httpPost request', fakeAsync(() => {
