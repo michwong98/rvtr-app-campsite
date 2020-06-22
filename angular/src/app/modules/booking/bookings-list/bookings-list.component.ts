@@ -17,6 +17,8 @@ export class BookingsListComponent implements OnInit {
 
   @Output() bookingClickHandler = new EventEmitter<Booking>();
 
+  display: boolean = false;
+
   constructor(private readonly bookingsService: BookingService) { }
 
   ngOnInit(): void {
@@ -31,12 +33,14 @@ export class BookingsListComponent implements OnInit {
     this.bookings$ = this.bookingsService.get();
   }
 
+  /** Calls the bookings service to delete selected booking. */
   public deleteBooking(booking: Booking): void {
     this.bookingsService.delete(booking.id).subscribe(
       () => this.getBookings()
-    )
+    );
   }
 
+  /** Opens booking modal to edit selected booking. */
   public editBooking(booking: Booking): void {
     this.bookingClickHandler.emit(booking);
   }
