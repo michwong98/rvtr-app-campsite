@@ -12,7 +12,7 @@ import { Address } from './address.model';
 export interface Location {
   id: string;
   address: Address;
-  latitude: string;
+  latitude: number;
   locale: string;
-  longitude: string;
+  longitude: number;
 }

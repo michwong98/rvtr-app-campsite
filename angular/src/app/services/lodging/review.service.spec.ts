@@ -6,23 +6,20 @@ import {
 } from '@angular/common/http/testing';
 import { TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { asyncScheduler, scheduled } from 'rxjs';
-import { LodgingService } from './lodging.service';
 import { ConfigService } from '../config/config.service';
 import { Config } from '../../data/config.model';
-import { Lodging } from '../../data/lodging.model';
-import { FormControl } from '@angular/forms';
+import { Review } from 'src/app/data/review.model';
+import { ReviewService } from './review.service';
 
-describe('LodgingService', () => {
-  const lodgingMock: Lodging[] = [
+describe('ReviewService', () => {
+  const reviewMock: Review[] = [
     {
       id: '0',
-      location: null,
-      name: null,
-      description: null,
-      amenities: [],
-      images: [],
-      rentals: [],
-      reviews: []
+      accountId: '1',
+      lodgingId: '1',
+      comment: 'comment',
+      dateCreated: new Date(Date.now()),
+      rating: 5,
     },
   ];
 
@@ -44,7 +41,7 @@ describe('LodgingService', () => {
 
   let httpClient: HttpClient;
   let httpTestingController: HttpTestingController;
-  let service: LodgingService;
+  let service: ReviewService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -54,7 +51,7 @@ describe('LodgingService', () => {
 
     httpClient = TestBed.inject(HttpClient);
     httpTestingController = TestBed.inject(HttpTestingController);
-    service = TestBed.inject(LodgingService);
+    service = TestBed.inject(ReviewService);
   });
 
   it('should be created', () => {
@@ -70,7 +67,7 @@ describe('LodgingService', () => {
 
     tick();
 
-    req = httpTestingController.expectOne('test/Lodging/0?id=0');
+    req = httpTestingController.expectOne('test/Review/0?id=0');
     req.flush(JSON.stringify(true));
   }));
 
@@ -82,45 +79,45 @@ describe('LodgingService', () => {
     params = params.set('City', 'LA');
 
     service.get().subscribe((res) => {
-      expect(res.length).toEqual(lodgingMock.length);
+      expect(res.length).toEqual(reviewMock.length);
     });
 
     service.get('0', params).subscribe((res) => {
-      expect(res[0]).toEqual(lodgingMock[0]);
+      expect(res[0]).toEqual(reviewMock[0]);
     });
 
     tick();
 
-    req = httpTestingController.expectOne('test/Lodging');
-    reqOne = httpTestingController.expectOne('test/Lodging/0?City=LA');
+    req = httpTestingController.expectOne('test/Review');
+    reqOne = httpTestingController.expectOne('test/Review/0?City=LA');
 
-    req.flush(lodgingMock);
-    reqOne.flush(lodgingMock);
+    req.flush(reviewMock);
+    reqOne.flush(reviewMock);
   }));
 
   it('should make httpPost insert request', fakeAsync(() => {
     let req: TestRequest;
 
-    service.post(lodgingMock[0]).subscribe((res) => {
+    service.post(reviewMock[0]).subscribe((res) => {
       expect(JSON.parse(res.toString())).toBeTrue();
     });
 
     tick();
 
-    req = httpTestingController.expectOne('test/Lodging');
+    req = httpTestingController.expectOne('test/Review');
     req.flush(JSON.stringify(true));
   }));
 
   it('should make httpPost update request', fakeAsync(() => {
     let req: TestRequest;
 
-    service.post(lodgingMock[0]).subscribe((res) => {
-      expect(res).toEqual(lodgingMock[0]);
+    service.post(reviewMock[0]).subscribe((res) => {
+      expect(res).toEqual(reviewMock[0]);
     });
 
     tick();
 
-    req = httpTestingController.expectOne('test/Lodging');
-    req.flush(lodgingMock[0]);
+    req = httpTestingController.expectOne('test/Review');
+    req.flush(reviewMock[0]);
   }));
 });

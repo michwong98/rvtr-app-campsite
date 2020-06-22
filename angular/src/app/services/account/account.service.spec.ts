@@ -14,7 +14,7 @@ import { Config } from '../../data/config.model';
 describe('AccountService', () => {
   const accountMock: Account[] = [
     {
-      id: '0',
+      id: '1',
       address: null,
       name: '',
       payments: null,
@@ -26,7 +26,14 @@ describe('AccountService', () => {
     get() {
       const config: Config = {
         api: {
-          account: 'test',
+          account: {
+            base: '',
+            uri: {
+              account: 'test',
+              payment: null,
+              profile: null
+            }
+          },
           booking: null,
           lodging: null,
           monitoring: null,
@@ -66,30 +73,37 @@ describe('AccountService', () => {
 
     tick();
 
-    req = httpTestingController.expectOne('test?id=0');
+    req = httpTestingController.expectOne('test/0');
     req.flush(JSON.stringify(true));
   }));
 
-  it('should make httpGet request', fakeAsync(() => {
-    let req: TestRequest;
-    let reqOne: TestRequest;
+  describe('get', () => {
 
-    service.get().subscribe((res) => {
-      expect(res.length).toEqual(accountMock.length);
-    });
+    it('should get all accounts', fakeAsync(() => {
+      let req: TestRequest;
+      service.get().subscribe((res) => {
+        expect(res.length).toEqual(accountMock.length);
+      });
 
-    service.get('0').subscribe((res) => {
-      expect(res[0]).toEqual(accountMock[0]);
-    });
+      tick();
 
-    tick();
+      req = httpTestingController.expectOne('test');
+      req.flush(accountMock);
+    }));
 
-    req = httpTestingController.expectOne('test');
-    reqOne = httpTestingController.expectOne('test?id=0');
+    it('should get correct account id', fakeAsync(() => {
+      let reqOne: TestRequest;
 
-    req.flush(accountMock);
-    reqOne.flush(accountMock);
-  }));
+      service.get('0').subscribe((res) => {
+        expect(res[0].id).toEqual(accountMock[0].id);
+      });
+
+      tick();
+
+      reqOne = httpTestingController.expectOne('test?id=0');
+      reqOne.flush(accountMock);
+    }));
+  });
 
   it('should make httpPost request', fakeAsync(() => {
     let req: TestRequest;
@@ -103,6 +117,7 @@ describe('AccountService', () => {
     req = httpTestingController.expectOne('test');
     req.flush(JSON.stringify(true));
   }));
+
 
   it('should make httpPut request', fakeAsync(() => {
     let req: TestRequest;

@@ -18,11 +18,12 @@ const mockLocations: Location[] = [
       country: 'USA',
       postalCode: '90210',
       stateProvince: 'CA',
-      street: '7421 Something Dr'
+      street: '7421 Something Dr',
+      unit: ''
     },
-    latitude: '34.0522',
+    latitude: 34.0522,
     locale: 'N/A',
-    longitude: '118.2437',
+    longitude: 118.2437,
   },
   {
     id: '1',
@@ -32,11 +33,12 @@ const mockLocations: Location[] = [
       country: 'USA',
       postalCode: '90210',
       stateProvince: 'TX',
-      street: '7421 Something Dr'
+      street: '7421 Something Dr',
+      unit: ''
     },
-    latitude: '30.2672',
+    latitude: 30.2672,
     locale: 'N/A',
-    longitude: '97.7431',
+    longitude: 97.7431,
   }
 ];
 
@@ -46,7 +48,8 @@ const rentalUnitMock: RentalUnit = {
   bathrooms: [],
   bedrooms: [],
   occupancy: 1,
-  type: 'bungalow'
+  rentalUnitType: '',
+  description: ''
 };
 
 const mockRentals: Rental[] = [
@@ -54,16 +57,18 @@ const mockRentals: Rental[] = [
     id: '0',
     name: 'Nice Place',
     rentalUnit: rentalUnitMock,
+    description: ''
   },
   {
     id: '1',
     name: 'Nicer Place',
     rentalUnit: rentalUnitMock,
+    description: ''
   },
 ];
 
 const mockReviews: Review[] = [
-  { id: '0', accountId: '0', hotelId: '0', comment: '0', dateCreated: new Date(), rating: 4 },
+  { id: '0', accountId: '0', lodgingId: '', comment: '0', dateCreated: new Date(), rating: 4 },
 ];
 
 const mockLodgings: Lodging[] = [
@@ -73,6 +78,9 @@ const mockLodgings: Lodging[] = [
     name: 'A Place',
     rentals: mockRentals,
     reviews: mockReviews,
+    description: '',
+    images: [],
+    amenities: []
   },
   {
     id: '1',
@@ -80,6 +88,9 @@ const mockLodgings: Lodging[] = [
     name: 'The Lodging',
     rentals: mockRentals,
     reviews: mockReviews,
+    description: '',
+    images: [],
+    amenities: []
   },
 ];
 
@@ -98,8 +109,8 @@ const mockBookings: Booking[] = [
     accountId: '0',
     lodgingId: '0',
     guests: [
-      {age: 'Adult', name: {family: '', given: '', id: ''}, email: '', id: '', phone: ''},
-      {age: 'Child', name: {family: '', given: '', id: ''}, email: '', id: '', phone: ''}
+      {age: 'Adult', name: {family: '', given: '', id: 1}, email: '', id: 1, phone: '', image: ''},
+      {age: 'Child', name: {family: '', given: '', id: 1}, email: '', id: 1, phone: '', image: ''}
     ],
     bookingRentals: [],
     stay: mockStay,
