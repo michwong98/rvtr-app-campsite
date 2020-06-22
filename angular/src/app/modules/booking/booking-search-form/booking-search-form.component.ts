@@ -10,8 +10,6 @@ import { Lodging } from '../../../data/lodging.model';
 /**
  * Compoent that contains a form to take in user input to determine the
  * lodgings to display in the parent `Booking` component.
- *
- * @implements {OnInit}
  */
 @Component({
   selector: 'uic-booking-search-form',

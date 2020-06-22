@@ -12,8 +12,6 @@ import { BookingModalComponent } from '../booking-modal/booking-modal.component'
  * The Base component for the booking portion of this appilcation.
  * Responsible for Displaying lodgings that a user can filter through a
  * search form and posting new bookings through the booking modal.
- *
- * @implements {OnInit}
  */
 @Component({
   selector: 'uic-booking',
