@@ -7,6 +7,10 @@ import { getNewDateFromNowBy, formatDate } from '../utils/date-helpers';
 import { LodgingService } from '../../../services/lodging/lodging.service';
 import { Lodging } from '../../../data/lodging.model';
 
+/**
+ * Compoent that contains a form expecting user input to determine the
+ * lodgings to display in the parent `Booking` component.
+ */
 @Component({
   selector: 'uic-booking-search-form',
   templateUrl: './booking-search-form.component.html'
@@ -15,8 +19,19 @@ export class BookingSearchFormComponent implements OnInit {
 
   constructor(private readonly formBuilder: FormBuilder, private readonly lodgingService: LodgingService) { }
 
+  /**
+   * Input form - takes in user input to determine lodgings to display and data
+   * to input in the `Booking` sub-component `BookingModal`.
+   */
   @Input() searchForm: FormGroup;
+  /**
+   * Observable that expects a list of lodgings to display to the template
+   */
   @Input() lodgings$: Observable<Lodging[]>;
+  /**
+   * An event that is triggered once the User submits the Search Form to
+   * update the parent `BookingComponent` with a filtered list of lodgings.
+   */
   @Output() lodgingsChange = new EventEmitter<Observable<Lodging[]>>();
 
   ngOnInit(): void {
