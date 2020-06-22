@@ -38,7 +38,7 @@ export class BookingsListComponent implements OnInit {
     )
   }
 
-  public triggerBookingEditClick(booking: Booking): void {
+  public editBooking(booking: Booking): void {
     this.bookingClickHandler.emit(booking);
   }
 }
