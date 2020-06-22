@@ -7,6 +7,8 @@ import { concatMap } from 'rxjs/operators';
 /**
  * Component that fetches a list of bookings from `BookingService` and
  * displays the results in the template
+ *
+ * @implements {OnInit}
  */
 @Component({
   selector: 'uic-bookings-list',
