@@ -17,22 +17,22 @@ import { Rental } from 'src/app/data/rental.model';
   templateUrl: './booking-modal.component.html'
 })
 export class BookingModalComponent implements OnInit {
-  // Element reference for the booking modal html element.
+  /** Element reference for the booking modal html element. */
   @ViewChild('bookingModal') bookingModal: ElementRef;
 
-  // Form group for the booking form.
+  /** Form group for the booking form. */
   bookingForm: FormGroup;
 
-  // Booking object containing information on the current booking.
+  /** Booking object containing information on the current booking. */
   @Input() booking: Booking;
 
-  // Lodging object containing information on the current lodging.
+  /** Lodging object containing information on the current lodging. */
   @Input() lodging: Lodging;
 
-  // Search data information.
+  /** Search data information. */
   @Input() searchData: BookingSearchData;
 
-  // Available rentals.
+  /** Available rentals. */
   rentals: Rental[] = [];
 
   constructor(
