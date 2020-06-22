@@ -38,9 +38,10 @@ export class LodgingService {
    * @param id string
    */
   get(id?: string, params?: HttpParams): Observable<Lodging[]> {
-    const options = params ? { params } : {};
+    const options = params ? { params } : { params: new HttpParams() };
+    options.params.append('id', id);
     return this.apiUrl$.pipe(
-      map(url => id ? `${url}/${id}` : url),
+      // map(url => id ? `${url}/${id}` : url),
       concatMap((url) => this.http.get<Lodging[]>(url, options)));
   }
 
