@@ -1,0 +1,28 @@
+.uic-icon {
+  align-items: baseline;
+  display: inline-flex;
+  height: 0rem;
+  justify-content: flex-start;
+  width: 1.5rem
+}
+
+.amenity-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 1rem;
+}
+
+.icons-container {
+  line-height: normal;
+}
+
+.amenity-outer-container {
+  width: 5rem;
+}
+
+@media screen and (max-width: 768px) {
+  .amenity-outer-container {
+    width: 100%;
+  }
+}

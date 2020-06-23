@@ -1,0 +1,143 @@
+<section class="hero is-fullheight-with-navbar">
+  <div class="hero-head">
+
+    <div class="container">
+      <uic-lodging-search-form (submitted)="onSearchSubmit($event)"></uic-lodging-search-form>
+    </div>
+
+    <div class="container" *ngFor="let lodge of lodgings">
+      <br>
+      <h1 class="title is-2">{{lodge.name}}</h1>
+      <!--IMAGES START-->
+      <div class="tile is-ancestor">
+        <div class="tile is-6 is-parent is-vertical">
+          <div class="tile is-child">
+            <figure class="image is-16by9">
+              <img alt="placeholder image" src="{{lodge.images[0].image}}">
+            </figure>
+          </div>
+        </div>
+        <div class="tile is-vertical">
+          <div class="tile">
+            <div class="tile is-parent is-vertical">
+              <div class="tile is-child">
+                <figure class="image is-5by3">
+                  <img alt="placeholder image" src="{{lodge.images[1].image}}">
+                </figure>
+              </div>
+              <div class="tile is-child">
+                <figure class="image is-5by3">
+                  <img alt="placeholder image" src="{{lodge.images[2].image}}">
+                </figure>
+              </div>
+            </div>
+            <div class="tile is-parent is-vertical">
+              <div class="tile is-child">
+                <figure class="image is-5by3">
+                  <img alt="placeholder image" src="{{lodge.images[3].image}}">
+                </figure>
+              </div>
+
+              <div class="tile is-child">
+                <figure class="image is-5by3">
+                  <img alt="placeholder image" src="{{lodge.images[4].image}}">
+                </figure>
+              </div>
+            </div>
+
+            <div class="tile is-parent is-vertical">
+              <div class="tile is-child">
+                <figure class="image is-5by3">
+                  <img alt="placeholder image" src="{{lodge.images[5].image}}">
+                </figure>
+              </div>
+
+              <div class="tile is-child">
+                <figure class="image is-5by3">
+                  <img alt="placeholder image" src="{{lodge.images[6].image}}">
+                </figure>
+              </div>
+            </div>
+          </div>
+          <!--IMAGES END-->
+          <!--Title for Lodging-->
+          <div class="tile is-parent">
+            <div class="tile box has-background-dark is-child">
+              <div class="level">
+                <div class="level-item">
+                  <div>
+                    <p class="title has-text-light is-3">{{lodge.name}}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tile is-ancestor">
+        <div class="tile is-3">
+          <div class="tile is-parent">
+            <div class="tile box is-child">
+              <h2 class="title is-4">Overview</h2>
+
+              <div class="level">
+                <div class="level-left">
+                  <div class="level-item">
+                    <div>
+                      <p class="heading">Address</p>
+                      <p class="title is-6">{{lodge.location.address.street}}</p>
+                      <p class="title is-6">{{lodge.location.address.city}}, {{lodge.location.address.stateProvince}} {{lodge.location.address.postalCode}}</p>
+                      <p class="title is-6">{{lodge.location.address.country}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="level">
+                <div class="level-left">
+                  <div class="level-item">
+                    <div>
+                      <p class="heading">Amenity</p>
+                      <p>
+                        <span *ngFor="let amenity of lodge.amenities" class="icon">
+                          <i aria-hidden="true" class="fas fa-{{getIconName(amenity.amenity)}}"></i>
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="tile">
+          <div class="tile is-parent">
+            <div class="tile box is-child" *ngFor="let rental of lodge.rentals">
+              <h2 class="title is-4">Rooms</h2>
+              <uic-lodging-room [room]="rental.rentalUnit.bedrooms[0]"></uic-lodging-room>
+              <hr>
+              <uic-lodging-room [room]="rental.rentalUnit.bedrooms[1]"></uic-lodging-room>
+            </div>
+          </div>
+
+          <div class="tile is-parent">
+            <div (click)="reviewModal.openModal($event, lodge, account)" class="tile box is-child">
+              <h2 class="title is-4">Reviews</h2>
+              <uic-lodging-review *ngIf="lodge.reviews" [review]="lodge.reviews[0]"></uic-lodging-review>
+              <hr>
+              <uic-lodging-review *ngIf="lodge.reviews" [review]="lodge.reviews[1]"></uic-lodging-review>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container uic-paginate-button-layout">
+      <a class="button uic-paginate-button" (click)="previousPage(); pageViewToFirstResult()" *ngIf="this.currentPageIndex > 0">Previous Page</a>
+      <div *ngIf="this.currentPageIndex < this.lastPageIndex"></div>
+      <a class="button uic-paginate-button" *ngIf="this.currentPageIndex < this.lastPageIndex" (click)="nextPage(); pageViewToFirstResult()">Next Page&gt;</a>
+    </div>
+  </div>
+</section>
+
+<uic-lodging-review-modal #reviewModal></uic-lodging-review-modal>

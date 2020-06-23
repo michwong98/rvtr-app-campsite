@@ -1,0 +1,14 @@
+<div *ngFor="let review of reviews">
+    <uic-lodging-review
+        [review]="review"
+        [displayComment]="true">
+    </uic-lodging-review>
+    <hr>
+</div>
+
+
+
+<div class="level">
+    <button class="button level-item" *ngIf="!allReviewsLoaded" (click)="loadMore()">Load More Reviews</button>
+    <div *ngIf="allReviewsLoaded" class="level-item"><strong>No more Reviews</strong></div>
+</div>
