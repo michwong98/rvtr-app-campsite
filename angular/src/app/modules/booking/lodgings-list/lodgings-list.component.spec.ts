@@ -53,11 +53,8 @@ describe('LodgingsListComponent', () => {
   });
 
   it('should emit when a lodging is clicked', () => {
-    // Implemented using the following resource
-    // https://www.vincecampanale.com/blog/2018/03/22/testing-custom-events-angular/
-    lodgingItemEl = lodgingsListDe.query(By.css('.lodging-item'));
-    spyOn(component.lodgingClickHandler, 'emit'); // Spy to listen for when event is emitted
-    lodgingItemEl.nativeElement.click(); // Click the lodging item
+    const lodgingEventEmitterSpy = spyOn(component.lodgingClickHandler, 'emit'); // Spy to listen for when event is emitted
+    component.triggerLodgingClick(mockLodgings[0]);
     expect(component.lodgingClickHandler.emit).toHaveBeenCalled();
   });
 });

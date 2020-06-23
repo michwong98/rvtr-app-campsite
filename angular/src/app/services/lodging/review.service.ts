@@ -3,54 +3,55 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { concatMap, map } from 'rxjs/operators';
 import { ConfigService } from '../config/config.service';
-import { Lodging } from '../../data/lodging.model';
+import { Review } from '../../data/review.model';
 
 @Injectable({
   providedIn: 'root',
 })
-export class LodgingService {
+export class ReviewService {
+
   private readonly apiUrl$: Observable<string>;
 
   /**
-   * Represents the _Lodging Service_ `constructor` method
+   * Represents the _Review Service_ `constructor` method
    *
    * @param config ConfigService
    * @param http HttpClient
    */
   constructor(private readonly config: ConfigService, private readonly http: HttpClient) {
-    this.apiUrl$ = config.get().pipe(map((cfg) => `${cfg.api.lodging}/Lodging`));
+    this.apiUrl$ = config.get().pipe(map((cfg) => `${cfg.api.lodging}/Review`));
   }
 
   /**
-   * Represents the _Lodging Service_ `delete` method
+   * Represents the _Review Service_ `delete` method
    *
    * @param id string
    */
-  delete(id: string): Observable<Lodging> {
+  delete(id: string): Observable<Review> {
     return this.apiUrl$.pipe(
       map(url => `${url}/${id}`),
-      concatMap((url) => this.http.delete<Lodging>(url, { params: { id } }))
+      concatMap((url) => this.http.delete<Review>(url, { params: { id } }))
     );
   }
 
   /**
-   * Represents the _Lodging Service_ `get` method
+   * Represents the _Review Service_ `get` method
    *
    * @param id string
    */
-  get(id?: string, params?: HttpParams): Observable<Lodging[]> {
+  get(id?: string, params?: HttpParams): Observable<Review[]> {
     const options = params ? { params } : {};
     return this.apiUrl$.pipe(
       map(url => id ? `${url}/${id}` : url),
-      concatMap((url) => this.http.get<Lodging[]>(url, options)));
+      concatMap((url) => this.http.get<Review[]>(url, options)));
   }
 
   /**
-   * Represents the _Lodging Service_ `post` method
+   * Represents the _Review Service_ `post` method
    *
-   * @param lodging Lodging
+   * @param review Review
    */
-  post(lodging: Lodging): Observable<Lodging> {
-    return this.apiUrl$.pipe(concatMap((url) => this.http.post<Lodging>(url, lodging)));
+  post(review: Review): Observable<Review> {
+    return this.apiUrl$.pipe(concatMap((url) => this.http.post<Review>(url, review)));
   }
 }

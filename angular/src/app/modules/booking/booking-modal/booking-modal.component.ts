@@ -145,7 +145,7 @@ export class BookingModalComponent implements OnInit {
       // Reduce stays to an array of rental unit ids.
       map(stays =>
         stays.reduce((occupiedRentals: string[], stay): string[] => {
-          if (stay.booking.id !== this.booking.id) {
+          if (stay.booking.id !== this.booking?.id) {
             stay.booking.bookingRentals.forEach(bookingRental => {
               occupiedRentals.push(bookingRental.rentalId);
             });
