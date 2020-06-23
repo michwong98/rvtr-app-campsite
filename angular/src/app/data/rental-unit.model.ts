@@ -18,6 +18,7 @@ export interface RentalUnit {
   bathrooms: Bathroom[];
   bedrooms: Bedroom[];
   name: string;
+  description: string;
   occupancy: number;
-  type: string;
+  rentalUnitType: string;
 }
