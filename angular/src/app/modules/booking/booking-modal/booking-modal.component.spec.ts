@@ -147,6 +147,8 @@ describe('BookingModalComponent', () => {
       checkOut: '2020-02-01'
     });
 
+    component.lodging = {id: '1'} as Lodging;
+
     component.getValidRentals();
     expect(component.rentals.length).toBe(0);
     expect(component.bookingForm.controls['stay'].valid).toBe(false);
