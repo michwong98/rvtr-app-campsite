@@ -1,0 +1,50 @@
+<form [formGroup]="reviewForm" (ngSubmit)="submitReview()">
+  <div class="level">
+    <div class="is-size-5 level-item">Add New Review</div>
+  </div>
+
+  <div class="tile">
+    <div *ngIf="account">{{account.name}} - {{currentDate | date}}</div>
+    <div *ngIf="account === null">Anonymous - {{currentDate | date}}</div>
+  </div>
+
+  <div class="tile is-child">
+    <textarea class="textarea" placeholder="Your review" formControlName="comment"></textarea>
+  </div>
+
+  <div class="tile is-parent">
+
+    <div class="tile is-child is-2">
+      <div class="field">
+        <label for="rating" class="label">Rating</label>
+        <div class="control">
+          <input formControlName="rating" class="input" id="rating" name="rating"
+                 placeholder="Rating" type="number" min="0" max="10" step="1">
+        </div>
+      </div>
+    </div>
+
+    <div class="tile is-child is-1">
+      <div class="field">
+        <label for="location" class="label">&nbsp;</label>
+        <div class="control">
+          <input class="button is-primary" type="submit" value="Submit"
+            [disabled]="!canSubmit()">
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <article *ngIf="ratingField.invalid" class="message is-danger">
+    <div class="message-body">
+      Please enter a rating between 0 and 10.
+    </div>
+  </article>
+  <article *ngIf="commentField.invalid" class="message is-danger">
+    <div class="message-body">
+      Please enter a comment.
+    </div>
+  </article>
+</form>
+

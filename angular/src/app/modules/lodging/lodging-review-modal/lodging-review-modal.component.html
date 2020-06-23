@@ -1,0 +1,26 @@
+<div id="lodging-review-modal-form" class="modal" #lodgingReviewModal>
+    <div class="modal-background" (click)="closeModal($event)"></div>
+    <div class="modal-card">
+      
+      <header class="modal-card-head">
+        <p class="modal-card-title">Reviews</p>
+        <button class="delete" aria-label="close" (click)="closeModal($event)"></button>
+      </header>
+
+      <section class="modal-card-body">
+
+        <uic-lodging-add-review (submitted)="reviewSubmitted()"></uic-lodging-add-review>
+
+        <button class="button is-danger" *ngIf="addingReview" (click)="addingReview=false">Cancel</button>
+
+        <br><br>
+        <div>
+          <uic-lodging-review-list></uic-lodging-review-list>
+        </div>
+      </section>
+  
+      <footer class="modal-card-foot level">
+        <button class="button is-danger level-item" (click)="closeModal($event)">Close</button>
+      </footer>
+    </div>
+  </div>

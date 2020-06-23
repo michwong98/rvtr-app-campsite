@@ -14,3 +14,7 @@ node_modules/
 
 # vscode
 .vscode/
+**/.vs
+**/.vs/*
+**/justfile
+**/spa-host
