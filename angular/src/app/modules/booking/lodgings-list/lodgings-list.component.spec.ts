@@ -6,6 +6,7 @@ import { Lodging } from 'src/app/data/lodging.model';
 import { DebugElement, ElementRef } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { empty } from 'rxjs';
 
 describe('LodgingsListComponent', () => {
   let component: LodgingsListComponent;
@@ -40,6 +41,13 @@ describe('LodgingsListComponent', () => {
   it('should create 2D array of lodgings', () => {
     const resultLodgingRow = component.lodgingsRow(mockLodgings, 1);
     const expectedLodginRow: Lodging[][] = [[mockLodgings[0]], [mockLodgings[1]]];
+
+    expect(resultLodgingRow).toEqual(expectedLodginRow);
+  });
+
+  it('should create empty array when lodgings is null', () => {
+    const resultLodgingRow = component.lodgingsRow(null, 0);
+    const expectedLodginRow = [];
 
     expect(resultLodgingRow).toEqual(expectedLodginRow);
   });
