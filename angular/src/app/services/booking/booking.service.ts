@@ -42,9 +42,10 @@ export class BookingService {
    * record if the `id` parameter is provided.
    * @param id Optional - id of the specified `Booking` record
    */
-  get(id?: string): Observable<Booking[]> {
-    const options = id ? { params: new HttpParams().set('id', id) } : {};
-    return this.apiUrl$.pipe(concatMap((url) => this.http.get<Booking[]>(url[0], options)));
+  get(id?: string, params?: HttpParams): Observable<Booking[]> {
+    const parameters = params ? params : new HttpParams();
+    const options = { params: parameters };
+    return this.apiUrl$.pipe(concatMap((url) => this.http.get<Booking[]>(`${url[0]}/${id ? id : ''}`, options)));
   }
 
   /**
