@@ -21,7 +21,7 @@ describe('BookingsListComponent', () => {
     get(id?: string) {
       return of([] as Booking[]);
     },
-    delete:  ()  => { return {subscribe: () => {}}},
+    delete: () => of(true)
   };
 
   beforeEach(async(() => {
@@ -43,7 +43,7 @@ describe('BookingsListComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should delete booking', async (() => {
+  it('should delete booking', async(() => {
     const bookingSpy = spyOn(bookingServiceMock, 'delete').and.returnValue(of(true));
     const getBookingSpy = spyOn(component, 'getBookings');
     component.deleteBooking(bookingMock as Booking);

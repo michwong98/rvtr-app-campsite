@@ -6,10 +6,12 @@
       <div class="tile is-ancestor">
         <div class="tile is-vertical">
 
-          <uic-bookings-list [bookings$]="bookings$" (bookingClickHandler)="bookingModal.openModal(null, $event)" class="column" style="margin: 10px;"></uic-bookings-list>
+          <uic-bookings-list [bookings$]="bookings$" (bookingClickHandler)="bookingModal.openModal(null, $event)"
+            class="column" style="margin: 10px;"></uic-bookings-list>
 
           <uic-booking-search-form [searchForm]="searchForm" [lodgings$]="lodgings$"
-            (lodgingsChange)="this.lodgings$ = $event.lodgings$; this.searchForm = $event.searchForm"></uic-booking-search-form>
+            (lodgingsChange)="this.lodgings$ = $event.lodgings$; this.searchForm = $event.searchForm">
+          </uic-booking-search-form>
 
           <!-- Loading for lodgings$ -->
           <ng-template #loading>
@@ -29,7 +31,8 @@
                 <div class="columns">
                   <div class="column is-4">
                     <figure class="image is-16by9">
-                      <img alt="placeholder image" [src]="lodgings[0].images ? lodgings[0].images[0] : 'https://bulma.io/images/placeholders/1280x960.png'">
+                      <img alt="placeholder image"
+                        [src]="lodgings[0].images?.length > 0 ? lodgings[0].images[0].image : 'https://bulma.io/images/placeholders/1280x960.png'">
                     </figure>
                   </div>
 
@@ -84,8 +87,8 @@
             </div>
 
             <!-- Lodgings List -->
-            <uic-lodgings-list [lodgings]="this.lodgings"
-              (lodgingClickHandler)="bookingModal.openModal($event)"></uic-lodgings-list>
+            <uic-lodgings-list [lodgings]="this.lodgings" (lodgingClickHandler)="bookingModal.openModal($event)">
+            </uic-lodgings-list>
 
           </ng-container>
         </div>
@@ -94,4 +97,5 @@
   </div>
 </section>
 
-<uic-booking-modal [booking]="booking" [lodging]="lodging" [searchData]="searchForm?.controls" (bookingsChange)="this.bookings$ = $event"></uic-booking-modal>
+<uic-booking-modal [booking]="booking" [lodging]="lodging" [searchData]="searchForm?.controls"
+  (bookingsChange)="this.bookings$ = $event"></uic-booking-modal>

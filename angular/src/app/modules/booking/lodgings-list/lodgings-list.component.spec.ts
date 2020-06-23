@@ -3,10 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { LodgingsListComponent } from './lodgings-list.component';
 import { mockLodgings } from '../mock-booking-data';
 import { Lodging } from 'src/app/data/lodging.model';
-import { DebugElement, ElementRef } from '@angular/core';
-import { By } from '@angular/platform-browser';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { empty } from 'rxjs';
+import { DebugElement } from '@angular/core';
 
 describe('LodgingsListComponent', () => {
   let component: LodgingsListComponent;
@@ -14,7 +11,6 @@ describe('LodgingsListComponent', () => {
 
   let lodgingsListDe: DebugElement;
   let lodgingsListEl: HTMLElement;
-  let lodgingItemEl: ElementRef;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

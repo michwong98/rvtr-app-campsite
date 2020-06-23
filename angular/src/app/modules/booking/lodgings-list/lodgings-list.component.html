@@ -8,11 +8,14 @@
           {{lodging.location?.address?.city}},
           {{lodging.location?.address?.stateProvince}}</p>
         <figure class="image is-16by9">
-          <img alt="placeholder image" [src]="lodging.images ? lodging.images[0] : 'https://bulma.io/images/placeholders/1280x960.png'">
+          <img alt="placeholder image"
+            [src]="lodging.images?.length > 0 ? lodging.images[0].image : 'https://bulma.io/images/placeholders/1280x960.png'">
         </figure>
+        <!-- Button for going to lodging details page. Doesn't exist in current iteration.
         <div onclick="event.stopPropagation()">
           <a routerLink="/lodging/{{lodging.id}}" class="button is-white is-small">Details</a>
         </div>
+        -->
       </div>
     </div>
   </div>

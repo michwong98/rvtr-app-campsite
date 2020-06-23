@@ -86,8 +86,8 @@ describe('BookingService', () => {
 
     tick();
 
-    req = httpTestingController.expectOne('test');
-    reqOne = httpTestingController.expectOne('test?id=0');
+    req = httpTestingController.expectOne('test/');
+    reqOne = httpTestingController.expectOne('test/0');
 
     req.flush(bookingMock);
     reqOne.flush(bookingMock);
