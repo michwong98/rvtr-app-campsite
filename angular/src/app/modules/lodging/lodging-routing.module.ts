@@ -4,9 +4,10 @@ import { LodgingComponent } from './lodging/lodging.component';
 
 const routes: Routes = [{ component: LodgingComponent, path: '' }];
 
+
 @NgModule({
-  declarations: [LodgingComponent],
+  declarations: [],
   exports: [RouterModule],
   imports: [RouterModule.forChild(routes)],
 })
-export class LodgingRoutingModule {}
+export class LodgingRoutingModule { }

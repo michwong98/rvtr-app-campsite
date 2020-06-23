@@ -11,8 +11,11 @@ import { Name } from './name.model';
  * ```
  */
 export interface Profile {
-  id: string;
+  id: number;
+  accountId?: number;
   email: string;
   name: Name;
   phone: string;
+  age: 'Adult' | 'Child';
+  image: string;
 }

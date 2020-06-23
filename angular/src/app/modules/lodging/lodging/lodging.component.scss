@@ -1,0 +1,14 @@
+.uic-paginate-button-layout {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 1.5rem;
+}
+
+.uic-paginate-button-previous {
+    max-width: 10rem;
+}
+
+.uic-paginate-button-next {
+    max-width: 10rem;
+}

@@ -1,0 +1,82 @@
+<form [formGroup]="searchForm" action="" (ngSubmit)="onSubmit()">
+  <div class="tile is-parent"style="justify-content:center;width:100%">
+
+    <div class="tile is-child is-2">
+      <div class="field">
+        <label for="city" class="label">City</label>
+        <div class="control">
+          <input formControlName="city" class="input" id="city" name="city" placeholder="City" type="text">
+        </div>
+      </div>
+    </div>
+
+    <div class="tile is-child is-2">
+      <div class="field">
+        <label for="name" class="label">Name</label>
+        <div class="control">
+          <input formControlName="name" class="input" id="name" name="name" placeholder="Name" type="text">
+        </div>
+      </div>
+    </div>
+
+    <div class="tile is-child is-1">
+      <div class="field">
+        <label for="location" class="label">Beds</label>
+        <div class="control">
+          <input formControlName="beds" class="input" id="location" name="location" placeholder="Beds" type="number">
+        </div>
+      </div>
+    </div>
+
+    <div class="tile is-child is-1">
+      <div class="field">
+        <label for="location" class="label">Baths</label>
+        <div class="control">
+          <input formControlName="baths" class="input" id="location" name="location" placeholder="Baths" type="number">
+        </div>
+      </div>
+    </div>
+
+    <div class="tile is-child is-1">
+      <div class="field">
+        <label for="location" class="label">Rating</label>
+        <div class="control">
+          <input formControlName="rating" class="input" id="location" name="location" placeholder="Rating" type="number">
+        </div>
+      </div>
+    </div>
+
+    <div class="tile is-child is-2 width-min-content">
+      <div class="field">
+        <label for="location" class="label">Sort By</label>
+        <div class="select">
+          <select formControlName="sortBy">
+            <option *ngFor="let field of sortByFields" value="{{field.value}}">{{field.name}}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="tile is-child is-2 width-min-content">
+      <div class="field">
+        <label for="location" class="label">Order By</label>
+        <div class="select">
+          <select formControlName="orderBy">
+            <option *ngFor="let field of sortOrderFields" value="{{field.value}}">{{field.name}}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="tile is-child is-1">
+      <div class="field">
+        <label for="location" class="label">&nbsp;</label>
+        <div class="control">
+          <button class="button is-primary" type="submit">Search</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</form>

@@ -1,0 +1,38 @@
+<div class="level">
+  <div class="level-item">
+    <figure class="image is-64x64">
+      <img *ngIf="room && room.images" alt="placeholder image" class="is-rounded" src="{{room.images[0].image}}">
+      <img *ngIf="!room || !room.images" alt="placeholder image" class="is-rounded" src="https://bulma.io/images/placeholders/128x128.png">
+    </figure>
+  </div>
+  <div class="level-item has-text-centered">
+    <div>
+      <p class="heading is-6">Beds</p>
+      <p *ngIf="room && room.bedType" class="title is-6">{{room.bedCount}} {{room.bedType.bedType}}</p>
+      <p *ngIf="!room || !room.bedType" class="title is-6">&nbsp;</p>
+    </div>
+  </div>
+  <div class="level-item has-text-centered">
+    <div>
+      <p class="heading is-6">Room</p>
+      <p *ngIf="room" class="title is-6">{{room.roomNumber}}</p>
+      <p *ngIf="!room" class="title is-6">&nbsp;</p>
+    </div>
+  </div>
+  <div class="level-item amenity-outer-container">
+    <div>
+      <p class="heading is-6 amenity-container">Amenity</p>
+      <div *ngIf="room && room.amenities" class="icons-container">
+        <span *ngFor="let amenity of room.amenities; let i = index" class="uic-icon">
+          <em *ngIf="3 > i" aria-hidden="true" class="fas fa-{{getIconName(amenity.amenity)}}"></em>
+        </span>
+      </div>
+
+      <div *ngIf="!room || !room.amenities">
+        <span class="icon"> <em></em> </span>
+        <span class="icon"> <em></em> </span>
+        <span class="icon"> <em></em> </span>
+      </div>
+    </div>
+  </div>
+</div>

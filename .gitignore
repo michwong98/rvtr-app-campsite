@@ -11,3 +11,8 @@ node_modules/
 
 # sonarqube
 .scannerwork/
+
+**/.vs
+**/.vs/*
+**/justfile
+**/spa-host

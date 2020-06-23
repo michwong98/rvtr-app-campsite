@@ -18,7 +18,7 @@ export class LodgingService {
    * @param http HttpClient
    */
   constructor(private readonly config: ConfigService, private readonly http: HttpClient) {
-    this.apiUrl$ = config.get().pipe(map((cfg) => cfg.api.lodging));
+    this.apiUrl$ = config.get().pipe(map((cfg) => `${cfg.api.lodging}/Lodging`));
   }
 
   /**
@@ -26,9 +26,10 @@ export class LodgingService {
    *
    * @param id string
    */
-  delete(id: string): Observable<boolean> {
+  delete(id: string): Observable<Lodging> {
     return this.apiUrl$.pipe(
-      concatMap((url) => this.http.delete<boolean>(url, { params: { id } }))
+      map(url => `${url}/${id}`),
+      concatMap((url) => this.http.delete<Lodging>(url, { params: { id } }))
     );
   }
 
@@ -37,9 +38,11 @@ export class LodgingService {
    *
    * @param id string
    */
-  get(id?: string): Observable<Lodging[]> {
-    const options = id ? { params: new HttpParams().set('id', id) } : {};
-    return this.apiUrl$.pipe(concatMap((url) => this.http.get<Lodging[]>(url, options)));
+  get(id?: string, params?: HttpParams): Observable<Lodging[]> {
+    const options = params ? { params } : {};
+    return this.apiUrl$.pipe(
+      map(url => id ? `${url}/${id}` : url),
+      concatMap((url) => this.http.get<Lodging[]>(url, options)));
   }
 
   /**
@@ -47,16 +50,7 @@ export class LodgingService {
    *
    * @param lodging Lodging
    */
-  post(lodging: Lodging): Observable<boolean> {
-    return this.apiUrl$.pipe(concatMap((url) => this.http.post<boolean>(url, lodging)));
-  }
-
-  /**
-   * Represents the _Lodging Service_ `put` method
-   *
-   * @param lodging Lodging
-   */
-  put(lodging: Lodging): Observable<Lodging> {
-    return this.apiUrl$.pipe(concatMap((url) => this.http.put<Lodging>(url, lodging)));
+  post(lodging: Lodging): Observable<Lodging> {
+    return this.apiUrl$.pipe(concatMap((url) => this.http.post<Lodging>(url, lodging)));
   }
 }

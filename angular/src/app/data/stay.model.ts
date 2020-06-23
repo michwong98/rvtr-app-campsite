@@ -1,3 +1,5 @@
+import { Booking } from './booking.model';
+
 /**
  * Represents the _Stay_ model
  *
@@ -15,4 +17,5 @@ export interface Stay {
   checkOut: Date;
   dateCreated: Date;
   dateModified: Date;
+  booking?: Booking;
 }

@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import {
   HttpClientTestingModule,
   HttpTestingController,
@@ -10,6 +10,7 @@ import { LodgingService } from './lodging.service';
 import { ConfigService } from '../config/config.service';
 import { Config } from '../../data/config.model';
 import { Lodging } from '../../data/lodging.model';
+import { FormControl } from '@angular/forms';
 
 describe('LodgingService', () => {
   const lodgingMock: Lodging[] = [
@@ -17,8 +18,11 @@ describe('LodgingService', () => {
       id: '0',
       location: null,
       name: null,
+      description: null,
+      amenities: [],
+      images: [],
       rentals: [],
-      reviews: [],
+      reviews: []
     },
   ];
 
@@ -66,32 +70,35 @@ describe('LodgingService', () => {
 
     tick();
 
-    req = httpTestingController.expectOne('test?id=0');
+    req = httpTestingController.expectOne('test/Lodging/0?id=0');
     req.flush(JSON.stringify(true));
   }));
 
   it('should make httpGet request', fakeAsync(() => {
     let req: TestRequest;
     let reqOne: TestRequest;
+    let params = new HttpParams();
+
+    params = params.set('City', 'LA');
 
     service.get().subscribe((res) => {
       expect(res.length).toEqual(lodgingMock.length);
     });
 
-    service.get('0').subscribe((res) => {
+    service.get('0', params).subscribe((res) => {
       expect(res[0]).toEqual(lodgingMock[0]);
     });
 
     tick();
 
-    req = httpTestingController.expectOne('test');
-    reqOne = httpTestingController.expectOne('test?id=0');
+    req = httpTestingController.expectOne('test/Lodging');
+    reqOne = httpTestingController.expectOne('test/Lodging/0?City=LA');
 
     req.flush(lodgingMock);
     reqOne.flush(lodgingMock);
   }));
 
-  it('should make httpPost request', fakeAsync(() => {
+  it('should make httpPost insert request', fakeAsync(() => {
     let req: TestRequest;
 
     service.post(lodgingMock[0]).subscribe((res) => {
@@ -100,20 +107,20 @@ describe('LodgingService', () => {
 
     tick();
 
-    req = httpTestingController.expectOne('test');
+    req = httpTestingController.expectOne('test/Lodging');
     req.flush(JSON.stringify(true));
   }));
 
-  it('should make httpPut request', fakeAsync(() => {
+  it('should make httpPost update request', fakeAsync(() => {
     let req: TestRequest;
 
-    service.put(lodgingMock[0]).subscribe((res) => {
+    service.post(lodgingMock[0]).subscribe((res) => {
       expect(res).toEqual(lodgingMock[0]);
     });
 
     tick();
 
-    req = httpTestingController.expectOne('test');
+    req = httpTestingController.expectOne('test/Lodging');
     req.flush(lodgingMock[0]);
   }));
 });
